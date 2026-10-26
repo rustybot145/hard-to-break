@@ -1,12 +1,4 @@
-// [PLACEHOLDER: Whop checkout link] Paste it here and every buy button uses it.
-const CHECKOUT_URL = "";
 const motion = !matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window;
-
-// Buy buttons: point at checkout, or do nothing until the link exists (instead of jumping to the top).
-document.querySelectorAll("[data-checkout]").forEach((a) => {
-  if (CHECKOUT_URL) a.href = CHECKOUT_URL;
-  else a.addEventListener("click", (e) => e.preventDefault());
-});
 
 // Sticky buy bar (phones): show once the main button scrolls away, hide again at the final call to action.
 const sticky = document.querySelector(".sticky");
