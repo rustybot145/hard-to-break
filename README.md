@@ -2,7 +2,7 @@
 
 Sales page for Josh Heald's **Hard to Break Program** ([@trainerjosh](https://www.instagram.com/trainerjosh/)), a $48 calisthenics program on Whop. Built by Truepoint Digital.
 
-**Order:** offer → VSL → buy button → value stack → pains → method → what's inside → timelines → gear → meet Josh → FAQ → final CTA. Every claim, number and quote comes from Josh's own reels.
+**Order:** offer → VSL → buy button → value stack → pains → method → what's inside → meet Josh → FAQ → final CTA. Every claim, number and quote comes from Josh's own reels.
 
 ## Files
 
