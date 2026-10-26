@@ -12,7 +12,7 @@ public/
   styles.css   tokens (logo yellow on warm black) → base → sections → sticky bar → motion → breakpoints
   app.js       checkout link, sticky buy bar, scroll reveals, value-stack strike-through
   fonts/       Knewave (headings, matches the logo) + Barlow / Barlow Condensed (WOFF2, SIL OFL)
-  media/       logo, favicon, photo of Josh (frame from his reel DefQkYzzvfi)
+  media/       logo + favicon
 serve.py       local preview with byte-range support (python -m http.server stalls Safari/iPhone video)
 vercel.json    static hosting from public/, strict CSP + security headers, font caching
 ```
@@ -24,7 +24,7 @@ vercel.json    static hosting from public/, strict CSP + security headers, font 
 ## Before launch
 - [ ] Paste the Whop checkout link into `CHECKOUT_URL` at the top of `public/app.js` (until then the buy buttons do nothing).
 - [ ] Add Josh's VSL to the empty `.frame` in the VSL section.
-- [ ] Josh approves the copy and his bio, then remove the `.ph` placeholder under the bio. Nothing ships in his name without his OK.
+- [ ] Josh approves the copy and his bio. Nothing ships in his name without his OK.
 - [ ] Refund line stays "All sales are final" (partner agreement). No fake urgency or reference prices (§9).
 
 ```

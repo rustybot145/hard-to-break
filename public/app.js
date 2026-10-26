@@ -30,7 +30,7 @@ if (motion) {
       el.classList.remove("reveal", "in"); el.style.transitionDelay = "";
     });
   }), { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
-  document.querySelectorAll(".stack > *:not(ul), .ledger li, .block .eyebrow, .block h2, .rows > *, .note, .josh figure, .josh div > p, details, .final > *, footer > *")
+  document.querySelectorAll(".stack > *:not(ul), .ledger li, .block .eyebrow, .block h2, .rows > *, .note, .josh div > p, details, .final > *, footer > *")
     .forEach((el) => {
       el.classList.add("reveal");
       el.style.transitionDelay = Math.min([...el.parentElement.children].indexOf(el), 6) * 80 + "ms";
