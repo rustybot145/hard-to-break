@@ -1,5 +1,10 @@
 const motion = !matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window;
 
+// Buy buttons: Whop's checkout takes a few seconds to load, so react the instant they're tapped.
+const buyButtons = document.querySelectorAll('a[href^="https://whop.com/checkout/"]');
+buyButtons.forEach((a) => a.addEventListener("click", () => a.classList.add("loading")));
+addEventListener("pageshow", () => buyButtons.forEach((a) => a.classList.remove("loading"))); // back button restores the page
+
 // Sticky buy bar (phones): show once the main button scrolls away, hide again at the final call to action.
 const sticky = document.querySelector(".sticky");
 const buy = document.querySelector(".buy .cta"), last = document.querySelector(".final .cta");
