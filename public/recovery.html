@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="robots" content="noindex">
+<title>Stretch &amp; Mobility · Hard 2 Break</title>
+<link rel="icon" type="image/png" href="media/icon.png">
+<link rel="preload" href="fonts/knewave.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="recovery.css">
+</head>
+<body>
+<main>
+  <header>
+    <p class="top">Hard 2 Break</p>
+    <h1>Stretch &amp; <em>mobility</em></h1>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" aria-selected="true" data-tab="after">After training</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="rest">Rest day</button>
+  </div>
+
+  <!-- every step is from Joshua's lessons: Module 1 (foam roller), Module 7 lesson 1 (straight leg stretch),
+       Module 2 lesson 3 (Cossack squats, deep lunges), Module 8 lesson 3 (German hang) -->
+  <section class="routine" data-routine="after" role="tabpanel">
+    <p class="when">After your workout · 3 to 4 times a week</p>
+    <ol>
+      <li><span class="n">1</span><div><b>Foam roll</b><span>Your legs and your back.</span></div></li>
+      <li><span class="n">2</span><div><b>Straight leg stretch</b><span>Legs straight, knees pushed back. 30s where you first feel it, then 20s a little deeper. Shake out, rest 30s. 4 rounds.</span></div>
+        <button type="button" class="demo" data-clip="m7-straight-leg-stretch-protocol">See demonstration</button></li>
+      <li><span class="n">3</span><div><b>Loaded straight leg stretch</b><span>On a bench with a 25 to 35 lb dumbbell. Same 30s, then 20s. 4 rounds.</span></div>
+        <button type="button" class="demo" data-clip="r-loaded-straight-leg-stretch">See demonstration</button></li>
+      <li><span class="n">4</span><div><b>Pulses</b><span>On the bench: 10 quick pulses past your deepest point. Rest 30s. 4 rounds. Always last.</span></div>
+        <button type="button" class="demo" data-clip="r-straight-leg-pulses">See demonstration</button></li>
+    </ol>
+  </section>
+
+  <section class="routine" data-routine="rest" role="tabpanel" hidden>
+    <p class="when">On your rest days</p>
+    <ol>
+      <li><span class="n">1</span><div><b>Foam roll</b><span>Your legs and your back.</span></div></li>
+      <li><span class="n">2</span><div><b>Cossack squats</b><span>3 × 15. Wide base, sit deep to one side, heel stays down. Band if you need it.</span></div>
+        <button type="button" class="demo" data-clip="m2-cossack-squats">See demonstration</button></li>
+      <li><span class="n">3</span><div><b>Deep lunges</b><span>3 × 15 per leg. Big step, slow, knee just above the ground.</span></div>
+        <button type="button" class="demo" data-clip="m2-deep-lunges">See demonstration</button></li>
+      <li><span class="n">4</span><div><b>Tucked German hang</b><span>3 × 15s. Knees to your chest, rotate through and hold. Chalk up.</span></div>
+        <button type="button" class="demo" data-clip="r-tucked-german-hang">See demonstration</button></li>
+      <li><span class="n">5</span><div><b>Straight leg stretch</b><span>30s where you first feel it, then 20s a little deeper. 4 rounds.</span></div>
+        <button type="button" class="demo" data-clip="m7-straight-leg-stretch-protocol">See demonstration</button></li>
+    </ol>
+  </section>
+
+  <p class="fine"><a href="recovery/hard-2-break-stretch-and-mobility.pdf" download>Download the PDF</a> · Not medical advice. Stop anything that hurts.</p>
+</main>
+
+<dialog class="player" data-player aria-label="Exercise video">
+  <button class="x" type="button" data-close aria-label="Close">×</button>
+  <video muted loop playsinline autoplay data-video></video>
+  <h3 data-name></h3>
+</dialog>
+
+<script src="recovery.js"></script>
+</body>
+</html>
