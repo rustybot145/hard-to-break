@@ -58,9 +58,6 @@ const CHECK = CHECKS[CHECK_KEY] || null;
 const COLORS = { 2: "#ff8a3d", 3: "#ff5252", 4: "#5b9dff", 5: "#a77bff", 6: "#b8f04a", 7: "#ff6fae", 8: "#5fe3f0", 9: "#ffb347" };
 const FLOW = CHECK ? [{ n: CHECK.module, color: COLORS[CHECK.module], title: CHECK.title, sequential: !!CHECK.steps, tests: CHECK.tests }] : MODULES;
 const STORE = CHECK ? `h2b-check-${CHECK_KEY}` : "h2b-tests";
-const TESTS = Object.fromEntries(MODULES.flatMap((m) => m.tests.map((t) => [t.id, t])));
-const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];  // weeks start on Monday
-const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const fmtDate = (d, o = { month: "long", day: "numeric" }) => new Date(d).toLocaleDateString(undefined, o);
 
 const $ = (s) => document.querySelector(s);
@@ -147,10 +144,10 @@ function placement(vals) {
   return { mod: PAST_ALL, lesson: 0, missed: [] };
 }
 
-function finish(fresh, brandNew = false) {
+function finish(fresh) {
   let history = load();
   if (fresh) {
-    history.push({ at: Date.now(), values, ...(brandNew && { brandNew }) });
+    history.push({ at: Date.now(), values });
     try { localStorage.setItem(STORE, JSON.stringify(history.slice(-20))); } catch {}
   }
   const last = history.at(-1), prev = history.at(-2);
@@ -160,81 +157,20 @@ function finish(fresh, brandNew = false) {
   $("[data-num]").textContent = mod.n;
   $("[data-title]").textContent = `Start at Module ${mod.n}: ${mod.title}`;
   $("[data-lesson]").textContent = lesson === null ? "Train all three lessons together" : `Begin with lesson ${lesson + 1}: ${mod.lessons[lesson]}`;
-  $("[data-why]").textContent = last.brandNew
-    ? "Brand new is the right place to start. Module 2 builds every foundation from zero, with a band to help on anything you can't do yet."
-    : missed.length
+  $("[data-why]").textContent = missed.length
     ? `You hit ${countHits(mod, last.values)} of ${mod.tests.filter((t) => t.id in last.values).length} targets in this module. Close the gaps below and you're ready for the next one.`
     : "You hit every target in the test. Your foundations, strength, handstand, muscle-up and dragon flag are already there.";
 
   renderScores(MODULES.flatMap((m) => m.tests.filter((t) => t.id in last.values).map((t) => ({ m, t }))), last, prev);
   renderFocus(missed, last.values);
-  $("[data-focus-block]").hidden ||= !!last.brandNew;
-  $("[data-scores-block]").hidden = !!last.brandNew;
+  $("[data-scores-block]").hidden = false;
 
   const weeks = mod.weeks;
   $("[data-retest]").textContent = `Retest on ${fmtDate(last.at + weeks * 7 * 864e5)}, after ${weeks} weeks` + (prev ? ` · Last test ${fmtDate(prev.at)}` : "");
-  for (const sel of [".week", "[data-note]"]) $(sel).hidden = false;
-  renderWeek(mod, lesson, last.values);
-  renderDays(mod);
+  $("[data-note]").hidden = false;
+  $("[data-retest]").hidden = false;
   show("result");
 }
-// the starting module's training, with every tested exercise set from that person's own number
-function renderWeek(mod, lesson, vals) {
-  const tr = TRAINING[mod.n];
-  const items = tr.lessons ? tr.lessons[lesson ?? 0] : tr.items;
-  $("[data-week]").replaceChildren(...tr.sessions.map((name, s) => {
-    const box = document.createElement("div");
-    box.className = "session";
-    if (tr.sessions.length > 1) { const h = document.createElement("h4"); h.textContent = name; box.append(h); }
-    const ul = document.createElement("ul");
-    ul.append(...items.filter((it) => it.s === s).map((it) => {
-      const li = document.createElement("li"), t = TESTS[it.test], v = vals[it.test];
-      const scored = t && v !== undefined;
-      li.className = scored ? "yours" : "";
-      li.innerHTML = `<b></b><span></span>`;
-      li.querySelector("b").textContent = it.name;
-      li.querySelector("span").textContent = scored && v < t.target && it.low ? it.low(v) : it.rx;
-      return li;
-    }));
-    box.append(ul);
-    return box;
-  }));
-  $("[data-rest]").textContent = [`Rest ${tr.rest}.`, tr.extra && `${tr.extra}.`].filter(Boolean).join(" ");
-}
-
-// pick training days; the next 7 days are laid out with the session for each
-function renderDays(mod) {
-  const tr = TRAINING[mod.n], key = `h2b-days-${mod.n}`;
-  $("[data-days-block]").hidden = !tr.days;
-  if (!tr.days) return;
-  let days;
-  try { days = JSON.parse(localStorage.getItem(key)) || tr.days; } catch { days = tr.days; }
-  $("[data-days-hint]").textContent = `Josh's plan is ${tr.days.length} days a week${tr.sessions.length > 1 ? `, alternating ${tr.sessions.join(" and ")}` : ""}. Tap to change your days.`;
-  $("[data-daypick]").replaceChildren(...DAY_ORDER.map((d) => {
-    const b = document.createElement("button");
-    b.type = "button"; b.textContent = DAY_NAMES[d];
-    b.setAttribute("aria-pressed", days.includes(d));
-    b.addEventListener("click", () => {
-      days = days.includes(d) ? days.filter((x) => x !== d) : [...days, d];
-      try { localStorage.setItem(key, JSON.stringify(days)); } catch {}
-      renderDays(mod);
-    });
-    return b;
-  }));
-  // sessions rotate through the chosen days in week order: Mon A, Tue B, Thu A, Fri B
-  const order = DAY_ORDER.filter((d) => days.includes(d));
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  $("[data-sched]").replaceChildren(...Array.from({ length: 7 }, (_, i) => {
-    const date = new Date(today.getTime() + i * 864e5), d = date.getDay(), li = document.createElement("li");
-    const train = days.includes(d);
-    li.className = train ? "train" : "off";
-    li.innerHTML = `<span class="when"></span><span class="what"></span>`;
-    li.querySelector(".when").textContent = i === 0 ? "Today" : fmtDate(date, { weekday: "short", day: "numeric" });
-    li.querySelector(".what").textContent = train ? tr.sessions[order.indexOf(d) % tr.sessions.length] : "Rest";
-    return li;
-  }));
-}
-
 // every test taken, as a bar against its target, with the change since last time
 function renderScores(taken, last, prev) {
   $("[data-scores]").replaceChildren(...taken.map(({ m, t }) => {
@@ -286,7 +222,8 @@ function finishCheck(fresh) {
   renderScores(tests.filter((t) => t.id in last.values).map((t) => ({ m: mod, t })), last, prev);
   renderFocus(step >= 0 ? [] : missed, last.values);
   $("[data-scores-block]").hidden = false;
-  for (const sel of [".week", "[data-days-block]", "[data-note]"]) $(sel).hidden = true;
+  $("[data-note]").hidden = true;
+  $("[data-retest]").hidden = true;
   $("[data-check-retest]").hidden = !prev;
   $("[data-check-retest]").textContent = prev ? `Last check: ${fmtDate(prev.at)}` : "";
   $("[data-full]").hidden = false;
@@ -298,8 +235,6 @@ function load() { try { return JSON.parse(localStorage.getItem(STORE)) || []; } 
 
 // ---- wiring ----
 $("[data-start]").addEventListener("click", () => { path = [{ m: 0, t: 0 }]; values = {}; ask(path[0]); });
-// brand new: no point failing seven tests in a row, so record zeros for Module 2 and go to the plan
-$("[data-new]").addEventListener("click", () => { values = Object.fromEntries(MODULES[0].tests.map((t) => [t.id, 0])); finish(true, true); });
 $("[data-restart]").addEventListener("click", () => { tint(INTRO_COLOR_OVERRIDE); show("intro"); });
 $("[data-clear]").addEventListener("click", () => { try { localStorage.removeItem(STORE); } catch {} tint(INTRO_COLOR_OVERRIDE); show("intro"); });
 $("[data-back]").addEventListener("click", () => {
@@ -329,7 +264,6 @@ if (CHECK) {
   // Josh's own rule, from his straddle planche tutorial (Voice.md)
   $("[data-quote]").textContent = "\u201cMake sure you hit the milestone for every single step before moving on. That way you don't injure yourself.\u201d \u2014 Josh";
   $("[data-quote]").hidden = false;
-  $("[data-new]").hidden = true;
   $("#intro .micro").textContent = `About 5 minutes · ${CHECK.tests.length} ${CHECK.steps ? "steps" : "tests"}`;
   $("[data-restart]").textContent = "Check again";
   $("[data-start]").textContent = "Start the check";

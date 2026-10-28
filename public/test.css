@@ -122,37 +122,6 @@ html { touch-action: manipulation; }  /* no double-tap zoom on fast taps */
 #result .cta { margin-top: 24px; }
 footer { position: relative; z-index: 1; }
 
-/* your first week: the training list, with the lines set from their own scores marked */
-.session { margin-bottom: 14px; border-radius: 14px; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; }
-.session h4 { padding: 12px 16px; font: 400 1.15rem/1 var(--display); text-transform: uppercase; color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, transparent); }
-.session ul { list-style: none; }
-.session li { padding: 12px 16px; border-top: 1px solid var(--line); display: grid; gap: 2px; }
-.session h4 + ul li:first-child { border-top: 0; }
-.session li b { font-weight: 600; }
-.session li span { color: var(--mute); font-size: .95rem; }
-.session li.yours span { color: var(--ink); }
-.session li.yours b::after {
-  content: "from your test"; margin-left: 8px; padding: 2px 7px; border-radius: 99px; vertical-align: 2px;
-  font: 600 .66rem/1.4 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--bg); background: var(--accent);
-}
-.rest, .hint, .retest { color: var(--mute); font-size: .95rem; margin-top: 6px; }
-.retest { margin-top: 14px; }
-
-/* your training days */
-.daypick { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 14px 0 16px; }
-.daypick button {
-  min-height: 46px; border-radius: 10px; cursor: pointer; border: 1.5px solid var(--line); background: transparent; color: var(--mute);
-  font: 600 .86rem/1 var(--label); letter-spacing: .06em; text-transform: uppercase; transition: background .2s, color .2s, border-color .2s;
-}
-.daypick button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
-.daypick button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-.sched { list-style: none; border-top: 1px solid var(--line); }
-.sched li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 2px; border-bottom: 1px solid var(--line); }
-.sched .when { font: 600 .9rem/1.5 var(--label); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
-.sched .train .what { color: var(--ink); font-weight: 600; }
-.sched .train .when { color: var(--accent); }
-.sched .off .what { color: var(--mute); }
-#intro .ghost { margin-top: 10px; }
 /* lesson check: the score ("2/5") is wider than a module number, so it runs smaller */
 .badge.score { font-size: clamp(5.5rem, 27vw, 8rem); margin: 10px 0 14px; }
 
