@@ -1,9 +1,9 @@
 /* Workout Builder: same fonts and dark base as the landing page (styles.css), but its own color system.
    One teal accent on black throughout, matching the app logo in Whop. */
-@font-face { font-family: "Archivo Black"; src: url(fonts/archivo-black.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Permanent Marker"; src: url(fonts/permanent-marker.woff2) format("woff2"); font-display: swap; }
 @font-face { font-family: "Inter Tight"; src: url(fonts/intertight.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
 /* teal on black like the app logo, and its own type so it doesn't look like the sales page */
-:root { --accent: #1fc2c9; --bg: #000; --bg-2: #0e1213; --display: "Archivo Black", "Arial Black", sans-serif; --body: "Inter Tight", system-ui, sans-serif; --label: "Inter Tight", system-ui, sans-serif; }
+:root { --accent: #1fc2c9; --bg: #000; --bg-2: #0e1213; --display: "Permanent Marker", "Arial Black", sans-serif; --body: "Inter Tight", system-ui, sans-serif; --label: "Inter Tight", system-ui, sans-serif; }
 .test {
   --yellow: var(--accent); --yellow-hi: color-mix(in srgb, var(--accent) 80%, #fff);
   max-width: 520px; min-height: 100svh; position: relative; z-index: 1;
@@ -19,7 +19,7 @@
 }
 
 .test h1 { font-size: clamp(2.1rem, 9vw, 3.2rem); line-height: 1.04; }
-.test h1 em { display: block; font-size: 1.2em; margin-top: .06em; }
+.test h1 em { display: block; font-size: 1.2em; margin-top: .06em; rotate: -2deg; transform-origin: left; }
 .test h2 { font-size: clamp(2.2rem, 10vw, 3.3rem); margin: 4px 0 14px; color: var(--accent); }
 .test h3 { font: 600 .9rem/1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); margin-bottom: 12px; }
 .lead { color: var(--mute); margin: 18px 0 0; font-size: 1.06rem; }
@@ -209,3 +209,6 @@ footer { position: relative; z-index: 1; }
 .player .x:focus-visible, .player .nav > :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .player .nav .cta { box-shadow: 0 2px 0 color-mix(in srgb, var(--accent) 60%, #000); border: 0; cursor: pointer; }
 .player [data-prev]:disabled { opacity: .4; cursor: default; }
+
+/* the offer above the title */
+.offer-line { font: 600 1.15rem/1.35 var(--body); color: var(--accent); margin-bottom: 14px; max-width: 30ch; }

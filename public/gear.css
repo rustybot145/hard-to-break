@@ -1,5 +1,5 @@
 /* Recommended Gear: Joshua's equipment with Amazon links. Orange on black like its app logo, with its own type. */
-@font-face { font-family: "Anton"; src: url(fonts/anton.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Bangers"; src: url(fonts/bangers.woff2) format("woff2"); font-display: swap; }
 @font-face { font-family: "DM Sans"; src: url(fonts/dmsans.woff2) format("woff2"); font-weight: 100 1000; font-display: swap; }
 :root { --orange: #ff8a3d; --deep: #e8661a; --bg: #0b0a09; --card: #161412; --ink: #f6f1ea; --mute: #a59d93; --line: rgba(246, 241, 234, .1); }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -13,7 +13,7 @@ header {
 }
 header > * { max-width: 980px; margin: 0 auto; }
 .top { font: 700 .78rem/1 "DM Sans", sans-serif; letter-spacing: .18em; text-transform: uppercase; opacity: .7; }
-h1 { font: 400 clamp(3rem, 15vw, 5.6rem)/.92 "Anton", sans-serif; text-transform: uppercase; letter-spacing: .005em; margin-top: 12px; }
+h1 { font: 400 clamp(3.2rem, 16vw, 6rem)/.9 "Bangers", sans-serif; text-transform: uppercase; letter-spacing: .02em; rotate: -2deg; transform-origin: left; margin-top: 12px; }
 h1 span { display: block; color: #fff; }
 
 main { max-width: 1012px; margin: 0 auto; padding: 0 16px 32px; }
@@ -26,7 +26,7 @@ main { max-width: 1012px; margin: 0 auto; padding: 0 16px 32px; }
 .item:hover { border-color: var(--orange); transform: translateY(-2px); }
 .item:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
 .item img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 11px; padding: 10px; margin-bottom: 12px; }
-.item b { font: 400 1.35rem/1 "Anton", sans-serif; text-transform: uppercase; letter-spacing: .01em; color: var(--orange); }
+.item b { font: 400 1.5rem/1 "Bangers", sans-serif; text-transform: uppercase; letter-spacing: .03em; color: var(--orange); }
 .prod { font-size: .86rem; line-height: 1.35; margin-top: 6px; flex: 1; }
 .meta { font-size: .78rem; font-weight: 700; color: var(--mute); margin-top: 6px; }
 .buy {
