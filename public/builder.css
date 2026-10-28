@@ -1,7 +1,7 @@
 /* Workout Builder: same fonts and dark base as the landing page (styles.css), but its own color system.
-   One teal accent on black throughout, matching the app logo in Whop. */
-/* teal on black like the app logo; the program fonts from styles.css (Knewave, Barlow) */
-:root { --accent: #1fc2c9; --bg: #000; --bg-2: #0e1213; }
+   One red accent on black throughout, matching the app logo in Whop. */
+/* red on black like the app logo; the program fonts from styles.css (Knewave, Barlow) */
+:root { --accent: #ff5252; --bg: #000; --bg-2: #140e0e; }
 .test {
   --yellow: var(--accent); --yellow-hi: color-mix(in srgb, var(--accent) 80%, #fff);
   --top: max(20px, calc(env(safe-area-inset-top) + 12px)); --bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
@@ -225,7 +225,7 @@ footer { position: relative; z-index: 1; }
 .hero em .w { animation-delay: .32s; }
 .hero em .w + .w { animation-delay: .46s; }
 @keyframes word { from { opacity: 0; transform: translateY(55%) rotate(5deg) scale(.94); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
-/* a teal swipe under "workout plan" once the words land */
+/* a red swipe under "workout plan" once the words land */
 .hero h1 em::after {
   content: ""; display: block; height: .1em; margin: .08em auto 0; width: 86%; border-radius: 99px; background: var(--accent);
   transform: scaleX(0); animation: swipe .7s var(--ease) .95s forwards; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 60%, transparent);
