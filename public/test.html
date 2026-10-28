@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#121110">
+<meta name="robots" content="noindex">
+<title>Day 0 Starting Test · Hard 2 Break</title>
+<link rel="icon" type="image/png" href="media/icon.png">
+<link rel="preload" href="fonts/knewave.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="test.css">
+</head>
+<body>
+
+<div class="glow" aria-hidden="true"></div>
+
+<main class="test wrap">
+
+  <!-- intro -->
+  <section class="screen" id="intro">
+    <p class="eyebrow rise">Day 0 · Starting test</p>
+    <h1 class="rise">Find your <em>starting module</em></h1>
+    <p class="lead rise">Measure yourself against the program's own milestones. You'll get the exact module and lesson to start on, what to focus on, and a date to retest.</p>
+    <ul class="rules rise">
+      <li>Warm up first.</li>
+      <li>Do each test once, fresh, with no band.</li>
+      <li>Only count reps with good form.</li>
+    </ul>
+    <button class="cta rise" type="button" data-start>Start the test</button>
+    <button class="ghost rise" type="button" data-new>I'm brand new: skip to my plan</button>
+    <p class="micro rise">10 to 20 minutes · Pull-up bar, dip bars, a bench and a wall</p>
+  </section>
+
+  <!-- one test at a time -->
+  <section class="screen" id="question" hidden>
+    <div class="progress" aria-hidden="true"></div>
+    <p class="eyebrow"><span data-module></span> · <span data-step></span></p>
+    <h2 data-name></h2>
+    <p class="goal">Target: <b data-goal></b></p>
+    <p class="how" data-how></p>
+
+    <!-- type in reps, or how many seconds they held -->
+    <div class="meter">
+      <div class="counter">
+        <button type="button" data-step-by="-1" aria-label="Less">−</button>
+        <label><input type="number" inputmode="numeric" min="0" max="600" value="0" data-value aria-label="Your result"><span data-unit>reps</span></label>
+        <button type="button" data-step-by="1" aria-label="More">+</button>
+      </div>
+      <div class="bar"><i data-fill></i></div>
+    </div>
+
+    <button class="cta save" type="button" data-save>Save and next</button>
+    <button class="ghost" type="button" data-zero>Couldn't do one</button>
+    <button class="back" type="button" data-back>Back</button>
+  </section>
+
+  <!-- result -->
+  <section class="screen" id="result" hidden>
+    <p class="eyebrow">Your starting point</p>
+    <div class="badge"><span data-num></span></div>
+    <h1 data-title></h1>
+    <p class="lesson" data-lesson></p>
+    <p class="lead" data-why></p>
+
+    <div class="part" data-focus-block>
+      <h3>Focus on</h3>
+      <ol class="focus" data-focus></ol>
+    </div>
+
+    <div class="part week">
+      <h3>Your first week</h3>
+      <div data-week></div>
+      <p class="rest" data-rest></p>
+      <p class="retest" data-retest></p>
+    </div>
+
+    <div class="part days" data-days-block>
+      <h3>Your training days</h3>
+      <p class="hint" data-days-hint></p>
+      <div class="daypick" data-daypick role="group" aria-label="Training days"></div>
+      <ol class="sched" data-sched></ol>
+    </div>
+
+    <div class="part" data-scores-block>
+      <h3>Your numbers</h3>
+      <ul class="scores" data-scores></ul>
+    </div>
+
+    <p class="note">Everyone watches <b>Start Here</b> and <b>Module 1: Health and Recovery</b> first, then jumps in here.</p>
+    <button class="cta" type="button" data-restart>Retake the test</button>
+    <button class="back" type="button" data-clear>Clear my saved results</button>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <p>© 2026 Josh Heald · Hard to Break Program · Not medical advice. Stop any test that hurts.</p>
+</footer>
+
+<script src="test-plan.js"></script>
+<script src="test.js"></script>
+</body>
+</html>

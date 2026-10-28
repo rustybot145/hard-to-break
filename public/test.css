@@ -1,0 +1,155 @@
+/* Day 0 starting test: same fonts and dark base as the landing page (styles.css), but its own color system.
+   --accent follows the module being tested (set from test.js), matching the lesson thumbnails in Whop. */
+:root { --accent: #4fdcb0; }
+.test {
+  --yellow: var(--accent); --yellow-hi: color-mix(in srgb, var(--accent) 80%, #fff);
+  max-width: 520px; min-height: 100svh; position: relative; z-index: 1;
+  padding: max(36px, calc(env(safe-area-inset-top) + 20px)) 0 40px;
+}
+.screen { display: flex; flex-direction: column; }
+.screen[hidden], .part[hidden] { display: none; }
+
+/* soft light in the module's color behind the card */
+.glow {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(90% 55% at 50% -5%, color-mix(in srgb, var(--accent) 17%, transparent), transparent 72%);
+}
+
+.test h1 { font-size: clamp(2.1rem, 9vw, 3.2rem); line-height: 1.04; }
+.test h1 em { display: block; font-size: 1.25em; rotate: -3deg; margin-top: .08em; }
+.test h2 { font-size: clamp(2.2rem, 10vw, 3.3rem); margin: 4px 0 14px; rotate: -2deg; transform-origin: left; color: var(--accent); }
+.test h3 { font: 600 .9rem/1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); margin-bottom: 12px; }
+.lead { color: var(--mute); margin: 18px 0 0; font-size: 1.06rem; }
+.lead b, .note b { color: var(--ink); font-weight: 600; }
+
+.rules { list-style: none; margin: 26px 0 30px; border-top: 1px solid var(--line); }
+.rules li { padding: 13px 0 13px 30px; border-bottom: 1px solid var(--line); position: relative; }
+.rules li::before { content: ""; position: absolute; left: 4px; top: 22px; width: 12px; height: 3px; background: var(--accent); rotate: -8deg; border-radius: 2px; }
+
+button.cta { border: 0; cursor: pointer; }
+.test .cta {
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--accent) 60%, #000), 0 16px 40px -14px color-mix(in srgb, var(--accent) 55%, transparent);
+  transition: transform .25s var(--ease), background-color .5s var(--ease), box-shadow .5s var(--ease);
+}
+.test .cta:active { box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 60%, #000); }
+.ghost {
+  width: 100%; min-height: 56px; margin-top: 12px; border-radius: 12px; cursor: pointer;
+  background: rgba(18, 17, 16, .5); color: var(--ink); border: 1.5px solid var(--line);
+  font: 600 1.05rem/1 var(--label); letter-spacing: .1em; text-transform: uppercase;
+  transition: border-color .2s, background .2s;
+}
+.ghost:hover { border-color: var(--accent); background: var(--bg-2); }
+.cta:focus-visible, .ghost:focus-visible, .back:focus-visible, .meter button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.back {
+  align-self: center; margin-top: 18px; padding: 10px 16px; background: none; border: 0; cursor: pointer;
+  color: var(--mute); font: 600 .86rem/1 var(--label); letter-spacing: .12em; text-transform: uppercase;
+}
+.back:hover { color: var(--ink); }
+
+/* question card */
+.progress { display: flex; gap: 5px; margin-bottom: 30px; }
+.progress i { flex: 1; height: 5px; border-radius: 3px; background: var(--line); position: relative; overflow: hidden; }
+.progress i::after { content: ""; position: absolute; inset: 0; background: var(--c); transform: scaleX(var(--p)); transform-origin: left; transition: transform .5s var(--ease); }
+.goal { font: 400 1.15rem/1.35 var(--body); color: var(--mute); }
+.goal b { color: var(--ink); font-weight: 600; }
+.how {
+  color: var(--mute); margin-top: 14px; padding: 14px 16px; border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-2)); border-left: 3px solid var(--accent);
+}
+.enter > * { animation: rise .55s var(--ease) both; }
+.enter > :nth-child(3) { animation-delay: .04s; }
+.enter > :nth-child(4), .enter > :nth-child(5) { animation-delay: .08s; }
+.enter > :nth-child(n+6) { animation-delay: .12s; }
+
+/* the result entry: type it in, or step with − and + */
+.meter { margin: 26px 0 6px; padding: 22px 18px 18px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); text-align: center; }
+.counter span { font: 600 1rem/1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--mute); margin-left: 6px; }
+.bar { height: 8px; margin: 16px 0 18px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 4px; transition: width .2s linear; }
+.counter button {
+  flex: 1; min-height: 46px; border-radius: 10px; cursor: pointer; border: 1.5px solid var(--line); background: transparent; color: var(--ink);
+  font: 600 1rem/1 var(--label); letter-spacing: .08em;
+}
+.counter { display: flex; align-items: center; gap: 12px; }
+.counter button:hover { border-color: var(--accent); }
+.counter button { flex: 0 0 64px; min-height: 64px; font: 400 2rem/1 var(--display); }
+.counter label { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; }
+.counter label span { margin: 2px 0 0; }
+.counter input {
+  width: 100%; background: none; border: 0; color: var(--ink); text-align: center; padding: 0;
+  font: 400 clamp(4.6rem, 24vw, 6.4rem)/1 var(--display); -moz-appearance: textfield; appearance: textfield;
+}
+.counter input::-webkit-inner-spin-button, .counter input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.counter input:focus { outline: none; color: var(--accent); }
+.counter + .bar { margin-bottom: 4px; }
+/* target reached: the number lights up */
+.hit .counter input { color: var(--accent); }
+.save { margin-top: 20px; }
+
+/* result */
+#result { align-items: stretch; }
+#result > .eyebrow, #result > .badge, #result > h1, #result > .lesson { text-align: center; }
+.badge {
+  font: 400 clamp(9rem, 44vw, 13rem)/.9 var(--display); margin: 6px 0 4px; rotate: -4deg; align-self: center;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 45%, #fff), var(--accent) 45%, color-mix(in srgb, var(--accent) 60%, #000));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 30px color-mix(in srgb, var(--accent) 25%, transparent));
+}
+#result h1 { font-size: clamp(1.8rem, 7.6vw, 2.6rem); }
+.lesson { margin-top: 12px; font: 600 1rem/1.3 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+#result .lead { text-align: center; }
+.part { margin-top: 30px; }
+
+.scores { list-style: none; }
+.scores li { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: .98rem; }
+.scores .name::before { content: "✓"; display: inline-block; width: 22px; color: var(--c); font-weight: 600; }
+.scores .miss .name::before { content: "–"; color: var(--mute); }
+.scores .val { font: 600 .95rem/1.5 var(--label); letter-spacing: .04em; color: var(--mute); }
+.scores .pass .val { color: var(--ink); }
+.scores .bar { grid-column: 1 / -1; height: 5px; margin: 0; }
+.scores .bar i { width: calc(var(--p) * 100%); background: var(--c); }
+.scores .miss .bar i { opacity: .55; }
+
+.focus { list-style: none; counter-reset: f; }
+.focus li { counter-increment: f; padding: 12px 14px 12px 46px; margin-bottom: 8px; border-radius: 12px; background: color-mix(in srgb, var(--accent) 8%, var(--bg-2)); position: relative; }
+.focus li::before { content: counter(f); position: absolute; left: 14px; top: 9px; font: 400 1.3rem/1.2 var(--display); color: var(--accent); }
+
+.plan dl { display: grid; grid-template-columns: auto 1fr; gap: 0; border-top: 1px solid var(--line); }
+.plan dt, .plan dd { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.plan dt { font: 600 .86rem/1.6 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); padding-right: 18px; }
+
+.note { margin: 30px 0 0; padding: 16px 18px; background: var(--bg-2); border-radius: 12px; color: var(--mute); }
+#result .cta { margin-top: 24px; }
+footer { position: relative; z-index: 1; }
+
+/* your first week: the training list, with the lines set from their own scores marked */
+.session { margin-bottom: 14px; border-radius: 14px; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; }
+.session h4 { padding: 12px 16px; font: 400 1.15rem/1 var(--display); text-transform: uppercase; color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, transparent); }
+.session ul { list-style: none; }
+.session li { padding: 12px 16px; border-top: 1px solid var(--line); display: grid; gap: 2px; }
+.session h4 + ul li:first-child { border-top: 0; }
+.session li b { font-weight: 600; }
+.session li span { color: var(--mute); font-size: .95rem; }
+.session li.yours span { color: var(--ink); }
+.session li.yours b::after {
+  content: "from your test"; margin-left: 8px; padding: 2px 7px; border-radius: 99px; vertical-align: 2px;
+  font: 600 .66rem/1.4 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--bg); background: var(--accent);
+}
+.rest, .hint, .retest { color: var(--mute); font-size: .95rem; margin-top: 6px; }
+.retest { margin-top: 14px; }
+
+/* your training days */
+.daypick { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 14px 0 16px; }
+.daypick button {
+  min-height: 46px; border-radius: 10px; cursor: pointer; border: 1.5px solid var(--line); background: transparent; color: var(--mute);
+  font: 600 .86rem/1 var(--label); letter-spacing: .06em; text-transform: uppercase; transition: background .2s, color .2s, border-color .2s;
+}
+.daypick button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.daypick button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.sched { list-style: none; border-top: 1px solid var(--line); }
+.sched li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 2px; border-bottom: 1px solid var(--line); }
+.sched .when { font: 600 .9rem/1.5 var(--label); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.sched .train .what { color: var(--ink); font-weight: 600; }
+.sched .train .when { color: var(--accent); }
+.sched .off .what { color: var(--mute); }
+#intro .ghost { margin-top: 10px; }
