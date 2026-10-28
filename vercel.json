@@ -3,7 +3,7 @@
   "cleanUrls": true,
   "headers": [
     {
-      "source": "/((?!builder).*)",
+      "source": "/((?!builder|gear).*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "source": "/builder(.*)",
+      "source": "/(builder|gear)(.*)",
       "headers": [
         {
           "key": "Content-Security-Policy",

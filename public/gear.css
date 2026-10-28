@@ -1,0 +1,22 @@
+/* Gear You Need: Josh's equipment with Amazon links. Same look as the gear list PDF. */
+@font-face { font-family: "Knewave"; src: url(fonts/knewave.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Barlow"; src: url(fonts/barlow-400.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Barlow Condensed"; src: url(fonts/barlow-cond-600.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+:root { --bg: #121110; --card: #1a1917; --ink: #f2eee4; --mute: #a39e92; --line: rgba(242, 238, 228, .12); --yellow: #f5c842; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; touch-action: manipulation; }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.45 "Barlow", system-ui, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: max(28px, env(safe-area-inset-top)) 16px 32px; }
+.top { font: 600 .8rem/1 "Barlow Condensed", sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); padding-bottom: 10px; border-bottom: 2px solid var(--yellow); }
+h1 { font: 400 clamp(2.2rem, 9vw, 3.2rem)/1 "Knewave", sans-serif; color: var(--yellow); rotate: -2deg; transform-origin: left; margin: 20px 0 22px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(160px, 42vw), 1fr)); gap: 12px; }
+.item { display: flex; flex-direction: column; padding: 10px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); color: inherit; text-decoration: none; transition: border-color .2s; }
+.item:hover { border-color: var(--yellow); }
+.item:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+.item img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 10px; padding: 8px; margin-bottom: 10px; }
+.item b { font: 400 1.05rem/1.1 "Knewave", sans-serif; color: var(--yellow); }
+.prod { font-size: .85rem; margin-top: 4px; flex: 1; }
+.meta { font: 600 .78rem/1.3 "Barlow Condensed", sans-serif; letter-spacing: .06em; color: var(--mute); margin-top: 4px; }
+.buy { margin-top: 10px; text-align: center; font: 600 .8rem/1 "Barlow Condensed", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--bg); background: var(--yellow); padding: 11px 0; border-radius: 8px; }
+.fine { margin-top: 16px; color: var(--mute); font-size: .8rem; }
+.fine a { color: var(--ink); }
