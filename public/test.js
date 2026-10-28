@@ -50,7 +50,14 @@ const MODULES = [
 ];
 const PAST_ALL = { n: 7, color: "#ff6fae", title: "Pike Press to Handstand", lessons: ["Straight Leg Stretch"], weeks: 3 };
 const INTRO_COLOR = "#4fdcb0";
-const STORE = "h2b-tests";
+let INTRO_COLOR_OVERRIDE = INTRO_COLOR;
+
+// /test?lesson=4-1 runs one lesson's check (CHECKS in test-plan.js) instead of the full Day 0 test
+const CHECK_KEY = new URLSearchParams(location.search).get("lesson");
+const CHECK = CHECKS[CHECK_KEY] || null;
+const COLORS = { 2: "#ff8a3d", 3: "#ff5252", 4: "#5b9dff", 5: "#a77bff", 6: "#b8f04a", 7: "#ff6fae", 8: "#5fe3f0", 9: "#ffb347" };
+const FLOW = CHECK ? [{ n: CHECK.module, color: COLORS[CHECK.module], title: CHECK.title, sequential: !!CHECK.steps, tests: CHECK.tests }] : MODULES;
+const STORE = CHECK ? `h2b-check-${CHECK_KEY}` : "h2b-tests";
 const TESTS = Object.fromEntries(MODULES.flatMap((m) => m.tests.map((t) => [t.id, t])));
 const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];  // weeks start on Monday
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -74,27 +81,28 @@ function show(name) {
 function nextTest() {
   if (!path.length) return { m: 0, t: 0 };
   const { m, t } = path.at(-1);
-  const mod = MODULES[m], test = mod.tests[t], missed = values[test.id] < test.target;
+  const mod = FLOW[m], test = mod.tests[t], missed = values[test.id] < test.target;
   if (missed && mod.sequential) return null;                       // the first miss sets the lesson
   if (t + 1 < mod.tests.length) return { m, t: t + 1 };
   if (mod.tests.some((x) => values[x.id] < x.target)) return null;  // finished a module with a miss
-  return m + 1 < MODULES.length ? { m: m + 1, t: 0 } : null;
+  return m + 1 < FLOW.length ? { m: m + 1, t: 0 } : null;
 }
 
 function ask(pos) {
-  const mod = MODULES[pos.m], test = mod.tests[pos.t];
+  const mod = FLOW[pos.m], test = mod.tests[pos.t];
   tint(mod.color);
-  $("[data-module]").textContent = `Module ${mod.n}`;
-  $("[data-step]").textContent = `Test ${pos.t + 1} of ${mod.tests.length}`;
+  $("[data-module]").textContent = CHECK ? CHECK.title : `Module ${mod.n}`;
+  $("[data-step]").textContent = `${CHECK?.steps ? "Step" : "Test"} ${pos.t + 1} of ${mod.tests.length}`;
   $("[data-name]").textContent = test.name;
   $("[data-goal]").textContent = goalText(test);
   $("[data-how]").textContent = test.how;
   $("[data-unit]").textContent = test.kind === "secs" ? "seconds" : "reps";
   setValue(values[test.id] ?? 0);
-  $(".progress").replaceChildren(...MODULES.map((m, i) => {
+  // full test: a segment per module; lesson check: a segment per step
+  const segs = CHECK ? mod.tests.map((_, i) => [mod.color, i < pos.t ? 1 : 0]) : FLOW.map((m, i) => [m.color, i < pos.m ? 1 : i === pos.m ? pos.t / m.tests.length : 0]);
+  $(".progress").replaceChildren(...segs.map(([c, p]) => {
     const seg = document.createElement("i");
-    seg.style.setProperty("--c", m.color);
-    seg.style.setProperty("--p", i < pos.m ? 1 : i === pos.m ? pos.t / m.tests.length : 0);
+    seg.style.setProperty("--c", c); seg.style.setProperty("--p", p);
     return seg;
   }));
   show("question");
@@ -102,7 +110,7 @@ function ask(pos) {
   card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
 }
 
-const current = () => { const { m, t } = path.at(-1); return MODULES[m].tests[t]; };
+const current = () => { const { m, t } = path.at(-1); return FLOW[m].tests[t]; };
 
 function setValue(v) {
   const test = current();
@@ -117,7 +125,7 @@ const readValue = () => Number($("[data-value]").value) || 0;
 function save(v) {
   values[current().id] = v;
   const next = nextTest();
-  if (next) { path.push(next); ask(next); } else finish(true);
+  if (next) { path.push(next); ask(next); } else (CHECK ? finishCheck : finish)(true);
 }
 
 // ---- result ----
@@ -152,33 +160,14 @@ function finish(fresh, brandNew = false) {
     ? `You hit ${countHits(mod, last.values)} of ${mod.tests.filter((t) => t.id in last.values).length} targets in this module. Close the gaps below and you're ready for the next one.`
     : "You hit every target in the test. Your foundations, strength, handstand, muscle-up and dragon flag are already there.";
 
-  // every test taken, as a bar against its target, with the change since last time
-  const taken = MODULES.flatMap((m) => m.tests.filter((t) => t.id in last.values).map((t) => ({ m, t })));
-  $("[data-scores]").replaceChildren(...taken.map(({ m, t }) => {
-    const v = last.values[t.id], li = document.createElement("li");
-    li.className = v >= t.target ? "pass" : "miss";
-    li.style.setProperty("--c", m.color);
-    li.style.setProperty("--p", Math.min(1, v / t.target));
-    const delta = prev && t.id in prev.values ? v - prev.values[t.id] : null;
-    li.innerHTML = `<span class="name"></span><span class="val"></span><span class="bar"><i></i></span>`;
-    li.querySelector(".name").textContent = t.name;
-    li.querySelector(".val").textContent = `${unit(t, v)} / ${unit(t, t.target)}` + (delta ? ` (${delta > 0 ? "+" : ""}${unit(t, delta)})` : "");
-    return li;
-  }));
-
-  // biggest gaps first
-  const gaps = missed.map((t) => ({ t, p: last.values[t.id] / t.target })).sort((a, b) => a.p - b.p);
-  $("[data-focus-block]").hidden = !gaps.length || last.brandNew;
+  renderScores(MODULES.flatMap((m) => m.tests.filter((t) => t.id in last.values).map((t) => ({ m, t }))), last, prev);
+  renderFocus(missed, last.values);
+  $("[data-focus-block]").hidden ||= !!last.brandNew;
   $("[data-scores-block]").hidden = !!last.brandNew;
-  $("[data-focus]").replaceChildren(...gaps.map(({ t }) => {
-    const li = document.createElement("li");
-    const v = last.values[t.id];
-    li.textContent = `${t.name}: ${t.kind === "secs" ? `${t.target - v} more seconds` : `${t.target - v} more reps`}`;
-    return li;
-  }));
 
   const weeks = mod.weeks;
   $("[data-retest]").textContent = `Retest on ${fmtDate(last.at + weeks * 7 * 864e5)}, after ${weeks} weeks` + (prev ? ` · Last test ${fmtDate(prev.at)}` : "");
+  for (const sel of [".week", "[data-note]"]) $(sel).hidden = false;
   renderWeek(mod, lesson, last.values);
   renderDays(mod);
   show("result");
@@ -240,6 +229,64 @@ function renderDays(mod) {
   }));
 }
 
+// every test taken, as a bar against its target, with the change since last time
+function renderScores(taken, last, prev) {
+  $("[data-scores]").replaceChildren(...taken.map(({ m, t }) => {
+    const v = last.values[t.id], li = document.createElement("li");
+    li.className = v >= t.target ? "pass" : "miss";
+    li.style.setProperty("--c", m.color);
+    li.style.setProperty("--p", Math.min(1, v / t.target));
+    const delta = prev && t.id in prev.values ? v - prev.values[t.id] : null;
+    li.innerHTML = `<span class="name"></span><span class="val"></span><span class="bar"><i></i></span>`;
+    li.querySelector(".name").textContent = t.name;
+    li.querySelector(".val").textContent = `${unit(t, v)} / ${unit(t, t.target)}` + (delta ? ` (${delta > 0 ? "+" : ""}${unit(t, delta)})` : "");
+    return li;
+  }));
+}
+
+// biggest gaps first
+function renderFocus(missed, vals) {
+  const gaps = missed.map((t) => ({ t, p: vals[t.id] / t.target })).sort((a, b) => a.p - b.p);
+  $("[data-focus-block]").hidden = !gaps.length;
+  $("[data-focus]").replaceChildren(...gaps.map(({ t }) => {
+    const li = document.createElement("li"), v = vals[t.id];
+    li.textContent = `${t.name}: ${t.target - v} more ${t.kind === "secs" ? "seconds" : "reps"}`;
+    return li;
+  }));
+}
+
+// one lesson's check: where you are in that video's steps, and what's next
+function finishCheck(fresh) {
+  const history = load();
+  if (fresh) {
+    history.push({ at: Date.now(), values });
+    try { localStorage.setItem(STORE, JSON.stringify(history.slice(-20))); } catch {}
+  }
+  const last = history.at(-1), prev = history.at(-2), mod = FLOW[0], tests = mod.tests;
+  const missed = tests.filter((t) => t.id in last.values && last.values[t.id] < t.target);
+  const hits = tests.filter((t) => last.values[t.id] >= t.target).length;
+  const step = CHECK.steps && missed.length ? tests.indexOf(missed[0]) : -1;
+  tint(mod.color);
+
+  $("#result .eyebrow").textContent = "Your lesson check";
+  $(".badge").classList.add("score");
+  $("[data-num]").textContent = `${hits}/${tests.length}`;
+  $("[data-title]").textContent = !missed.length ? "Lesson passed" : step >= 0 ? `You're on step ${step + 1} of ${tests.length}` : "Keep training this lesson";
+  $("[data-lesson]").textContent = step >= 0 ? `Step ${step + 1}: ${tests[step].name}` : `Module ${mod.n} · ${CHECK.title}`;
+  $("[data-why]").textContent = !missed.length ? CHECK.after
+    : step >= 0 ? `Train every step up to this one each session. Move on when you hit ${goalText(tests[step])}${(tests[step].how.match(/^Per (\w+)/) || ["", ""])[1].replace(/^./, " per $&")}.`
+    : "Close these gaps, then check again.";
+
+  renderScores(tests.filter((t) => t.id in last.values).map((t) => ({ m: mod, t })), last, prev);
+  renderFocus(step >= 0 ? [] : missed, last.values);
+  $("[data-scores-block]").hidden = false;
+  for (const sel of [".week", "[data-days-block]", "[data-note]"]) $(sel).hidden = true;
+  $("[data-check-retest]").hidden = !prev;
+  $("[data-check-retest]").textContent = prev ? `Last check: ${fmtDate(prev.at)}` : "";
+  $("[data-full]").hidden = false;
+  show("result");
+}
+
 const countHits = (mod, vals) => mod.tests.filter((t) => t.id in vals && vals[t.id] >= t.target).length;
 function load() { try { return JSON.parse(localStorage.getItem(STORE)) || []; } catch { return []; } }
 
@@ -247,11 +294,11 @@ function load() { try { return JSON.parse(localStorage.getItem(STORE)) || []; } 
 $("[data-start]").addEventListener("click", () => { path = [{ m: 0, t: 0 }]; values = {}; ask(path[0]); });
 // brand new: no point failing seven tests in a row, so record zeros for Module 2 and go to the plan
 $("[data-new]").addEventListener("click", () => { values = Object.fromEntries(MODULES[0].tests.map((t) => [t.id, 0])); finish(true, true); });
-$("[data-restart]").addEventListener("click", () => { tint(INTRO_COLOR); show("intro"); });
-$("[data-clear]").addEventListener("click", () => { try { localStorage.removeItem(STORE); } catch {} tint(INTRO_COLOR); show("intro"); });
+$("[data-restart]").addEventListener("click", () => { tint(INTRO_COLOR_OVERRIDE); show("intro"); });
+$("[data-clear]").addEventListener("click", () => { try { localStorage.removeItem(STORE); } catch {} tint(INTRO_COLOR_OVERRIDE); show("intro"); });
 $("[data-back]").addEventListener("click", () => {
   path.pop();
-  if (path.length) ask(path.at(-1)); else { tint(INTRO_COLOR); show("intro"); }
+  if (path.length) ask(path.at(-1)); else { tint(INTRO_COLOR_OVERRIDE); show("intro"); }
 });
 // holds step by 5 seconds, reps by 1
 for (const b of document.querySelectorAll("[data-step-by]")) b.addEventListener("click", () => setValue(readValue() + Number(b.dataset.stepBy) * (current().kind === "secs" ? 5 : 1)));
@@ -259,6 +306,21 @@ $("[data-value]").addEventListener("input", (e) => setValue(e.target.value));
 $("[data-save]").addEventListener("click", () => save(setValue(readValue())));
 $("[data-zero]").addEventListener("click", () => save(0));
 
-tint(INTRO_COLOR);
+// lesson check: the intro talks about this video, not the whole program
+if (CHECK) {
+  document.title = `${CHECK.title} check · Hard 2 Break`;
+  $("#intro .eyebrow").textContent = `Lesson check · Module ${CHECK.module}`;
+  $("#intro h1").innerHTML = `Check your <em></em>`;
+  $("#intro h1 em").textContent = CHECK.title;
+  $("#intro .lead").textContent = CHECK.steps
+    ? "Test yourself on the steps from this video. You'll see which step you're on and exactly what to hit before moving on."
+    : "Test yourself against the targets from this video. You'll see what you've got, what's left, and when you're ready to move on.";
+  $("[data-new]").hidden = true;
+  $("#intro .micro").textContent = `About 5 minutes · ${CHECK.tests.length} ${CHECK.steps ? "steps" : "tests"}`;
+  $("[data-restart]").textContent = "Check again";
+  $("[data-start]").textContent = "Start the check";
+  INTRO_COLOR_OVERRIDE = COLORS[CHECK.module];
+}
+tint(INTRO_COLOR_OVERRIDE);
 // came back later: show the last result (with progress since the one before) instead of a blank test
-if (load().length) finish(false);
+if (load().length) (CHECK ? finishCheck : finish)(false);

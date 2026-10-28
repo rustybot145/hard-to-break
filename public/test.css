@@ -153,3 +153,5 @@ footer { position: relative; z-index: 1; }
 .sched .train .when { color: var(--accent); }
 .sched .off .what { color: var(--mute); }
 #intro .ghost { margin-top: 10px; }
+/* lesson check: the score ("2/5") is wider than a module number, so it runs smaller */
+.badge.score { font-size: clamp(5.5rem, 27vw, 8rem); margin: 10px 0 14px; }
