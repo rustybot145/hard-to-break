@@ -319,9 +319,16 @@ if (CHECK) {
   $("#intro .eyebrow").textContent = `Lesson check · Module ${CHECK.module}`;
   $("#intro h1").innerHTML = `Check your <em></em>`;
   $("#intro h1 em").textContent = CHECK.title;
-  $("#intro .lead").textContent = CHECK.steps
-    ? "Test yourself on the steps from this video. You'll see which step you're on and exactly what to hit before moving on."
-    : "Test yourself against the targets from this video. You'll see what you've got, what's left, and when you're ready to move on.";
+  $("#intro .lead").textContent = "5 minutes to know if you're ready for the next video, or exactly what to work on first.";
+  const gets = [
+    ["Know when you're ready to move on.", "No guessing, and no moving on before your body is ready."],
+    [CHECK.steps ? "Your exact step." : "Your gaps, biggest first.", CHECK.steps ? "See which step you're on and the number to hit before the next one." : "See how far you are from each of Josh's targets."],
+    ["Proof you're improving.", "Your numbers are saved. Check again next session and watch them go up."],
+  ];
+  $("[data-gets]").replaceChildren(...gets.map(([b, t]) => { const li = document.createElement("li"), s = document.createElement("b"); s.textContent = b; li.append(s, " " + t); return li; }));
+  // Josh's own rule, from his straddle planche tutorial (Voice.md)
+  $("[data-quote]").textContent = "\u201cMake sure you hit the milestone for every single step before moving on. That way you don't injure yourself.\u201d \u2014 Josh";
+  $("[data-quote]").hidden = false;
   $("[data-new]").hidden = true;
   $("#intro .micro").textContent = `About 5 minutes · ${CHECK.tests.length} ${CHECK.steps ? "steps" : "tests"}`;
   $("[data-restart]").textContent = "Check again";
