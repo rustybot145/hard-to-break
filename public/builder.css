@@ -1,5 +1,5 @@
-/* Day 0 starting test: same fonts and dark base as the landing page (styles.css), but its own color system.
-   --accent follows the module being tested (set from test.js), matching the lesson thumbnails in Whop. */
+/* Workout Builder: same fonts and dark base as the landing page (styles.css), but its own color system.
+   --accent follows the module the plan is from (set in builder.js), matching the lesson thumbnails in Whop. */
 :root { --accent: #4fdcb0; }
 .test {
   --yellow: var(--accent); --yellow-hi: color-mix(in srgb, var(--accent) 80%, #fff);
@@ -82,20 +82,7 @@ html { touch-action: manipulation; }  /* no double-tap zoom on fast taps */
 @keyframes nudge { 25% { translate: -6px 0; } 75% { translate: 6px 0; } }
 .save { margin-top: 20px; }
 
-/* result */
-#result { align-items: stretch; }
-#result > .eyebrow, #result > .badge, #result > h1, #result > .lesson { text-align: center; }
-.badge {
-  font: 400 clamp(9rem, 44vw, 13rem)/.9 var(--display); margin: 6px 0 4px; rotate: -4deg; align-self: center;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 45%, #fff), var(--accent) 45%, color-mix(in srgb, var(--accent) 60%, #000));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter: drop-shadow(0 0 30px color-mix(in srgb, var(--accent) 25%, transparent));
-}
-#result h1 { font-size: clamp(1.8rem, 7.6vw, 2.6rem); }
-.lesson { margin-top: 12px; font: 600 1rem/1.3 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
-#result .lead { text-align: center; }
-.part { margin-top: 30px; }
-
+/* their quick-test numbers */
 .scores { list-style: none; }
 .scores li { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: .98rem; }
 .scores .name::before { content: "✓"; display: inline-block; width: 22px; color: var(--c); font-weight: 600; }
@@ -105,10 +92,6 @@ html { touch-action: manipulation; }  /* no double-tap zoom on fast taps */
 .scores .bar { grid-column: 1 / -1; height: 5px; margin: 0; }
 .scores .bar i { width: calc(var(--p) * 100%); background: var(--c); }
 .scores .miss .bar i { opacity: .55; }
-
-.plan dl { display: grid; grid-template-columns: auto 1fr; gap: 0; border-top: 1px solid var(--line); }
-.plan dt, .plan dd { padding: 12px 0; border-bottom: 1px solid var(--line); }
-.plan dt { font: 600 .86rem/1.6 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); padding-right: 18px; }
 
 .note { margin: 30px 0 0; padding: 16px 18px; background: var(--bg-2); border-radius: 12px; color: var(--mute); }
 #result .cta { margin-top: 24px; }
@@ -144,39 +127,94 @@ footer { position: relative; z-index: 1; }
 .choice[aria-pressed="true"] b::after { content: " ✓"; color: var(--accent); }
 .choice:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 
-/* the week */
-.sched { list-style: none; border-top: 1px solid var(--line); margin-top: 8px; }
-.sched li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 2px; border-bottom: 1px solid var(--line); }
-.sched .when { font: 600 .9rem/1.5 var(--label); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
-.sched .train .when { color: var(--accent); }
-.sched .train .what { color: var(--ink); font-weight: 600; }
-.sched .mobility .what { color: var(--ink); }
-.sched .off .what { color: var(--mute); }
-
-/* the sessions */
-.session { margin-bottom: 14px; border-radius: 14px; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; }
-.session h4 { padding: 12px 16px; font: 400 1.15rem/1 var(--display); text-transform: uppercase; color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, transparent); }
-.session ul { list-style: none; }
-.session li { padding: 12px 16px; border-top: 1px solid var(--line); display: grid; gap: 2px; }
-.session h4 + ul li:first-child { border-top: 0; }
-.session li b { font-weight: 600; }
-.session li span { color: var(--mute); font-size: .95rem; }
-.session li.yours span { color: var(--ink); }
 .rest, .hint { color: var(--mute); font-size: .95rem; margin-top: 6px; }
 
-/* the road to their skills */
-.road { list-style: none; display: grid; gap: 8px; margin-bottom: 8px; }
-.road li { display: grid; grid-template-columns: 44px 1fr; grid-template-rows: auto auto; column-gap: 12px; align-items: center;
-  padding: 12px 14px; border-radius: 12px; background: var(--bg-2); border-left: 4px solid var(--c); }
-.road .n { grid-row: 1 / 3; font: 400 2rem/1 var(--display); color: var(--c); text-align: center; }
-.road b { font-weight: 600; }
-.road .when { font: 600 .82rem/1.4 var(--label); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
-.road .soon { opacity: .6; }
-.session li.yours b::after {
-  content: "Set to you"; margin-left: 8px; padding: 2px 7px; border-radius: 99px; vertical-align: 2px;
-  font: 600 .66rem/1.4 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--bg); background: var(--accent);
-}
 .pair .field { min-width: 0; padding: 6px 14px; }
 .pair .field input { font-size: clamp(2.6rem, 13vw, 3.4rem); width: 100%; }
 .progress i { --c: var(--accent); }
 #intro .cta { margin-top: 26px; }
+
+/* logo + name */
+.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; font: 600 .86rem/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+.brand img { width: 44px; height: 44px; border-radius: 11px; box-shadow: 0 6px 20px -8px #5fb8ff; }
+
+/* result */
+#result { align-items: stretch; }
+#result h1 { font-size: clamp(1.8rem, 7.6vw, 2.6rem); }
+#result .lead { margin-top: 12px; }
+#result .lead b { color: var(--ink); }
+.part { margin-top: 30px; }
+
+/* the week at a glance: 7 days, training days lit */
+.days { list-style: none; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 22px; }
+.days li { display: grid; gap: 4px; justify-items: center; padding: 10px 0 9px; border-radius: 12px; background: var(--bg-2); border: 1px solid var(--line); }
+.days b { font: 600 .8rem/1 var(--label); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.days span { font: 600 .7rem/1 var(--label); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+.days .train { background: var(--accent); border-color: var(--accent); }
+.days .train b, .days .train span { color: var(--bg); }
+.days .mobility { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
+.days .mobility b { color: var(--ink); }
+
+/* weeks 1-3 / weeks 4-6 when a module has more than one lesson */
+.phases { display: flex; gap: 6px; margin-top: 22px; padding: 4px; border-radius: 12px; background: var(--bg-2); border: 1px solid var(--line); }
+.phases:empty { display: none; }
+.phases button { flex: 1; min-height: 44px; border: 0; border-radius: 9px; cursor: pointer; background: none; color: var(--mute); font: 600 .95rem/1.1 var(--label); letter-spacing: .06em; text-transform: uppercase; }
+.phases [aria-pressed="true"] { background: var(--accent); color: var(--bg); }
+.phases button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* each session: when, then every exercise with Josh's clip */
+.session { margin-top: 16px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; }
+.session header { padding: 14px 16px 12px; background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.session h4 { font: 400 1.3rem/1.1 var(--display); text-transform: uppercase; color: var(--accent); }
+.session .on { display: block; margin-top: 4px; font: 600 .86rem/1.2 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
+.session ol { list-style: none; counter-reset: ex; }
+.ex {
+  counter-increment: ex; width: 100%; display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: center;
+  padding: 12px 16px; border: 0; border-top: 1px solid var(--line); background: none; color: var(--ink); font: inherit; text-align: left;
+}
+button.ex { cursor: pointer; }
+button.ex:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+button.ex:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+.ex .pic { position: relative; width: 64px; aspect-ratio: 3 / 4; border-radius: 10px; overflow: hidden; background: var(--bg); display: grid; place-items: center; }
+.ex .pic img { width: 100%; height: 100%; object-fit: cover; }
+.ex .pic::before { content: counter(ex); position: absolute; font: 400 1.6rem/1 var(--display); color: var(--accent); }
+.ex .pic:has(img)::before { content: "▶"; z-index: 1; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 400 .8rem/1 var(--body); color: var(--bg); background: color-mix(in srgb, #fff 85%, transparent); }
+.ex b { display: block; font-weight: 600; line-height: 1.3; }
+.ex span { display: block; color: var(--mute); font-size: .95rem; line-height: 1.4; margin-top: 2px; }
+.ex.yours span { color: var(--ink); }
+.ex.yours b::after {
+  content: "Set to you"; margin-left: 8px; padding: 2px 7px; border-radius: 99px; vertical-align: 2px; white-space: nowrap;
+  font: 600 .66rem/1.4 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--bg); background: var(--accent);
+}
+.session .watch { display: block; width: calc(100% - 32px); margin: 6px 16px 16px; min-height: 52px; }
+
+/* calendar */
+.cal input[type="time"] {
+  display: block; width: 100%; min-height: 60px; padding: 0 18px; border-radius: 12px; background: var(--bg); color: var(--ink);
+  border: 2px solid var(--line); font: 400 2rem/1 var(--display); color-scheme: dark;
+}
+.cal input[type="time"]:focus { outline: none; border-color: var(--accent); }
+.cal .cta { margin-top: 14px; }
+.cal .ghost { display: grid; place-items: center; text-decoration: none; }
+#result > .ghost { margin-top: 24px; }
+
+/* Josh doing it */
+.player {
+  --yellow: var(--accent); --yellow-hi: color-mix(in srgb, var(--accent) 80%, #fff);
+  margin: auto; width: min(420px, calc(100% - 32px)); max-height: calc(100svh - 32px); padding: 0; border: 1px solid var(--line); border-radius: 18px;
+  background: var(--bg-2); color: var(--ink); overflow: auto;
+}
+.player::backdrop { background: rgba(8, 8, 7, .82); }
+.player video { display: block; width: 100%; aspect-ratio: 9 / 16; max-height: 62svh; object-fit: cover; background: #000; }
+.player .count { margin: 14px 18px 0; font: 600 .82rem/1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.player h3 { margin: 6px 18px 0; font: 400 1.4rem/1.15 var(--display); text-transform: uppercase; }
+.player h3 + p { margin: 6px 18px 0; color: var(--mute); }
+.player .nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 16px 18px 18px; }
+.player .nav > * { margin: 0; min-height: 52px; }
+.player .x {
+  position: absolute; top: 10px; right: 10px; z-index: 1; width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
+  background: rgba(18, 17, 16, .7); color: #fff; font: 400 1.6rem/1 var(--body);
+}
+.player .x:focus-visible, .player .nav > :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.player .nav .cta { box-shadow: 0 2px 0 color-mix(in srgb, var(--accent) 60%, #000); border: 0; cursor: pointer; }
+.player [data-prev]:disabled { opacity: .4; cursor: default; }

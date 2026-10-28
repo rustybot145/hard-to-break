@@ -19,13 +19,13 @@
 
   <!-- intro -->
   <section class="screen" id="intro">
-    <p class="eyebrow rise">Hard 2 Break · Workout Builder</p>
+    <p class="brand rise"><img src="media/builder-logo.png" alt="" width="48" height="48"> Hard 2 Break · Workout Builder</p>
     <h1 class="rise">Build your <em>workout plan</em></h1>
-    <p class="lead rise">Answer a few questions and get a plan built from every video in the program, set to where you are right now.</p>
+    <p class="lead rise">Answer a few questions and get a week of training built from Josh's videos, set to where you are right now.</p>
     <ol class="gets rise">
-      <li><b>Start in the right place.</b> Skip what you can already do, and don't jump ahead of what you can't.</li>
       <li><b>Your week, laid out.</b> Every session, exercise, set and rep on the days you train.</li>
-      <li><b>Your road to your skills.</b> Every module between you and the skills you want, in order.</li>
+      <li><b>Watch Josh do every exercise.</b> Tap any exercise to see exactly how it looks.</li>
+      <li><b>Straight into your calendar.</b> Pick a time and your sessions show up on your phone.</li>
     </ol>
     <button class="cta rise" type="button" data-start>Build my plan</button>
     <p class="micro rise">2 minutes · Add 5 quick tests if you want it more exact</p>
@@ -67,28 +67,21 @@
 
   <!-- the plan -->
   <section class="screen" id="result" hidden>
-    <p class="eyebrow">Your workout plan</p>
-    <div class="badge"><span data-num></span></div>
-    <h1 data-plan-title></h1>
-    <p class="lesson" data-lesson></p>
-    <p class="lead" data-why></p>
+    <p class="brand"><img src="media/builder-logo.png" alt="" width="48" height="48"> Your workout plan</p>
+    <h1>Your <em>week</em></h1>
+    <p class="lead" data-summary></p>
+    <ol class="days" data-days></ol>
+    <div class="phases" data-phases role="group" aria-label="Which weeks"></div>
+    <div data-sessions></div>
+    <p class="rest" data-rest></p>
 
-    <div class="part">
-      <h3>Your week</h3>
-      <p class="hint" data-days-note></p>
-      <ol class="sched" data-sched></ol>
-    </div>
-
-    <div class="part">
-      <h3>Your sessions</h3>
-      <div data-sessions></div>
-      <p class="rest" data-rest></p>
-    </div>
-
-    <div class="part">
-      <h3>Your road to your skills</h3>
-      <ol class="road" data-road></ol>
-      <p class="hint">Weeks are estimates from Josh's videos. Move on when you hit each lesson's milestone, not just the date.</p>
+    <div class="part cal">
+      <h3>Put it in your calendar</h3>
+      <label class="ask" for="time">What time do you train?</label>
+      <input id="time" type="time" value="17:00" data-time>
+      <button class="cta" type="button" data-ics>Add to my calendar</button>
+      <a class="ghost" data-gcal target="_blank" rel="noopener">Use Google Calendar</a>
+      <p class="hint" data-cal-note></p>
     </div>
 
     <div class="part" data-scores-block>
@@ -96,12 +89,25 @@
       <ul class="scores" data-scores></ul>
     </div>
 
-    <p class="note">Watch <b>Start Here</b> and <b>Module 1: Health and Recovery</b> first. Every session above has its video in the program.</p>
-    <button class="cta" type="button" data-rebuild>Rebuild my plan</button>
+    <p class="note">Watch <b>Start Here</b> and <b>Module 1: Health and Recovery</b> first. Every exercise above is from Josh's videos in the program.</p>
+    <button class="ghost" type="button" data-rebuild>Rebuild my plan</button>
     <button class="back" type="button" data-clear>Clear my saved answers</button>
   </section>
 
 </main>
+
+<!-- Josh doing the exercise -->
+<dialog class="player" data-player aria-label="Exercise video">
+  <button class="x" type="button" data-close aria-label="Close">×</button>
+  <video muted loop playsinline autoplay data-video></video>
+  <p class="count" data-count></p>
+  <h3 data-pname></h3>
+  <p data-prx></p>
+  <div class="nav">
+    <button class="ghost" type="button" data-prev>Back</button>
+    <button class="cta" type="button" data-fwd>Next</button>
+  </div>
+</dialog>
 
 <footer class="wrap">
   <p>© 2026 Josh Heald · Hard to Break Program · Not medical advice. Stop anything that hurts.</p>

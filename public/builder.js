@@ -25,7 +25,6 @@ const TEST_STEPS = TESTS.map((t) => ({ ...t, id: `t_${t.id}`, test: t, type: "nu
 const $ = (s) => document.querySelector(s);
 const screens = { intro: $("#intro"), question: $("#question"), result: $("#result") };
 const tint = (c) => document.documentElement.style.setProperty("--accent", c);
-const fmtDate = (d, o = { month: "short", day: "numeric" }) => new Date(d).toLocaleDateString(undefined, o);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
 
 let A = {};       // answers
@@ -126,73 +125,47 @@ function place(a) {
   const goals = (a.goals?.length ? [...a.goals] : GOALS).sort((x, y) => x - y);
   const firstSkill = goals.find((n) => !MODULES[n].comingSoon) ?? 4;
   const start = !foundations ? 2 : !strength ? 3 : firstSkill;
-  // Foundations and Strength if they need them, then their skills in program order
-  const road = [...(start <= 2 ? [2] : []), ...(start <= 3 ? [3] : []), ...(start >= 4 && !goals.includes(start) ? [start] : []), ...goals];
-  let why;
-  if (tested) why = !foundations ? "Your bar hang, push-ups or hollow hold aren't at Josh's Foundations targets yet, so that's where you build first."
-    : !strength ? "Your foundations are there. Pull-ups and dips under 10 mean Building Strength comes next."
-    : "You hit every quick-test target, so you go straight to your skills.";
-  else why = { new: "Brand new is the right place to start: Foundations builds everything from zero.", some: "With some experience, you start by building real pull-up, dip and L-sit strength.", trained: "You already train, so you go straight to your skills." }[a.level];
-  return { start, road, why, v, tested };
+  return { start, v, tested };
 }
 
-// spread the module's sessions over the person's days; extra days become mobility
+// the module's sessions on evenly spaced days; their extra days become stretch days
 function week(mod, days) {
-  const chosen = DEFAULT_DAYS[days];
-  const need = Math.min(mod.freq ?? days, days);
-  const train = Array.from({ length: need }, (_, i) => chosen[Math.round((i * days) / need)]);
+  const train = DEFAULT_DAYS[Math.min(mod.freq ?? days, days)];
+  const stretch = [1, 2, 3, 4, 5, 6, 0].filter((d) => !train.includes(d)).slice(0, days - train.length);
   return [1, 2, 3, 4, 5, 6, 0].map((d) => ({
-    d, what: train.includes(d) ? mod.sessions[train.indexOf(d) % mod.sessions.length] : chosen.includes(d) ? "Mobility: foam roll and stretch" : "Rest",
-    kind: train.includes(d) ? "train" : chosen.includes(d) ? "mobility" : "off",
+    d, what: train.includes(d) ? mod.sessions[train.indexOf(d) % mod.sessions.length] : stretch.includes(d) ? "Stretch" : "Rest",
+    kind: train.includes(d) ? "train" : stretch.includes(d) ? "mobility" : "off",
   }));
 }
+
+let plan = null;  // { mod, lesson index, days } of what's on screen, for the player and the calendar
 
 function build(fresh) {
   if (fresh) { try { localStorage.setItem(STORE, JSON.stringify({ at: Date.now(), A })); } catch {} }
-  const { start, road, why, v, tested } = place(A);
-  const mod = MODULES[start], lesson = mod.lessons[0], ctx = { v, w: A.weight };
+  const { start, v, tested } = place(A);
+  const mod = MODULES[start], days = A.days || 3;
+  plan = { mod, days, ctx: { v, w: A.weight }, tested, wk: week(mod, days) };
   tint(mod.color);
 
-  $("[data-num]").textContent = start;
-  $("[data-plan-title]").textContent = `Module ${start}: ${mod.title}`;
-  $("[data-lesson]").textContent = mod.lessons.length > 1 ? `Begin with lesson 1: ${lesson.title}` : "Train all three lessons together";
-  $("[data-why]").textContent = why;
-
-  // the week
-  const days = A.days || 3, plan = week(mod, days);
-  $("[data-days-note]").textContent = mod.freq && days < mod.freq
-    ? `Josh trains this module ${mod.freq} days a week. With ${days}, your sessions rotate, so each comes up a little less often.`
-    : mod.freq && days > mod.freq ? `Josh trains this module ${mod.freq} days a week, so your other days are for mobility.`
-    : `${days} training days a week.`;
-  $("[data-sched]").replaceChildren(...plan.map((p) => { const li = el("li", p.kind); li.append(el("span", "when", DAY_NAMES[p.d]), el("span", "what", p.what)); return li; }));
-
-  // the sessions, with every line that adapts set from their numbers and weight
-  $("[data-sessions]").replaceChildren(...mod.sessions.map((name, s) => {
-    const box = el("div", "session");
-    box.append(el("h4", "", name));
-    const ul = el("ul");
-    ul.append(...lesson.items.filter((it) => it.s === s).map((it) => {
-      // tag the lines their own numbers actually changed: a quick-test score, or their weight
-      const personal = typeof it.rx === "function" && (tested || (it.weight && A.weight));
-      const li = el("li", personal ? "yours" : "");
-      li.append(el("b", "", it.name), el("span", "", typeof it.rx === "function" ? it.rx(ctx) : it.rx));
-      return li;
-    }));
-    box.append(ul);
-    return box;
-  }));
-  $("[data-rest]").textContent = [`Rest ${mod.rest}.`, mod.extra && `${mod.extra}.`].filter(Boolean).join(" ");
-
-  // the road: each module, its weeks and dates
-  let t = Date.now();
-  $("[data-road]").replaceChildren(...road.map((n) => {
-    const m = MODULES[n], li = el("li", m.comingSoon ? "soon" : "");
-    li.style.setProperty("--c", m.color);
-    const when = m.comingSoon ? "Coming soon" : `${m.weeks}+ weeks · from ${fmtDate(t)}`;
-    if (!m.comingSoon) t += m.weeks * 7 * 864e5;
-    li.append(el("span", "n", n), el("b", "", m.title), el("span", "when", when + (m.partial ? ` · ${m.partial}` : "")));
+  const train = plan.wk.filter((p) => p.kind === "train").length;
+  $("[data-summary]").textContent = `${train} workouts a week for about ${mod.weeks} weeks. Tap any exercise to watch Josh do it.`;
+  $("[data-days]").replaceChildren(...plan.wk.map((p) => {
+    const li = el("li", p.kind);
+    li.append(el("b", "", DAY_NAMES[p.d]), el("span", "", p.kind === "train" ? "Train" : p.kind === "mobility" ? "Stretch" : "Rest"));
     return li;
   }));
+
+  // modules with more than one lesson: one tab per stretch of weeks
+  let w = 1;
+  $("[data-phases]").replaceChildren(...(mod.lessons.length > 1 ? mod.lessons.map((l, i) => {
+    const b = el("button", "", `Weeks ${w}–${(w += l.weeks) - 1}`);
+    b.type = "button";
+    b.addEventListener("click", () => sessions(i));
+    return b;
+  }) : []));
+  sessions(0);
+  $("[data-rest]").textContent = [`Rest ${mod.rest}.`, mod.extra && `${mod.extra}.`, plan.wk.some((p) => p.kind === "mobility") && "Stretch days: foam roll and stretch."].filter(Boolean).join(" ");
+  calendarLinks();
 
   // their quick-test numbers, if they did them
   $("[data-scores-block]").hidden = !tested;
@@ -205,6 +178,111 @@ function build(fresh) {
   }));
   show("result");
 }
+
+// one card per session: which days, then every exercise with Josh's clip
+function sessions(li) {
+  const { mod, ctx, tested, wk } = plan, lesson = mod.lessons[li];
+  plan.li = li;
+  [...$("[data-phases]").children].forEach((b, i) => b.setAttribute("aria-pressed", i === li));
+  $("[data-sessions]").replaceChildren(...mod.sessions.map((name, s) => {
+    const items = lesson.items.filter((it) => it.s === s).map((it) => ({ ...it, rx: typeof it.rx === "function" ? it.rx(ctx) : it.rx,
+      // tag the lines their own numbers actually changed: a quick-test score, or their weight
+      yours: typeof it.rx === "function" && (tested || (it.weight && A.weight)) }));
+    const on = wk.filter((p) => p.what === name).map((p) => DAY_NAMES[p.d]);
+    const box = el("div", "session"), head = el("header"), ol = el("ol");
+    head.append(el("h4", "", name), el("span", "on", on.join(" · ")));
+    ol.append(...items.map((it, k) => {
+      const row = el(it.clip ? "button" : "div", "ex" + (it.yours ? " yours" : "")), pic = el("span", "pic"), txt = el("span");
+      if (it.clip) {
+        row.type = "button";
+        row.addEventListener("click", () => play(items, k));
+        pic.append(Object.assign(el("img"), { src: `clips/${it.clip}.jpg`, alt: "", loading: "lazy" }));
+      }
+      txt.append(el("b", "", it.name), el("span", "", it.rx));
+      row.append(pic, txt);
+      const li = el("li"); li.append(row); return li;
+    }));
+    box.append(head, ol);
+    if (items.some((it) => it.clip)) {
+      const b = el("button", "cta watch", "▶  Watch the workout");
+      b.type = "button";
+      b.addEventListener("click", () => play(items, items.findIndex((it) => it.clip)));
+      box.append(b);
+    }
+    return box;
+  }));
+}
+
+// ---- Josh doing it ----
+const player = $("[data-player]"), video = $("[data-video]");
+let queue = [], qi = 0;
+function play(items, k) {
+  queue = items.filter((it) => it.clip);
+  qi = queue.indexOf(items[k]);
+  clip();
+  if (!player.open) player.showModal();
+}
+function clip() {
+  const it = queue[qi];
+  video.src = `clips/${it.clip}.mp4`;
+  video.poster = `clips/${it.clip}.jpg`;
+  video.play().catch(() => {});
+  $("[data-count]").textContent = `${qi + 1} of ${queue.length}`;
+  $("[data-pname]").textContent = it.name;
+  $("[data-prx]").textContent = it.rx;
+  $("[data-prev]").disabled = qi === 0;
+  $("[data-fwd]").textContent = qi === queue.length - 1 ? "Done" : "Next";
+}
+$("[data-prev]").addEventListener("click", () => { if (qi > 0) { qi--; clip(); } });
+$("[data-fwd]").addEventListener("click", () => { if (qi < queue.length - 1) { qi++; clip(); } else player.close(); });
+$("[data-close]").addEventListener("click", () => player.close());
+player.addEventListener("close", () => { video.pause(); video.removeAttribute("src"); video.load(); });
+player.addEventListener("click", (e) => { if (e.target === player) player.close(); });  // tap outside
+
+// ---- calendar: a weekly repeating event per workout day, for the module's weeks ----
+const ICS_DAY = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
+const stamp = (d) => d.toISOString().replace(/[-:]/g, "").slice(0, 15);           // 20261102T170000 (local wall time, no zone)
+const local = (d) => stamp(new Date(d.getTime() - d.getTimezoneOffset() * 6e4));
+
+// the first time each weekday comes up, starting tomorrow
+function firstOn(dow, hh, mm) {
+  const d = new Date(); d.setHours(hh, mm, 0, 0); d.setDate(d.getDate() + 1);
+  while (d.getDay() !== dow) d.setDate(d.getDate() + 1);
+  return d;
+}
+
+function calendarEvents() {
+  const [hh, mm] = ($("[data-time]").value || "17:00").split(":").map(Number);
+  return plan.wk.filter((p) => p.kind !== "off").map((p) => {
+    const startAt = firstOn(p.d, hh, mm);
+    return { p, startAt, endAt: new Date(startAt.getTime() + (p.kind === "train" ? 60 : 20) * 6e4),
+      title: p.kind === "train" ? `Hard 2 Break: ${p.what}` : "Hard 2 Break: stretch day" };
+  });
+}
+
+function calendarLinks() {
+  const evs = calendarEvents().filter((e) => e.p.kind === "train"), first = evs.reduce((a, b) => (a.startAt < b.startAt ? a : b));
+  const q = new URLSearchParams({
+    action: "TEMPLATE", text: "Hard 2 Break workout",
+    dates: `${local(first.startAt)}/${local(first.endAt)}`,
+    recur: `RRULE:FREQ=WEEKLY;BYDAY=${evs.map((e) => ICS_DAY[e.p.d]).join(",")};COUNT=${evs.length * plan.mod.weeks}`,
+    details: `Your workout is in the Workout Builder: ${location.origin}/builder`,
+  });
+  $("[data-gcal]").href = `https://calendar.google.com/calendar/render?${q}`;
+  $("[data-cal-note]").textContent = `Repeats every week for ${plan.mod.weeks} weeks, starting tomorrow.`;
+}
+
+$("[data-time]").addEventListener("change", calendarLinks);
+$("[data-ics]").addEventListener("click", () => {
+  const esc = (t) => t.replace(/[\\,;]/g, (c) => "\\" + c);
+  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Hard 2 Break//Workout Builder//EN", "CALSCALE:GREGORIAN",
+    ...calendarEvents().flatMap((e) => ["BEGIN:VEVENT", `UID:h2b-${e.p.d}-${Date.now()}@hard-to-break.vercel.app`, `DTSTAMP:${stamp(new Date())}Z`,
+      `DTSTART:${local(e.startAt)}`, `DTEND:${local(e.endAt)}`, `RRULE:FREQ=WEEKLY;COUNT=${plan.mod.weeks}`,
+      `SUMMARY:${esc(e.title)}`, `DESCRIPTION:${esc(`Your workout is in the Workout Builder: ${location.origin}/builder`)}`, "END:VEVENT"]),
+    "END:VCALENDAR"];
+  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(new Blob([lines.join("\r\n")], { type: "text/calendar" })), download: "hard-2-break-workouts.ics" });
+  document.body.append(a); a.click(); a.remove();
+});
 
 // ---- wiring ----
 $("[data-start]").addEventListener("click", () => { A = {}; at = 0; ask(); });
