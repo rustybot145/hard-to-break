@@ -148,7 +148,7 @@ function build(fresh) {
   tint(mod.color);
 
   const train = plan.wk.filter((p) => p.kind === "train").length;
-  $("[data-summary]").textContent = `${train} workouts a week for about ${mod.weeks} weeks. Tap any exercise to watch Josh do it.`;
+  $("[data-summary]").textContent = `${train} workouts a week for about ${mod.weeks} weeks. Tap See demonstration to watch Josh do any exercise.`;
   $("[data-days]").replaceChildren(...plan.wk.map((p) => {
     const li = el("li", p.kind);
     li.append(el("b", "", DAY_NAMES[p.d]), el("span", "", p.kind === "train" ? "Train" : p.kind === "mobility" ? "Stretch" : "Rest"));
@@ -158,7 +158,7 @@ function build(fresh) {
   // modules with more than one lesson: one tab per stretch of weeks
   let w = 1;
   $("[data-phases]").replaceChildren(...(mod.lessons.length > 1 ? mod.lessons.map((l, i) => {
-    const b = el("button", "", `Weeks ${w}–${(w += l.weeks) - 1}`);
+    const b = el("button", "", l.weeks ? `Weeks ${w}–${(w += l.weeks) - 1}` : `Week ${w} on`);
     b.type = "button";
     b.addEventListener("click", () => sessions(i));
     return b;
@@ -192,15 +192,17 @@ function sessions(li) {
     const box = el("div", "session"), head = el("header"), ol = el("ol");
     head.append(el("h4", "", name), el("span", "on", on.join(" · ")));
     ol.append(...items.map((it, k) => {
-      const row = el(it.clip ? "button" : "div", "ex" + (it.yours ? " yours" : "")), pic = el("span", "pic"), txt = el("span");
-      if (it.clip) {
-        row.type = "button";
-        row.addEventListener("click", () => play(items, k));
-        pic.append(Object.assign(el("img"), { src: `clips/${it.clip}.jpg`, alt: "", loading: "lazy" }));
-      }
+      const li = el("li", "ex" + (it.yours ? " yours" : "")), txt = el("span");
       txt.append(el("b", "", it.name), el("span", "", it.rx));
-      row.append(pic, txt);
-      const li = el("li"); li.append(row); return li;
+      li.append(el("span", "n", k + 1), txt);
+      if (it.clip) {
+        const b = el("button", "demo", "See demonstration");
+        b.type = "button";
+        b.setAttribute("aria-label", `See demonstration: ${it.name}`);
+        b.addEventListener("click", () => play(items, k));
+        li.append(b);
+      }
+      return li;
     }));
     box.append(head, ol);
     if (items.some((it) => it.clip)) {

@@ -133,7 +133,7 @@ const MODULES = {
     ],
   },
   8: {
-    title: "The Front Lever", color: "#5fe3f0", weeks: 6, freq: 2, sessions: ["Front lever"], rest: "90 seconds to 3 minutes between sets", partial: "Full Front Lever lesson coming soon",
+    title: "The Front Lever", color: "#5fe3f0", weeks: 6, freq: 2, sessions: ["Front lever"], rest: "90 seconds to 3 minutes between sets",
     lessons: [
       { title: "Tuck and Advanced Tuck", weeks: 3, items: [
         { s: 0, name: "Tuck front lever hold", clip: "m8-tuck-front-lever-hold", rx: "3 × 15s. Band if you need it." },
@@ -146,6 +146,13 @@ const MODULES = {
         { s: 0, name: "Straddle lever raises", clip: "m8-straddle-lever-raises", rx: "3 × 10" },
         { s: 0, name: "Straddle lever negatives", clip: "m8-straddle-lever-negatives", rx: "3 × 10" },
         { s: 0, name: "Straddle lever hold", clip: "m8-straddle-lever-hold", rx: "3 × 15s" },
+      ] },
+      // Josh sets no time for the full lever: you keep building hold time
+      { title: "Full Front Lever", weeks: null, items: [
+        { s: 0, name: "Front lever ups", clip: "m8-front-lever-ups", rx: "3 × 10. Band for the reps you can't do on your own." },
+        { s: 0, name: "Front lever negatives", clip: "m8-front-lever-negatives", rx: "3 × 10, once you can do your lever ups with no band. Light band if you need it." },
+        { s: 0, name: "Band-assisted front lever hold", clip: "m8-band-assisted-front-lever-hold", rx: "3 × 15s. Lighter band each week." },
+        { s: 0, name: "Front lever hold", clip: "m8-front-lever-hold", rx: "3 holds, as long as you can. Build to 15s. Rest up to 3 minutes." },
       ] },
     ],
   },
