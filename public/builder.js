@@ -1,7 +1,6 @@
 // Workout Builder: a few questions, optional quick tests, then a plan from builder-data.js.
 // Rule-based on purpose: the same answers always give the same plan, straight from Josh's videos.
 const STORE = "h2b-builder";
-const INTRO_COLOR = "#5fb8ff";
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const DEFAULT_DAYS = { 2: [1, 4], 3: [1, 3, 5], 4: [1, 2, 4, 5], 5: [1, 2, 3, 4, 5], 6: [1, 2, 3, 4, 5, 6] };
 
@@ -24,7 +23,6 @@ const TEST_STEPS = TESTS.map((t) => ({ ...t, id: `t_${t.id}`, test: t, type: "nu
 
 const $ = (s) => document.querySelector(s);
 const screens = { intro: $("#intro"), question: $("#question"), result: $("#result") };
-const tint = (c) => document.documentElement.style.setProperty("--accent", c);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
 
 let A = {};       // answers
@@ -39,7 +37,6 @@ function show(name) {
 // ---- asking ----
 function ask() {
   const all = steps(), st = all[at];
-  tint(st.test ? "#ff8a3d" : INTRO_COLOR);
   $("[data-step]").textContent = st.test ? `Quick test ${at - PROFILE.length + 1} of ${TESTS.length}` : `Question ${at + 1} of ${PROFILE.length}`;
   $("[data-title]").textContent = st.title;
   $("[data-how]").hidden = !st.how;
@@ -145,7 +142,6 @@ function build(fresh) {
   const { start, v, tested } = place(A);
   const mod = MODULES[start], days = A.days || 3;
   plan = { mod, days, ctx: { v, w: A.weight }, tested, wk: week(mod, days) };
-  tint(mod.color);
 
   const train = plan.wk.filter((p) => p.kind === "train").length;
   $("[data-summary]").textContent = `${train} workouts a week for about ${mod.weeks} weeks. Tap See demonstration to watch Josh do any exercise.`;
@@ -171,7 +167,6 @@ function build(fresh) {
   $("[data-scores-block]").hidden = !tested;
   $("[data-scores]").replaceChildren(...TESTS.filter((x) => x.id in v).map((x) => {
     const li = el("li", v[x.id] >= x.target ? "pass" : "miss");
-    li.style.setProperty("--c", mod.color);
     li.style.setProperty("--p", Math.min(1, v[x.id] / x.target));
     li.append(el("span", "name", x.name), el("span", "val", `${v[x.id]}${x.kind === "secs" ? "s" : ""} / ${x.target}${x.kind === "secs" ? "s" : ""}`), Object.assign(el("span", "bar"), { innerHTML: "<i></i>" }));
     return li;
@@ -290,7 +285,7 @@ $("[data-ics]").addEventListener("click", () => {
 $("[data-start]").addEventListener("click", () => { A = {}; at = 0; ask(); });
 $("[data-next]").addEventListener("click", () => (capture() ? next() : nudge()));
 $("[data-skip]").addEventListener("click", () => { const st = steps()[at]; if (st.zero) A[st.id] = 0; else delete A[st.id]; next(); });
-$("[data-back]").addEventListener("click", () => { if (at === 0) { tint(INTRO_COLOR); show("intro"); } else { at--; ask(); } });
+$("[data-back]").addEventListener("click", () => { if (at === 0) show("intro"); else { at--; ask(); } });
 $("[data-value]").addEventListener("input", (e) => setNumber(e.target.value));
 for (const s of ["[data-value]", "[data-ft]", "[data-in]"]) {
   $(s).addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); $("[data-next]").click(); } });
@@ -298,8 +293,7 @@ for (const s of ["[data-value]", "[data-ft]", "[data-in]"]) {
 }
 $("[data-ft]").addEventListener("input", (e) => { if (e.target.value) $("[data-in]").focus(); });
 $("[data-rebuild]").addEventListener("click", () => { at = 0; ask(); });
-$("[data-clear]").addEventListener("click", () => { try { localStorage.removeItem(STORE); } catch {} A = {}; tint(INTRO_COLOR); show("intro"); });
+$("[data-clear]").addEventListener("click", () => { try { localStorage.removeItem(STORE); } catch {} A = {}; show("intro"); });
 
-tint(INTRO_COLOR);
 // came back later: show their plan; "Rebuild" starts from their saved answers
 try { const saved = JSON.parse(localStorage.getItem(STORE)); if (saved?.A?.level) { A = saved.A; build(false); } } catch {}

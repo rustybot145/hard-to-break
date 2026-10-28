@@ -1,6 +1,6 @@
 /* Workout Builder: same fonts and dark base as the landing page (styles.css), but its own color system.
-   --accent follows the module the plan is from (set in builder.js), matching the lesson thumbnails in Whop. */
-:root { --accent: #4fdcb0; }
+   One teal accent on black throughout, matching the app logo in Whop. */
+:root { --accent: #1fc2c9; --bg: #000; --bg-2: #0e1213; }  /* teal on black, like the app logo */
 .test {
   --yellow: var(--accent); --yellow-hi: color-mix(in srgb, var(--accent) 80%, #fff);
   max-width: 520px; min-height: 100svh; position: relative; z-index: 1;
@@ -83,7 +83,7 @@ html { touch-action: manipulation; }  /* no double-tap zoom on fast taps */
 .save { margin-top: 20px; }
 
 /* their quick-test numbers */
-.scores { list-style: none; }
+.scores { list-style: none; --c: var(--accent); }
 .scores li { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: .98rem; }
 .scores .name::before { content: "✓"; display: inline-block; width: 22px; color: var(--c); font-weight: 600; }
 .scores .miss .name::before { content: "–"; color: var(--mute); }
@@ -135,8 +135,7 @@ footer { position: relative; z-index: 1; }
 #intro .cta { margin-top: 26px; }
 
 /* logo + name */
-.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; font: 600 .86rem/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
-.brand img { width: 44px; height: 44px; border-radius: 11px; box-shadow: 0 6px 20px -8px #5fb8ff; }
+.brand { margin-bottom: 18px; font: 600 .86rem/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
 
 /* result */
 #result { align-items: stretch; }
