@@ -13,9 +13,9 @@ const PROFILE = [
   { id: "weight", type: "number", title: "Your weight", ask: "What do you weigh?", unit: "lb", max: 500, optional: true, how: "Used to set loads, like the lat pulldown at half your body weight." },
   { id: "height", type: "height", title: "Your height", optional: true },
   { id: "level", type: "choice", title: "Your experience", options: LEVELS.map(([v, l, d]) => ({ v, l, d })) },
-  { id: "goals", type: "multi", title: "Skills you want", optional: true, how: "Pick any. Skip it and your plan covers every skill in the program.",
-    options: GOALS.map((n) => ({ v: n, l: MODULES[n].title.replace(/^The /, ""), d: MODULES[n].comingSoon ? "Coming soon" : `Module ${n}` })) },
-  { id: "days", type: "choice", title: "Training days", how: "How many days a week can you train?", options: [2, 3, 4, 5, 6].map((n) => ({ v: n, l: `${n} days a week` })) },
+  { id: "goals", type: "multi", title: "Skills you want", optional: true, layout: "two", how: "Pick any. Skip it and your plan covers every skill in the program.",
+    options: GOALS.map((n) => ({ v: n, l: MODULES[n].title.replace(/^The /, "").replace(/ to Handstand$/, ""), d: MODULES[n].comingSoon ? "Coming soon" : `Module ${n}` })) },
+  { id: "days", type: "choice", title: "Training days", how: "How many days a week can you train?", layout: "nums", options: [2, 3, 4, 5, 6].map((n) => ({ v: n, l: String(n), d: "days" })) },
   { id: "offer", type: "choice", title: "Add the quick tests?", how: "5 quick tests (bar hang, pull-ups, dips, push-ups, hollow hold) make your plan more exact. About 10 minutes. Warm up first.",
     options: [{ v: "yes", l: "Do the quick tests", d: "Most exact plan" }, { v: "no", l: "Skip and build my plan", d: "Based on your answers" }] },
 ];
@@ -67,6 +67,7 @@ function ask() {
 
 function renderChoices(st) {
   const multi = st.type === "multi", picked = multi ? (A[st.id] || []) : [A[st.id]];
+  $("[data-type=choice]").dataset.layout = st.layout || "";
   $("[data-type=choice]").replaceChildren(...st.options.map((o) => {
     const b = el("button", "choice");
     b.type = "button";

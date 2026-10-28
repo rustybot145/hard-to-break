@@ -17,12 +17,14 @@
 
 <main class="test wrap">
 
-  <!-- intro -->
+  <!-- intro: fills the screen, title animates in -->
   <section class="screen" id="intro">
-    <p class="brand rise">Hard 2 Break · Workout Builder</p>
-    <p class="offer-line rise">&ldquo;A repeatable workout routine, built around your needs.&rdquo;</p>
-    <h1 class="rise">Build your <em>workout plan</em></h1>
-    <button class="cta rise" type="button" data-start>Build my plan</button>
+    <p class="brand">Hard 2 Break · Workout Builder</p>
+    <div class="hero">
+      <div class="rings" aria-hidden="true"><i></i><i></i><i></i></div>
+      <h1><span class="w">Build</span> <span class="w">your</span> <em><span class="w">workout</span> <span class="w">plan</span></em></h1>
+    </div>
+    <button class="cta go" type="button" data-start>Build my plan</button>
   </section>
 
   <!-- one question at a time -->
@@ -54,9 +56,12 @@
     <!-- pick one / pick any -->
     <div class="choices" data-type="choice" role="group"></div>
 
-    <button class="cta save" type="button" data-next>Next</button>
-    <button class="ghost" type="button" data-skip>Skip</button>
-    <button class="back" type="button" data-back>Back</button>
+    <!-- always at the bottom, in thumb reach -->
+    <div class="actions">
+      <button class="cta save" type="button" data-next>Next</button>
+      <button class="ghost" type="button" data-skip>Skip</button>
+      <button class="back" type="button" data-back>Back</button>
+    </div>
   </section>
 
   <!-- the plan -->

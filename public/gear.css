@@ -1,10 +1,12 @@
-/* Recommended Gear: Joshua's equipment with Amazon links. Orange on black like its app logo, with its own type. */
-@font-face { font-family: "Bangers"; src: url(fonts/bangers.woff2) format("woff2"); font-display: swap; }
-@font-face { font-family: "DM Sans"; src: url(fonts/dmsans.woff2) format("woff2"); font-weight: 100 1000; font-display: swap; }
+/* Recommended Gear: Joshua's equipment with Amazon links. Orange on black like its app logo, in the program fonts. */
+@font-face { font-family: "Knewave"; src: url(fonts/knewave.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Barlow"; src: url(fonts/barlow-400.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url(fonts/barlow-600.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Barlow Condensed"; src: url(fonts/barlow-cond-600.woff2) format("woff2"); font-weight: 600; font-display: swap; }
 :root { --orange: #ff8a3d; --deep: #e8661a; --bg: #0b0a09; --card: #161412; --ink: #f6f1ea; --mute: #a59d93; --line: rgba(246, 241, 234, .1); }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { -webkit-text-size-adjust: 100%; touch-action: manipulation; }
-body { background: var(--bg); color: var(--ink); font: 400 16px/1.45 "DM Sans", system-ui, sans-serif; }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.45 "Barlow", system-ui, sans-serif; }
 
 /* orange header band */
 header {
@@ -12,8 +14,8 @@ header {
   color: #0b0a09; padding: max(30px, calc(env(safe-area-inset-top) + 18px)) 16px 34px;
 }
 header > * { max-width: 980px; margin: 0 auto; }
-.top { font: 700 .78rem/1 "DM Sans", sans-serif; letter-spacing: .18em; text-transform: uppercase; opacity: .7; }
-h1 { font: 400 clamp(3.2rem, 16vw, 6rem)/.9 "Bangers", sans-serif; text-transform: uppercase; letter-spacing: .02em; rotate: -2deg; transform-origin: left; margin-top: 12px; }
+.top { font: 600 .82rem/1 "Barlow Condensed", sans-serif; letter-spacing: .18em; text-transform: uppercase; opacity: .7; }
+h1 { font: 400 clamp(2.4rem, 12vw, 5rem)/.95 "Knewave", sans-serif; text-transform: uppercase; rotate: -2deg; transform-origin: left; margin-top: 12px; }
 h1 span { display: block; color: #fff; }
 
 main { max-width: 1012px; margin: 0 auto; padding: 0 16px 32px; }
@@ -26,13 +28,13 @@ main { max-width: 1012px; margin: 0 auto; padding: 0 16px 32px; }
 .item:hover { border-color: var(--orange); transform: translateY(-2px); }
 .item:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
 .item img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 11px; padding: 10px; margin-bottom: 12px; }
-.item b { font: 400 1.5rem/1 "Bangers", sans-serif; text-transform: uppercase; letter-spacing: .03em; color: var(--orange); }
+.item b { font: 400 1.15rem/1.05 "Knewave", sans-serif; text-transform: uppercase; color: var(--orange); }
 .prod { font-size: .86rem; line-height: 1.35; margin-top: 6px; flex: 1; }
-.meta { font-size: .78rem; font-weight: 700; color: var(--mute); margin-top: 6px; }
+.meta { font: 600 .82rem/1.3 "Barlow Condensed", sans-serif; letter-spacing: .04em; color: var(--mute); margin-top: 6px; }
 .buy {
-  margin-top: 12px; text-align: center; font: 700 .86rem/1 "DM Sans", sans-serif; color: #0b0a09;
+  margin-top: 12px; text-align: center; font: 600 .92rem/1 "Barlow Condensed", sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #0b0a09;
   background: var(--orange); padding: 12px 0; border-radius: 10px; transition: background .2s;
 }
 .item:hover .buy { background: #ffa463; }
 .fine { margin-top: 20px; color: var(--mute); font-size: .8rem; }
-.fine a { color: var(--orange); font-weight: 700; }
+.fine a { color: var(--orange); font-weight: 600; }
