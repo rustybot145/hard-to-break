@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#121110">
+<meta name="robots" content="noindex">
+<title>Workout Builder · Hard 2 Break</title>
+<link rel="icon" type="image/png" href="media/icon.png">
+<link rel="preload" href="fonts/knewave.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="builder.css">
+</head>
+<body>
+
+<div class="glow" aria-hidden="true"></div>
+
+<main class="test wrap">
+
+  <!-- intro -->
+  <section class="screen" id="intro">
+    <p class="eyebrow rise">Hard 2 Break · Workout Builder</p>
+    <h1 class="rise">Build your <em>workout plan</em></h1>
+    <p class="lead rise">Answer a few questions and get a plan built from every video in the program, set to where you are right now.</p>
+    <ol class="gets rise">
+      <li><b>Start in the right place.</b> Skip what you can already do, and don't jump ahead of what you can't.</li>
+      <li><b>Your week, laid out.</b> Every session, exercise, set and rep on the days you train.</li>
+      <li><b>Your road to your skills.</b> Every module between you and the skills you want, in order.</li>
+    </ol>
+    <button class="cta rise" type="button" data-start>Build my plan</button>
+    <p class="micro rise">2 minutes · Add 5 quick tests if you want it more exact</p>
+  </section>
+
+  <!-- one question at a time -->
+  <section class="screen" id="question" hidden>
+    <div class="progress" aria-hidden="true"></div>
+    <p class="eyebrow" data-step></p>
+    <h2 data-title></h2>
+    <p class="how" data-how hidden></p>
+
+    <!-- number answers: weight, test results -->
+    <div class="meter" data-type="number">
+      <label class="ask" for="answer" data-ask></label>
+      <div class="field">
+        <input id="answer" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off" placeholder="0" data-value>
+        <span data-unit></span>
+      </div>
+      <div class="bar" data-bar><i data-fill></i></div>
+    </div>
+
+    <!-- height: feet and inches -->
+    <div class="meter" data-type="height">
+      <p class="ask">How tall are you?</p>
+      <div class="pair">
+        <div class="field"><input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" placeholder="5" data-ft aria-label="Feet"><span>ft</span></div>
+        <div class="field"><input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" placeholder="10" data-in aria-label="Inches"><span>in</span></div>
+      </div>
+    </div>
+
+    <!-- pick one / pick any -->
+    <div class="choices" data-type="choice" role="group"></div>
+
+    <button class="cta save" type="button" data-next>Next</button>
+    <button class="ghost" type="button" data-skip>Skip</button>
+    <button class="back" type="button" data-back>Back</button>
+  </section>
+
+  <!-- the plan -->
+  <section class="screen" id="result" hidden>
+    <p class="eyebrow">Your workout plan</p>
+    <div class="badge"><span data-num></span></div>
+    <h1 data-plan-title></h1>
+    <p class="lesson" data-lesson></p>
+    <p class="lead" data-why></p>
+
+    <div class="part">
+      <h3>Your week</h3>
+      <p class="hint" data-days-note></p>
+      <ol class="sched" data-sched></ol>
+    </div>
+
+    <div class="part">
+      <h3>Your sessions</h3>
+      <div data-sessions></div>
+      <p class="rest" data-rest></p>
+    </div>
+
+    <div class="part">
+      <h3>Your road to your skills</h3>
+      <ol class="road" data-road></ol>
+      <p class="hint">Weeks are estimates from Josh's videos. Move on when you hit each lesson's milestone, not just the date.</p>
+    </div>
+
+    <div class="part" data-scores-block>
+      <h3>Your numbers</h3>
+      <ul class="scores" data-scores></ul>
+    </div>
+
+    <p class="note">Watch <b>Start Here</b> and <b>Module 1: Health and Recovery</b> first. Every session above has its video in the program.</p>
+    <button class="cta" type="button" data-rebuild>Rebuild my plan</button>
+    <button class="back" type="button" data-clear>Clear my saved answers</button>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <p>© 2026 Josh Heald · Hard to Break Program · Not medical advice. Stop anything that hurts.</p>
+</footer>
+
+<script src="builder-data.js"></script>
+<script src="builder.js"></script>
+</body>
+</html>
