@@ -1,10 +1,10 @@
-// Workout Builder data. Every exercise, number and schedule comes from Josh's lesson videos
+// Workout Builder data. Every exercise, number and schedule comes from Joshua's lesson videos
 // (raw/lesson-transcripts in the vault). builder.js picks the module, then lays this out as a week.
-//   freq:     Josh's training days per week for the module (null = he doesn't set one)
+//   freq:     Joshua's training days per week for the module (null = he doesn't set one)
 //   sessions: the session types, rotated across the training days
-//   lessons:  each lesson's exercises, in order; `weeks` is Josh's minimum time on it
+//   lessons:  each lesson's exercises, in order; `weeks` is Joshua's minimum time on it
 //   rx:       a string, or a function of { v: test numbers, w: body weight in lb } for lines that adapt
-//   clip:     clips/<clip>.mp4 + .jpg, a few seconds of Josh doing it, cut from the lesson video
+//   clip:     clips/<clip>.mp4 + .jpg, a few seconds of Joshua doing it, cut from the lesson video
 
 // The 5 optional quick tests, and the target that counts as "has it"
 const TESTS = [
@@ -147,7 +147,7 @@ const MODULES = {
         { s: 0, name: "Straddle lever negatives", clip: "m8-straddle-lever-negatives", rx: "3 × 10" },
         { s: 0, name: "Straddle lever hold", clip: "m8-straddle-lever-hold", rx: "3 × 15s" },
       ] },
-      // Josh sets no time for the full lever: you keep building hold time
+      // Joshua sets no time for the full lever: you keep building hold time
       { title: "Full Front Lever", weeks: null, items: [
         { s: 0, name: "Front lever ups", clip: "m8-front-lever-ups", rx: "3 × 10. Band for the reps you can't do on your own." },
         { s: 0, name: "Front lever negatives", clip: "m8-front-lever-negatives", rx: "3 × 10, once you can do your lever ups with no band. Light band if you need it." },

@@ -1,6 +1,9 @@
 /* Workout Builder: same fonts and dark base as the landing page (styles.css), but its own color system.
    One teal accent on black throughout, matching the app logo in Whop. */
-:root { --accent: #1fc2c9; --bg: #000; --bg-2: #0e1213; }  /* teal on black, like the app logo */
+@font-face { font-family: "Archivo Black"; src: url(fonts/archivo-black.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Inter Tight"; src: url(fonts/intertight.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+/* teal on black like the app logo, and its own type so it doesn't look like the sales page */
+:root { --accent: #1fc2c9; --bg: #000; --bg-2: #0e1213; --display: "Archivo Black", "Arial Black", sans-serif; --body: "Inter Tight", system-ui, sans-serif; --label: "Inter Tight", system-ui, sans-serif; }
 .test {
   --yellow: var(--accent); --yellow-hi: color-mix(in srgb, var(--accent) 80%, #fff);
   max-width: 520px; min-height: 100svh; position: relative; z-index: 1;
@@ -16,8 +19,8 @@
 }
 
 .test h1 { font-size: clamp(2.1rem, 9vw, 3.2rem); line-height: 1.04; }
-.test h1 em { display: block; font-size: 1.25em; rotate: -3deg; margin-top: .08em; }
-.test h2 { font-size: clamp(2.2rem, 10vw, 3.3rem); margin: 4px 0 14px; rotate: -2deg; transform-origin: left; color: var(--accent); }
+.test h1 em { display: block; font-size: 1.2em; margin-top: .06em; }
+.test h2 { font-size: clamp(2.2rem, 10vw, 3.3rem); margin: 4px 0 14px; color: var(--accent); }
 .test h3 { font: 600 .9rem/1 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); margin-bottom: 12px; }
 .lead { color: var(--mute); margin: 18px 0 0; font-size: 1.06rem; }
 .lead b, .note b { color: var(--ink); font-weight: 600; }
@@ -97,15 +100,6 @@ html { touch-action: manipulation; }  /* no double-tap zoom on fast taps */
 #result .cta { margin-top: 24px; }
 footer { position: relative; z-index: 1; }
 
-/* intro: what they get out of it */
-.gets { list-style: none; counter-reset: g; margin: 24px 0 0; display: grid; gap: 10px; }
-.gets li {
-  counter-increment: g; position: relative; padding: 14px 16px 14px 54px; border-radius: 14px;
-  background: color-mix(in srgb, var(--accent) 7%, var(--bg-2)); border: 1px solid var(--line); color: var(--mute); font-size: .98rem;
-}
-.gets li b { display: block; color: var(--ink); font-weight: 600; font-size: 1.04rem; margin-bottom: 2px; }
-.gets li::before { content: counter(g); position: absolute; left: 16px; top: 12px; font: 400 1.7rem/1 var(--display); color: var(--accent); }
-
 /* ---- Workout Builder ---- */
 .how[hidden], .meter[hidden], .choices[hidden], .bar[hidden], [data-next][hidden], [data-skip][hidden] { display: none; }
 .how { margin-bottom: 4px; }
@@ -132,7 +126,7 @@ footer { position: relative; z-index: 1; }
 .pair .field { min-width: 0; padding: 6px 14px; }
 .pair .field input { font-size: clamp(2.6rem, 13vw, 3.4rem); width: 100%; }
 .progress i { --c: var(--accent); }
-#intro .cta { margin-top: 26px; }
+#intro .cta { margin-top: 32px; }
 
 /* logo + name */
 .brand { margin-bottom: 18px; font: 600 .86rem/1.2 var(--label); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
@@ -172,7 +166,7 @@ footer { position: relative; z-index: 1; }
 .demo {
   min-height: 44px; max-width: 108px; padding: 6px 12px; border-radius: 10px; cursor: pointer; text-align: center;
   background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1.5px solid var(--accent); color: var(--ink);
-  font: 600 .78rem/1.15 var(--label); letter-spacing: .08em; text-transform: uppercase; transition: background .2s;
+  font: 700 .8rem/1.15 var(--label); transition: background .2s;
 }
 .demo:hover { background: color-mix(in srgb, var(--accent) 28%, transparent); }
 .demo:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }

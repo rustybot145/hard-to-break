@@ -1,5 +1,5 @@
 // Workout Builder: a few questions, optional quick tests, then a plan from builder-data.js.
-// Rule-based on purpose: the same answers always give the same plan, straight from Josh's videos.
+// Rule-based on purpose: the same answers always give the same plan, straight from Joshua's videos.
 const STORE = "h2b-builder";
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const DEFAULT_DAYS = { 2: [1, 4], 3: [1, 3, 5], 4: [1, 2, 4, 5], 5: [1, 2, 3, 4, 5], 6: [1, 2, 3, 4, 5, 6] };
@@ -144,7 +144,7 @@ function build(fresh) {
   plan = { mod, days, ctx: { v, w: A.weight }, tested, wk: week(mod, days) };
 
   const train = plan.wk.filter((p) => p.kind === "train").length;
-  $("[data-summary]").textContent = `${train} workouts a week for about ${mod.weeks} weeks. Tap See demonstration to watch Josh do any exercise.`;
+  $("[data-summary]").textContent = `${train} workouts a week for about ${mod.weeks} weeks.`;
   $("[data-days]").replaceChildren(...plan.wk.map((p) => {
     const li = el("li", p.kind);
     li.append(el("b", "", DAY_NAMES[p.d]), el("span", "", p.kind === "train" ? "Train" : p.kind === "mobility" ? "Stretch" : "Rest"));
@@ -174,7 +174,7 @@ function build(fresh) {
   show("result");
 }
 
-// one card per session: which days, then every exercise with Josh's clip
+// one card per session: which days, then every exercise with Joshua's clip
 function sessions(li) {
   const { mod, ctx, tested, wk } = plan, lesson = mod.lessons[li];
   plan.li = li;
@@ -210,7 +210,7 @@ function sessions(li) {
   }));
 }
 
-// ---- Josh doing it ----
+// ---- Joshua doing it ----
 const player = $("[data-player]"), video = $("[data-video]");
 let queue = [], qi = 0;
 function play(items, k) {
