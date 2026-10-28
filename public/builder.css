@@ -1,9 +1,8 @@
 /* Workout Builder: same fonts and dark base as the landing page (styles.css), but its own color system.
    One teal accent on black throughout, matching the app logo in Whop. */
-@font-face { font-family: "Permanent Marker"; src: url(fonts/permanent-marker.woff2) format("woff2"); font-display: swap; }
 @font-face { font-family: "Inter Tight"; src: url(fonts/intertight.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
-/* teal on black like the app logo, and its own type so it doesn't look like the sales page */
-:root { --accent: #1fc2c9; --bg: #000; --bg-2: #0e1213; --display: "Permanent Marker", "Arial Black", sans-serif; --body: "Inter Tight", system-ui, sans-serif; --label: "Inter Tight", system-ui, sans-serif; }
+/* teal on black like the app logo; Knewave like the rest of the program, Inter Tight for text */
+:root { --accent: #1fc2c9; --bg: #000; --bg-2: #0e1213; --display: "Knewave", "Arial Black", sans-serif; --body: "Inter Tight", system-ui, sans-serif; --label: "Inter Tight", system-ui, sans-serif; }
 .test {
   --yellow: var(--accent); --yellow-hi: color-mix(in srgb, var(--accent) 80%, #fff);
   max-width: 520px; min-height: 100svh; position: relative; z-index: 1;
@@ -211,4 +210,5 @@ footer { position: relative; z-index: 1; }
 .player [data-prev]:disabled { opacity: .4; cursor: default; }
 
 /* the offer above the title */
-.offer-line { font: 600 1.15rem/1.35 var(--body); color: var(--accent); margin-bottom: 14px; max-width: 30ch; }
+/* Knewave in quotes, tilted, like the landing page headline */
+.offer-line { font: 400 clamp(1.45rem, 6.4vw, 2rem)/1.12 var(--display); color: var(--accent); rotate: -2deg; transform-origin: left; margin: 4px 0 22px; max-width: 18ch; }
