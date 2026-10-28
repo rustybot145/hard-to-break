@@ -40,12 +40,12 @@
     <p class="goal">Target: <b data-goal></b></p>
     <p class="how" data-how></p>
 
-    <!-- type in reps, or how many seconds they held -->
+    <!-- ask the question, they type the number -->
     <div class="meter">
-      <div class="counter">
-        <button type="button" data-step-by="-1" aria-label="Less">−</button>
-        <label><input type="number" inputmode="numeric" min="0" max="600" value="0" data-value aria-label="Your result"><span data-unit>reps</span></label>
-        <button type="button" data-step-by="1" aria-label="More">+</button>
+      <label class="ask" for="answer" data-ask></label>
+      <div class="field">
+        <input id="answer" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off" placeholder="0" data-value>
+        <span data-unit>reps</span>
       </div>
       <div class="bar"><i data-fill></i></div>
     </div>

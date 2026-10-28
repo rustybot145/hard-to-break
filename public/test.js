@@ -97,7 +97,9 @@ function ask(pos) {
   $("[data-goal]").textContent = goalText(test);
   $("[data-how]").textContent = test.how;
   $("[data-unit]").textContent = test.kind === "secs" ? "seconds" : "reps";
-  setValue(values[test.id] ?? 0);
+  const per = (test.how.match(/^Per (\w+)/) || [])[1];
+  $("[data-ask]").textContent = test.kind === "secs" ? `How many seconds can you hold it${per ? ` per ${per}` : ""}?` : `How many can you do ${per ? `per ${per}` : "in a row"}?`;
+  setValue(values[test.id] ?? "");
   // full test: a segment per module; lesson check: a segment per step
   const segs = CHECK ? mod.tests.map((_, i) => [mod.color, i < pos.t ? 1 : 0]) : FLOW.map((m, i) => [m.color, i < pos.m ? 1 : i === pos.m ? pos.t / m.tests.length : 0]);
   $(".progress").replaceChildren(...segs.map(([c, p]) => {
@@ -108,19 +110,23 @@ function ask(pos) {
   show("question");
   const card = screens.question;
   card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
+  $("[data-value]").focus({ preventScroll: true });
 }
 
 const current = () => { const { m, t } = path.at(-1); return FLOW[m].tests[t]; };
 
+// typed answer: digits only; "" stays empty so they have to answer
 function setValue(v) {
-  const test = current();
-  v = Math.max(0, Math.min(test.kind === "secs" ? 600 : 200, Math.round(v) || 0));
-  $("[data-value]").value = v;
+  const test = current(), input = $("[data-value]");
+  const digits = String(v).replace(/\D/g, "").slice(0, 3);
+  input.value = digits;
+  v = Math.min(test.kind === "secs" ? 600 : 200, Number(digits) || 0);
   $("[data-fill]").style.width = Math.min(100, (v / test.target) * 100) + "%";
   screens.question.classList.toggle("hit", v >= test.target);
   return v;
 }
 const readValue = () => Number($("[data-value]").value) || 0;
+const answered = () => $("[data-value]").value !== "";
 
 function save(v) {
   values[current().id] = v;
@@ -300,10 +306,11 @@ $("[data-back]").addEventListener("click", () => {
   path.pop();
   if (path.length) ask(path.at(-1)); else { tint(INTRO_COLOR_OVERRIDE); show("intro"); }
 });
-// holds step by 5 seconds, reps by 1
-for (const b of document.querySelectorAll("[data-step-by]")) b.addEventListener("click", () => setValue(readValue() + Number(b.dataset.stepBy) * (current().kind === "secs" ? 5 : 1)));
 $("[data-value]").addEventListener("input", (e) => setValue(e.target.value));
-$("[data-save]").addEventListener("click", () => save(setValue(readValue())));
+// no answer yet: point them back at the box instead of saving a zero by accident
+const submit = () => { if (!answered()) { $("[data-value]").focus(); screens.question.classList.add("nudge"); setTimeout(() => screens.question.classList.remove("nudge"), 400); return; } save(setValue(readValue())); };
+$("[data-value]").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); submit(); } });
+$("[data-save]").addEventListener("click", submit);
 $("[data-zero]").addEventListener("click", () => save(0));
 
 // lesson check: the intro talks about this video, not the whole program

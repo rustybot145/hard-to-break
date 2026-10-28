@@ -61,29 +61,29 @@ button.cta { border: 0; cursor: pointer; }
 .enter > :nth-child(4), .enter > :nth-child(5) { animation-delay: .08s; }
 .enter > :nth-child(n+6) { animation-delay: .12s; }
 
-/* the result entry: type it in, or step with − and + */
-.meter { margin: 26px 0 6px; padding: 22px 18px 18px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); text-align: center; }
-.counter span { font: 600 1rem/1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--mute); margin-left: 6px; }
-.bar { height: 8px; margin: 16px 0 18px; border-radius: 4px; background: var(--line); overflow: hidden; }
+/* the answer: a question and a box they type the number into */
+html { touch-action: manipulation; }  /* no double-tap zoom on fast taps */
+.meter { margin: 26px 0 6px; padding: 20px 18px 18px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); }
+.ask { display: block; font: 600 1.15rem/1.35 var(--body); margin-bottom: 14px; }
+.field {
+  display: flex; align-items: baseline; gap: 10px; padding: 6px 18px; border-radius: 12px;
+  background: var(--bg); border: 2px solid var(--line); transition: border-color .2s;
+}
+.field:focus-within { border-color: var(--accent); }
+.field input {
+  flex: 1; min-width: 0; background: none; border: 0; padding: 0; color: var(--ink);
+  font: 400 clamp(3.6rem, 19vw, 4.8rem)/1.1 var(--display); caret-color: var(--accent);
+}
+.field input:focus { outline: none; }
+.field input::placeholder { color: var(--line); }
+.field span { font: 600 1rem/1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
+.bar { height: 8px; margin: 16px 0 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
 .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 4px; transition: width .2s linear; }
-.counter button {
-  flex: 1; min-height: 46px; border-radius: 10px; cursor: pointer; border: 1.5px solid var(--line); background: transparent; color: var(--ink);
-  font: 600 1rem/1 var(--label); letter-spacing: .08em;
-}
-.counter { display: flex; align-items: center; gap: 12px; }
-.counter button:hover { border-color: var(--accent); }
-.counter button { flex: 0 0 64px; min-height: 64px; font: 400 2rem/1 var(--display); }
-.counter label { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; }
-.counter label span { margin: 2px 0 0; }
-.counter input {
-  width: 100%; background: none; border: 0; color: var(--ink); text-align: center; padding: 0;
-  font: 400 clamp(4.6rem, 24vw, 6.4rem)/1 var(--display); -moz-appearance: textfield; appearance: textfield;
-}
-.counter input::-webkit-inner-spin-button, .counter input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-.counter input:focus { outline: none; color: var(--accent); }
-.counter + .bar { margin-bottom: 4px; }
 /* target reached: the number lights up */
-.hit .counter input { color: var(--accent); }
+.hit .field input { color: var(--accent); }
+/* tried to save with nothing typed */
+.nudge .field { border-color: var(--accent); animation: nudge .35s; }
+@keyframes nudge { 25% { translate: -6px 0; } 75% { translate: 6px 0; } }
 .save { margin-top: 20px; }
 
 /* result */
