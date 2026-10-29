@@ -63,10 +63,19 @@ h1 em { display: block; font-style: normal; rotate: -3deg; transform-origin: lef
   .tabs, .demo, .fine, .player { display: none; }
   .routine[hidden] { display: block; }
   .routine { margin-top: 26px; }
-  .routine + .routine { break-before: page; padding-top: 0; }
+  .routine + .routine { break-before: page; padding-top: 28px; }
   main:has(.routine) .routine + .routine { margin-top: 0; }
   .step { grid-template-columns: 34px 1fr; padding: 9px 18px; animation: none; break-inside: avoid; }
   .step ul { margin-top: 5px; gap: 2px; }
   .dose { margin-top: 4px; }
-  h1 { animation: none; }
+  [data-routine="after"] ol { display: grid; grid-template-columns: 1fr 1fr; }
+  [data-routine="after"] .step:nth-child(2) { border-top: 0; }
+  [data-routine="after"] .step:nth-child(odd) { border-right: 1px solid var(--line); }
+  h1 { animation: none; font-size: 2.4rem; margin-top: 8px; }
+  h1 em { display: inline; font-size: 1em; }
+  main { padding: 36px 48px; }
+  .routine { margin-top: 16px; }
+  [data-routine="after"] .step { padding: 7px 14px; }
+  [data-routine="after"] .step ul li { font-size: .86rem; line-height: 1.3; }
+  .note { margin-top: 8px; padding: 8px 12px; font-size: .86rem; }
 }
