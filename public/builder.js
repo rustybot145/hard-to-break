@@ -58,6 +58,7 @@ function ask() {
   $("[data-next]").textContent = at === all.length - 1 ? "Build my plan" : "Next";
   $("[data-skip]").hidden = !st.optional && !st.zero;
   $("[data-skip]").textContent = st.zero ? "Couldn't do one" : "Skip";
+  screens.question.classList.toggle("typing", st.type === "number" || st.type === "height");
   show("question");
   const card = screens.question;
   card.classList.remove("enter"); void card.offsetWidth; card.classList.add("enter");
@@ -281,6 +282,15 @@ $("[data-ics]").addEventListener("click", () => {
   const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(new Blob([lines.join("\r\n")], { type: "text/calendar" })), download: "hard-2-break-workouts.ics" });
   document.body.append(a); a.click(); a.remove();
 });
+
+// ---- keyboard: when it opens over the page, keep the answer and Next in view ----
+function keepNextVisible() {
+  const a = document.activeElement;
+  if (!a || a.tagName !== "INPUT" || screens.question.hidden) return;
+  $("[data-next]").scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+window.visualViewport?.addEventListener("resize", keepNextVisible);
+document.addEventListener("focusin", () => setTimeout(keepNextVisible, 300));
 
 // ---- wiring ----
 $("[data-start]").addEventListener("click", () => { A = {}; at = 0; ask(); });

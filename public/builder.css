@@ -82,7 +82,7 @@ html { touch-action: manipulation; }  /* no double-tap zoom on fast taps */
 /* tried to save with nothing typed */
 .nudge .field { border-color: var(--accent); animation: nudge .35s; }
 @keyframes nudge { 25% { translate: -6px 0; } 75% { translate: 6px 0; } }
-.actions { margin-top: auto; padding-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.actions { margin-top: auto; padding-top: 16px; scroll-margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .actions .save { grid-column: 1 / -1; }
 .actions .ghost, .actions .back { margin: 0; min-height: 52px; }
 .actions .back { order: 1; align-self: stretch; border: 1.5px solid var(--line); border-radius: 12px; }
@@ -218,13 +218,14 @@ footer { position: relative; z-index: 1; }
 #intro { text-align: center; }
 #intro .brand { margin: 0; animation: fade .6s ease both; }
 .hero { position: relative; flex: 1; display: grid; place-items: center; padding: 24px 0; }
-.hero h1 { position: relative; font-size: clamp(3.3rem, 17vw, 5.6rem); line-height: .94; }
+.hero h1 { position: relative; font-size: clamp(3.1rem, 16vw, 5.6rem); line-height: .94; }
 .hero h1 em { display: block; rotate: -3deg; margin-top: .1em; font-size: 1em; transform-origin: center; }
-.hero .w { display: inline-block; animation: word .9s var(--ease) both; }
+/* padding gives Knewave's overhanging strokes room, so nothing is clipped mid-animation */
+.hero .w { display: inline-block; padding: .06em .12em; margin: -.06em -.12em; animation: word .9s var(--ease) both; will-change: transform, opacity; }
 .hero .w:nth-child(2) { animation-delay: .12s; }
 .hero em .w { animation-delay: .32s; }
 .hero em .w + .w { animation-delay: .46s; }
-@keyframes word { from { opacity: 0; transform: translateY(55%) rotate(5deg) scale(.94); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes word { from { opacity: 0; transform: translateY(55%) rotate(5deg) scale(.94); } to { opacity: 1; transform: none; } }
 /* a red swipe under "workout plan" once the words land */
 .hero h1 em::after {
   content: ""; display: block; height: .1em; margin: .08em auto 0; width: 86%; border-radius: 99px; background: var(--accent);
@@ -260,3 +261,11 @@ body:has(#result[hidden]) footer { display: none; }
 .choices[data-layout="nums"] .choice b { font: 400 2rem/1 var(--display); }
 .choices[data-layout="nums"] .choice[aria-pressed="true"] b::after { content: none; }
 .choices[data-layout="two"] .choice { min-height: 58px; padding: 10px 14px; }
+
+/* typing steps: the keyboard covers the bottom of the screen, so Next sits right under the answer */
+.typing .actions { margin-top: 0; padding-top: 14px; }
+.typing .how { margin-top: 6px; padding: 8px 12px; font-size: .95rem; }
+.typing .meter { margin-top: 12px; padding: 14px 14px 12px; }
+.typing .ask { margin-bottom: 8px; font-size: 1.05rem; }
+.typing .progress { margin-bottom: 14px; }
+.typing h2 { margin-bottom: 6px; }
