@@ -156,7 +156,28 @@ const MODULES = {
       ] },
     ],
   },
-  9: { title: "The Planche", color: "#ffb347", weeks: null, freq: null, sessions: [], comingSoon: true, lessons: [] },
+  9: {
+    title: "The Planche", color: "#ffb347", weeks: 3, freq: 2, sessions: ["Planche"], rest: "90 seconds to 3 minutes between sets",
+    extra: "Keep doing the planche lean work as you move on. The tuck and straddle work takes as many weeks as it takes",
+    lessons: [
+      { title: "Planche Lean", weeks: 3, items: [
+        { s: 0, name: "Planche lean", clip: "m9-planche-lean", rx: "3 × 15s in position, before you lean forward" },
+        { s: 0, name: "Advanced planche lean", clip: "m9-advanced-planche-lean", rx: "Once 15s is easy: lean forward, hands toward your hips. Build to 30s." },
+        { s: 0, name: "Scapular push-ups", clip: "m9-scapular-push-ups", rx: "3 × 10, then 3 × 10 from the planche lean" },
+      ] },
+      // Joshua: "for as many weeks as it takes", twice a week, until no band
+      { title: "Tuck Planche", weeks: null, items: [
+        { s: 0, name: "Tuck planche hold", clip: "m9-tuck-planche-hold", rx: "3 × 15s. Band under your hips, lighter band each time it's easy." },
+        { s: 0, name: "Tuck planche push-ups", clip: "m9-tuck-planche-push-ups", rx: "3 × 5, with whatever band you need" },
+        { s: 0, name: "Advanced tuck planche", clip: "m9-advanced-tuck-planche", rx: "3 × 5s, once the tuck hold and push-ups need no band. Band if you need it." },
+      ] },
+      { title: "Straddle Planche", weeks: null, items: [
+        { s: 0, name: "Frog planche", clip: "m9-frog-planche", rx: "3 × 10s with your lightest band, then 3s with no band" },
+        { s: 0, name: "Pike straddle planche", clip: "m9-pike-straddle-planche", rx: "Same: 10s with your lightest band, then 3s with no band" },
+        { s: 0, name: "Full straddle planche", clip: "m9-full-straddle-planche", rx: "Same: 10s with your lightest band, then 3s with no band. Squeeze your glutes and lower back." },
+      ] },
+    ],
+  },
 };
 
 // the skills people can pick as goals (Modules 4 to 9, in program order)

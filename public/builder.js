@@ -156,7 +156,7 @@ function build(fresh) {
   // modules with more than one lesson: one tab per stretch of weeks
   let w = 1;
   $("[data-phases]").replaceChildren(...(mod.lessons.length > 1 ? mod.lessons.map((l, i) => {
-    const b = el("button", "", l.weeks ? `Weeks ${w}–${(w += l.weeks) - 1}` : `Week ${w} on`);
+    const b = el("button", "", l.weeks ? `Weeks ${w}–${(w += l.weeks) - 1}` : i && !mod.lessons[i - 1].weeks ? `Then: ${l.title}` : `Week ${w} on`);
     b.type = "button";
     b.addEventListener("click", () => sessions(i));
     return b;
