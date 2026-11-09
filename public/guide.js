@@ -89,7 +89,7 @@ function finish(s) {
       <p class="lede">${nb(s.finish)}</p>
       <div class="offer">
         <h2>Ready for the<em>next skill?</em></h2>
-        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. Buy from this page and you also get my Bonus Material: post&#8209;training stretching and rest&#8209;day mobility.</p>
+        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out.</p>
         <a class="cta" href="${CHECKOUT}">Get the program <span>$48</span></a>
         <p class="micro">Instant access on Whop · All sales are final</p>
       </div>
@@ -130,4 +130,7 @@ addEventListener("pointerdown", () => { app.querySelector("video")?.play().catch
 const retry = () => { if (!document.hidden) app.querySelector("video")?.play().catch(() => {}); };
 addEventListener("pageshow", retry);
 document.addEventListener("visibilitychange", retry);
-route();
+// First visit: the one-time bonus offer (offer.html) comes before the guide. It marks itself gone when they leave.
+let offerGone = true;
+try { offerGone = localStorage.getItem("h2b-offer") === "gone"; } catch {}
+if (offerGone) route(); else location.replace("offer.html");

@@ -195,6 +195,10 @@ footer p { font: 600 .78rem/1.5 var(--label); letter-spacing: .06em; text-transf
 .sound svg { width: 20px; height: 20px; fill: currentColor; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
 .sound[hidden] { display: none; }
 .frame video { cursor: pointer; }
+/* offer page: the warning and the way out under the buy button */
+.leave { margin-top: 18px; text-align: center; font-weight: 600; color: var(--ink); }
+.skip { display: block; width: fit-content; margin: 10px auto 0; padding: 12px 4px; color: var(--mute); text-underline-offset: 3px; }
+.skip:hover { color: var(--ink); }
 .vbar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: rgba(18, 17, 16, .55); pointer-events: none; }
 .vbar i { position: absolute; inset: 0; background: var(--yellow); transform: scaleX(0); transform-origin: left; }
 .buy { animation-delay: .6s; }

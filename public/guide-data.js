@@ -172,5 +172,5 @@ export const SKILLS = [
   },
 ];
 
-// The free guide's button uses the plan that includes the Bonus Material app; the sales page uses the plain $48 plan.
-export const CHECKOUT = "https://whop.com/checkout/plan_260bpocwoYkFm";
+// The plain $48 plan. The bonus plan (plan_260bpocwoYkFm) is only on the one-time offer page (offer.html).
+export const CHECKOUT = "https://whop.com/checkout/plan_G1ImiXXj5pKK3";
