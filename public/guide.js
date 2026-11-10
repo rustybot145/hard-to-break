@@ -98,8 +98,8 @@ function finish(s) {
     </div>`;
 }
 
-// One-time popup: the first skill they pick opens Josh's video over that skill's first page, with "Join the waitlist"
-// (waitlist.js). Closing it any way marks it seen in this browser; anyone already on the waitlist never gets it.
+// One-time popup: clicking handstand, front lever or muscle-up on the home screen opens Josh's video over that skill's
+// first page, with "Join the waitlist" (waitlist.js). Never on a refresh, shared link or Back. Closing it any way marks it seen in this browser; anyone already on the waitlist never gets it.
 const SEEN = "h2b-offer";
 const onList = () => { try { return localStorage.getItem("h2b-waitlist") === "1"; } catch { return false; } };
 const offerSeen = () => { try { return onList() || localStorage.getItem(SEEN) === "gone"; } catch { return true; } };
@@ -109,6 +109,8 @@ pop.addEventListener("close", () => { popVideo.stop(); try { localStorage.setIte
 pop.addEventListener("click", (e) => { if (e.target === pop) pop.close(); }); // a click off the video and button
 pop.querySelector("[data-pop-close]").addEventListener("click", () => pop.close());
 addEventListener("hashchange", () => { if (pop.open) pop.close(); });
+let picked = false; // set by a click on a skill card, used by the route() that click triggers
+app.addEventListener("click", (e) => { if (e.target.closest(".skills a")) picked = true; });
 
 function route() {
   const [id, raw] = location.hash.slice(1).split("/");
@@ -120,8 +122,9 @@ function route() {
     document.title = `${s.name} · Hard 2 Break`;
     if (i === 0) intro(s); else if (i > n) finish(s); else step(s, i);
     if (i >= 1 && i <= n) save(s.id, i);
-    if (!offerSeen()) openPop();
+    if (picked && !offerSeen()) openPop();
   }
+  picked = false;
   scrollTo(0, 0);
   // Safari ignores the muted attribute on videos added through innerHTML, so set the property and retry once it can play
   app.querySelectorAll("video").forEach((v) => {
