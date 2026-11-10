@@ -172,5 +172,5 @@ export const SKILLS = [
   },
 ];
 
-// The plain $48 plan. The bonus plan (plan_260bpocwoYkFm) is only on the one-time offer page (offer.html).
+// The plain $48 plan. The bonus plan (plan_260bpocwoYkFm) is only in the one-time popup (guide.html).
 export const CHECKOUT = "https://whop.com/checkout/plan_G1ImiXXj5pKK3";

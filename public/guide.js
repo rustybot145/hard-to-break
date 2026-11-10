@@ -98,13 +98,23 @@ function finish(s) {
     </div>`;
 }
 
-// Until they've seen it once, picking a skill shows the one-time offer video first (offer.html), then that skill.
-const offerSeen = () => { try { return localStorage.getItem("h2b-offer") === "gone"; } catch { return true; } };
+// One-time popup: the first skill they pick opens Josh's video over that skill's first page. Closing it any way
+// except "Get the program" marks it seen in this browser; after a checkout click it shows again when they come back.
+const SEEN = "h2b-offer";
+const offerSeen = () => { try { return localStorage.getItem(SEEN) === "gone"; } catch { return true; } };
+const pop = document.querySelector("[data-pop]"), popVideo = pop.querySelector("[data-vsl]"), popBuy = pop.querySelector("[data-buy]");
+let buying = false;
+const openPop = () => { if (pop.open) return; buying = false; popBuy.classList.remove("loading"); pop.showModal(); popVideo.start(); };
+pop.addEventListener("close", () => { popVideo.stop(); if (!buying) try { localStorage.setItem(SEEN, "gone"); } catch {} });
+pop.addEventListener("click", (e) => { if (e.target === pop) pop.close(); }); // a click off the video and button
+pop.querySelector("[data-pop-close]").addEventListener("click", () => pop.close());
+popBuy.addEventListener("click", () => { buying = true; popBuy.classList.add("loading"); });
+addEventListener("hashchange", () => { if (pop.open) pop.close(); });
+addEventListener("pageshow", (e) => { if (e.persisted && pop.open) { buying = false; popBuy.classList.remove("loading"); } }); // back from checkout
 
 function route() {
   const [id, raw] = location.hash.slice(1).split("/");
   const s = SKILLS.find((x) => x.id === id);
-  if (s && !offerSeen()) { location.assign("offer.html" + location.hash); return; }
   if (!s) { document.title = "Free step-by-step guide · Hard 2 Break"; home(); }
   else {
     const n = s.steps.length;
@@ -112,6 +122,7 @@ function route() {
     document.title = `${s.name} · Hard 2 Break`;
     if (i === 0) intro(s); else if (i > n) finish(s); else step(s, i);
     if (i >= 1 && i <= n) save(s.id, i);
+    if (!offerSeen()) openPop();
   }
   scrollTo(0, 0);
   // Safari ignores the muted attribute on videos added through innerHTML, so set the property and retry once it can play

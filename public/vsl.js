@@ -2,6 +2,7 @@
 // playing muted with "Tap for sound" (tap the button or the video to restart it with sound). Safari can refuse even
 // the muted start, so that retries on load, visibility, back/forward and the first touch. No native controls: the bar
 // at the bottom runs fast early and slows near the end (it still lands on 100% exactly when the video ends).
+// A video marked data-defer (the free guide's popup) waits for vsl.start(), which runs right after a tap, so sound is allowed.
 const vsl = document.querySelector("[data-vsl]"), btn = document.querySelector("[data-sound]"), fill = document.querySelector("[data-vbar]");
 if (vsl) {
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -25,10 +26,13 @@ if (vsl) {
     vsl.muted = false; vsl.loop = false;
     return vsl.play().then(() => say(""));
   };
-  if (still) say("Tap to play");
-  else withSound(false).catch(muted); // a refused start with sound drops to the muted preview
+  const begin = () => { if (still) say("Tap to play"); else withSound(false).catch(muted); }; // refused sound → muted preview
+  let started = !vsl.hasAttribute("data-defer");
+  if (started) begin();
+  vsl.start = () => { started = true; vsl.currentTime = 0; begin(); };
+  vsl.stop = () => { started = false; vsl.pause(); };
 
-  const nudge = () => { if (vsl.muted && vsl.paused && !still && !document.hidden) vsl.play().catch(() => {}); };
+  const nudge = () => { if (started && vsl.muted && vsl.paused && !still && !document.hidden) vsl.play().catch(() => {}); };
   ["loadeddata", "canplay"].forEach((ev) => vsl.addEventListener(ev, nudge));
   document.addEventListener("visibilitychange", nudge);
   addEventListener("pageshow", nudge);

@@ -99,6 +99,31 @@ dd { margin-top: 3px; max-width: 58ch; }
 .next:hover { background: var(--yellow-hi); transform: translateY(-1px); }
 .next:active { transform: translateY(1px); }
 
+/* one-time popup after picking a skill: just Josh's video and the buy button. A click anywhere off them closes it */
+.pop { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; color: var(--ink); }
+.pop[open] { display: grid; place-items: center; }
+.pop::backdrop { background: rgba(10, 9, 8, .88); }
+.pop-box { width: min(calc(100vw - 40px), clamp(230px, calc((100svh - 130px) * 9 / 16), 420px)); animation: rise .45s var(--ease); }
+.pop-box:focus { outline: none; }
+.pop .frame { position: relative; aspect-ratio: 9 / 16; overflow: hidden; border-radius: 14px; background: var(--bg-2);
+  box-shadow: 0 1px 0 rgba(245, 200, 66, .25) inset, 0 24px 60px -20px rgba(245, 200, 66, .18), 0 10px 30px rgba(0, 0, 0, .5); }
+.pop video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+.pop video::-webkit-media-controls-start-playback-button { display: none !important; }
+.pop .cta { margin-top: 14px; }
+.sound { position: absolute; right: 10px; top: 10px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 10px;
+  background: var(--yellow); color: var(--bg); cursor: pointer; box-shadow: 0 2px 0 #b8901f, 0 12px 30px -10px rgba(0, 0, 0, .7); }
+.sound[hidden] { display: none; }
+.sound:hover { background: var(--yellow-hi); }
+.sound:focus-visible, .pop-x:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.sound svg { width: 20px; height: 20px; fill: currentColor; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.sound span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } /* icon only; the label is for screen readers */
+.vbar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: rgba(18, 17, 16, .55); pointer-events: none; }
+.vbar i { position: absolute; inset: 0; background: var(--yellow); transform: scaleX(0); transform-origin: left; }
+.pop-x { position: absolute; top: max(12px, env(safe-area-inset-top)); right: 12px; width: 44px; height: 44px; border: 0; border-radius: 50%;
+  background: rgba(242, 238, 228, .1); color: var(--ink); font: 400 1.8rem/1 var(--body); cursor: pointer; }
+.pop-x:hover { background: rgba(242, 238, 228, .2); }
+.cta.loading { pointer-events: none; opacity: .8; }
+
 @media (min-width: 900px) {
   .screen { display: grid; grid-template-columns: minmax(0, 46vw) minmax(0, 1fr); min-height: 100svh; }
   .fig { position: sticky; top: 0; height: 100svh; }

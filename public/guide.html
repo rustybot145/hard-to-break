@@ -14,6 +14,22 @@
 <body>
 <main id="app"></main>
 <noscript><p class="noscript">This guide needs JavaScript to run.</p></noscript>
+
+<!-- One-time popup after they pick a skill: Josh's full video (bonus pitch included) and the bonus checkout.
+     Clicking off it, the X or Esc closes it on that skill's first step. guide.js opens it; vsl.js plays it. -->
+<dialog class="pop" data-pop aria-label="Joshua's video">
+  <div class="pop-box" tabindex="-1" autofocus>
+    <div class="frame">
+      <video data-vsl data-defer src="media/offer.mp4" poster="media/offer-poster.jpg" playsinline preload="metadata"></video>
+      <button class="sound" type="button" data-sound hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none"/></svg><span>Tap for sound</span></button>
+      <div class="vbar" aria-hidden="true"><i data-vbar></i></div>
+    </div>
+    <a class="cta" href="https://whop.com/checkout/plan_260bpocwoYkFm" data-buy>Get the program</a>
+  </div>
+  <button class="pop-x" type="button" data-pop-close aria-label="Close and start the free guide">&times;</button>
+</dialog>
+
+<script src="vsl.js"></script>
 <script type="module" src="guide.js"></script>
 </body>
 </html>

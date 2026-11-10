@@ -65,5 +65,12 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/offer",
+      "destination": "/guide",
+      "permanent": false
+    }
   ]
 }
