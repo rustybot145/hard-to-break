@@ -242,9 +242,13 @@ html[data-v="c"] .skills li { display: block; padding: 14px 10px; border: 1px so
 html[data-v="c"] .skills span { display: block; font-size: 1.9rem; line-height: 1; }
 html[data-v="c"] .skills h3 { margin-top: 6px; font-size: .9rem; line-height: 1.2; }
 html[data-v="c"] .skills p { display: none; }
-/* offer page: the warning and the way out under the buy button */
-.leave { margin-top: 18px; text-align: center; font-weight: 600; color: var(--ink); }
-.skip { display: block; width: fit-content; margin: 10px auto 0; padding: 12px 4px; color: var(--mute); text-underline-offset: 3px; }
+/* offer page: only the video, the button and a way on to their steps, centered on one screen */
+body.solo main { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: max(16px, env(safe-area-inset-top)) 0 max(12px, env(safe-area-inset-bottom)); }
+body.solo .vsl { max-width: clamp(240px, calc((100svh - 190px) * 9 / 16), 420px); }
+body.solo .buy { max-width: 420px; margin-top: 18px; }
+.sound.icon { padding: 0; width: 44px; justify-content: center; }
+.sound.icon span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { display: block; width: fit-content; margin: 6px auto 0; padding: 12px 4px; color: var(--mute); text-underline-offset: 3px; }
 .skip:hover { color: var(--ink); }
 .vbar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: rgba(18, 17, 16, .55); pointer-events: none; }
 .vbar i { position: absolute; inset: 0; background: var(--yellow); transform: scaleX(0); transform-origin: left; }

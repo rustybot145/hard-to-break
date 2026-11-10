@@ -5,8 +5,8 @@ Everything online for Josh Heald's **Hard to Break Program** ([@trainerjosh](htt
 | Path | What it is |
 |---|---|
 | `/` | Sales page. Josh's promo video (bonus pitch and free-guide lines cut), A/B/C format test, Whop pixel |
-| `/guide` | Free step-by-step guide (handstand, front lever, muscle-up, from his public reels only). First visit goes to `/offer` |
-| `/offer` | One-time offer: Josh's full promo + the $48 + Bonus Material checkout. Gone once they leave |
+| `/guide` | Free step-by-step guide (handstand, front lever, muscle-up, from his public reels only). The first skill they pick goes through `/offer` |
+| `/offer` | One-time offer: only Josh's full promo, a "Get the program" button (bonus checkout, no price shown) and Skip. Gone once they leave |
 | `/builder`, `/gear`, `/recovery` | Tools inside Whop (Workout Builder, Recommended Gear, Stretch Routines). Only whop.com may frame them |
 | `/terms`, `/privacy` | Terms of Use and Privacy Policy |
 

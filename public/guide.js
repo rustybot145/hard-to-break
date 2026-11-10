@@ -98,9 +98,13 @@ function finish(s) {
     </div>`;
 }
 
+// Until they've seen it once, picking a skill shows the one-time offer video first (offer.html), then that skill.
+const offerSeen = () => { try { return localStorage.getItem("h2b-offer") === "gone"; } catch { return true; } };
+
 function route() {
   const [id, raw] = location.hash.slice(1).split("/");
   const s = SKILLS.find((x) => x.id === id);
+  if (s && !offerSeen()) { location.assign("offer.html" + location.hash); return; }
   if (!s) { document.title = "Free step-by-step guide · Hard 2 Break"; home(); }
   else {
     const n = s.steps.length;
@@ -130,7 +134,4 @@ addEventListener("pointerdown", () => { app.querySelector("video")?.play().catch
 const retry = () => { if (!document.hidden) app.querySelector("video")?.play().catch(() => {}); };
 addEventListener("pageshow", retry);
 document.addEventListener("visibilitychange", retry);
-// First visit: the one-time bonus offer (offer.html) comes before the guide. It marks itself gone when they leave.
-let offerGone = true;
-try { offerGone = localStorage.getItem("h2b-offer") === "gone"; } catch {}
-if (offerGone) route(); else location.replace("offer.html");
+route();

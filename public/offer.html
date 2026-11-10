@@ -5,44 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#121110">
 <meta name="robots" content="noindex">
-<title>Before your free guide · Hard 2 Break</title>
+<title>Hard 2 Break</title>
 <link rel="icon" type="image/png" href="media/icon.png">
 <link rel="preload" href="fonts/knewave.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="solo">
 
-<!-- Shown once, before the free guide. Josh's full promo (bonus pitch included) + the bonus checkout.
-     offer.js sends anyone who already left this page straight to the guide. -->
+<!-- Shown once, after they pick a skill in the free guide: just Josh's full promo (bonus pitch included), a button to
+     the bonus checkout and a way on to their steps. offer.js sends anyone who already left it straight to the guide. -->
 <main>
-  <section class="offer wrap">
-    <p class="eyebrow rise">Before your free guide</p>
-    <h1 class="rise">Get the full program<em>&ldquo;+ the bonus&rdquo;</em></h1>
-    <p class="sub rise"><b>Only on this page.</b> Get the Hard to Break Program now and you also get Joshua's Bonus Material: post&#8209;training stretching and rest&#8209;day mobility.</p>
-  </section>
-
   <section class="vsl wrap rise" aria-label="Joshua's video">
     <div class="frame">
-      <!-- vsl.js starts it with sound when the browser allows, otherwise muted with "Tap for sound" -->
       <video data-vsl src="media/offer.mp4" poster="media/offer-poster.jpg" playsinline preload="auto"></video>
-      <button class="sound" type="button" data-sound hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none"/></svg><span>Tap for sound</span></button>
+      <button class="sound icon" type="button" data-sound hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none"/></svg><span>Tap for sound</span></button>
       <div class="vbar" aria-hidden="true"><i data-vbar></i></div>
     </div>
   </section>
 
   <section class="buy wrap rise">
-    <a class="cta" href="https://whop.com/checkout/plan_260bpocwoYkFm" data-buy>Get the program + bonus <span>$48</span></a>
-    <p class="micro">Instant access on Whop · All sales are final</p>
-    <p class="leave">Leave this page and this offer won't come back.</p>
-    <a class="skip" href="guide.html">No thanks, take me to my free guide</a>
+    <a class="cta" href="https://whop.com/checkout/plan_260bpocwoYkFm" data-buy>Get the program</a>
+    <a class="skip" href="guide.html" data-skip>Skip</a>
   </section>
 </main>
-
-<footer class="wrap">
-  <p>© 2026 Josh Heald · Hard to Break Program · All sales are final · Not medical advice.</p>
-  <p class="legal-links"><a href="/terms">Terms of Use</a> · <a href="/privacy">Privacy Policy</a></p>
-</footer>
 
 <script src="vsl.js"></script>
 <script src="offer.js"></script>
