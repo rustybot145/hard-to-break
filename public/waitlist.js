@@ -4,6 +4,8 @@ const box = document.querySelector("[data-join-box]"), form = document.querySele
 const done = document.querySelector("[data-join-done]"), err = document.querySelector("[data-join-error]");
 const submit = form.querySelector('button[type="submit"]'), email = form.elements.email;
 const JOINED = "h2b-waitlist"; // remembered so a returning visitor sees "you're on the list"
+// ?reset forgets this browser's waitlist signup and seen popup, for testing the first-visit experience
+if (new URLSearchParams(location.search).has("reset")) try { localStorage.removeItem(JOINED); localStorage.removeItem("h2b-offer"); } catch {}
 
 const joined = () => { try { return localStorage.getItem(JOINED) === "1"; } catch { return false; } };
 const markJoined = () => document.querySelectorAll("[data-join]").forEach((a) => { a.textContent = "Joined waitlist"; a.classList.add("joined"); });
