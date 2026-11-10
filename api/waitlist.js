@@ -39,7 +39,8 @@ module.exports = async (req, res) => {
 
 function safeJson(s) { try { return JSON.parse(s); } catch { return {}; } }
 
-// The welcome email, in Joshua's words. A failure here never blocks the signup.
+// The welcome email, in Joshua's words. Plain text, no links, no images: it reads like a personal note, which keeps it out of
+// Gmail's Promotions tab. Asking for a reply helps too: once they reply, his launch email lands in Primary. A failure never blocks the signup.
 async function welcome(key, to) {
   const from = process.env.RESEND_FROM;
   if (!from) return;
@@ -47,26 +48,24 @@ async function welcome(key, to) {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", "Idempotency-Key": `waitlist-welcome-${to}` },
-      body: JSON.stringify({ from, to: [to], reply_to: "lifeelitefit@gmail.com", subject: WELCOME.subject, text: WELCOME.text, html: WELCOME.html }),
+      body: JSON.stringify({ from, to: [to], reply_to: "lifeelitefit@gmail.com", subject: "You're on the list", text: WELCOME }),
     });
     if (!r.ok) console.error("welcome", r.status, (await r.text()).slice(0, 300));
   } catch (e) { console.error("welcome", e.message); }
 }
 
-const GUIDE = "https://www.hardtobreakprogram.com/guide";
-const LINES = [
-  "You're on the waitlist for the Hard to Break Program.",
-  "If you've been kicking up to the wall for months, or swinging on the bar trying to get your first muscle-up, and you still don't know how many sets, how many reps or when you're ready for the next step, this is for you.",
-  "The program breaks every skill into steps: the handstand, muscle-up, dragon flag, pike press, front lever and planche. Every step tells you how much to do and gives you a milestone. Hit the milestone, then move on. That way you don't injure yourself.",
-  "Your bonus is locked in: my post-training stretching and rest-day mobility routines. When the program launches, I'll email you the checkout link. Check out from that email and the bonus modules are yours.",
-];
-const WELCOME = {
-  subject: "You're on the Hard 2 Break waitlist",
-  text: ["Hey,", ...LINES, `Want to start now? My free step-by-step guide: ${GUIDE}`, "Talk soon,\nTrainer Josh",
-    "You're getting this because you joined the waitlist at hardtobreakprogram.com. Don't want these emails? Reply and we'll take you off the list."].join("\n\n"),
-  html: `<div style="font:16px/1.6 -apple-system,Helvetica,Arial,sans-serif;color:#111;max-width:560px">
-<p>Hey,</p>${LINES.map((l) => `<p>${l}</p>`).join("")}
-<p>Want to start now? <a href="${GUIDE}">Get my free step-by-step guide</a>.</p>
-<p>Talk soon,<br>Trainer Josh</p>
-<p style="font-size:12px;color:#777;margin-top:28px">You're getting this because you joined the waitlist at hardtobreakprogram.com. Don't want these emails? Reply and we'll take you off the list.</p></div>`,
-};
+const WELCOME = `Hey,
+
+You're on the Hard to Break waitlist.
+
+Most people stay stuck on the same skill for months because they're guessing: how many sets, how many reps, when to move on.
+
+The program fixes that. Every skill is broken into steps, and every step tells you exactly how much to do and when you're ready for the next one.
+
+Your bonus stretching and mobility routines are locked in. I'll email you the checkout when it launches.
+
+Which skill are you going after? Hit reply and let me know.
+
+Trainer Josh
+
+(Don't want these emails? Reply "stop".)`;
