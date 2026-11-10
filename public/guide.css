@@ -124,6 +124,36 @@ dd { margin-top: 3px; max-width: 58ch; }
 .pop-x:hover { background: rgba(242, 238, 228, .2); }
 .cta.loading { pointer-events: none; opacity: .8; }
 
+/* the waitlist box (shared markup with /waitlist, driven by waitlist.js) */
+.join { width: min(460px, calc(100vw - 32px)); max-height: calc(100svh - 32px); margin: auto; padding: 30px 22px 24px; border: 1px solid var(--line); border-radius: 18px;
+  background: var(--bg-2); color: var(--ink); box-shadow: 0 1px 0 rgba(245, 200, 66, .2) inset, 0 40px 80px -30px rgba(0, 0, 0, .9); }
+.join::backdrop { background: rgba(10, 9, 8, .82); }
+.join h2 { margin: 6px 0 12px; font: 400 clamp(1.8rem, 7vw, 2.4rem)/1.02 var(--display); text-transform: uppercase; }
+.join h2 em { font-style: normal; color: var(--yellow); }
+.join p { color: var(--mute); margin-top: 8px; }
+.join p b { color: var(--ink); }
+.join .cta { margin-top: 18px; border: 0; cursor: pointer; }
+.join .cta:disabled { opacity: .7; cursor: wait; }
+.join .micro { text-align: center; }
+.join-field { display: block; margin-top: 18px; }
+.join-field span { display: block; margin-bottom: 6px; font: 600 .84rem/1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
+.join-field input { width: 100%; min-height: 52px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); font: 400 1.05rem/1 var(--body); }
+.join-field input:focus { outline: 2px solid var(--yellow); outline-offset: 1px; border-color: transparent; }
+.join-error { margin-top: 10px; color: #ff8a7a !important; font-weight: 600; }
+.join .consent { margin-top: 12px; font-size: .8rem; line-height: 1.45; text-align: center; }
+.join .consent a { color: var(--mute); text-underline-offset: 2px; }
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.join-x { position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--mute); font: 400 1.8rem/1 var(--body); cursor: pointer; }
+.join-x:hover { color: var(--ink); background: rgba(242, 238, 228, .08); }
+.join .ledger { list-style: none; margin: 6px 0 14px; padding: 0; border-top: 1px solid var(--line); }
+.join .ledger li { display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+.join .ledger i { width: 22px; height: 22px; border-radius: 50%; background: #9b5cff; position: relative; }
+.join .ledger i::after { content: ""; position: absolute; left: 7.5px; top: 4px; width: 5px; height: 10px; border: solid var(--ink); border-width: 0 2.5px 2.5px 0; rotate: 45deg; }
+.join .ledger b { display: block; font-weight: 600; line-height: 1.25; }
+.join .ledger small { display: block; color: var(--mute); font-size: .9rem; line-height: 1.35; margin-top: 2px; }
+.join .ledger em { font: 600 .8rem/1 var(--label); font-style: normal; letter-spacing: .14em; text-transform: uppercase; color: #fff; background: #9b5cff; padding: 6px 8px; border-radius: 6px; }
+.purple-text { color: #b48cff !important; }
+
 @media (min-width: 900px) {
   .screen { display: grid; grid-template-columns: minmax(0, 46vw) minmax(0, 1fr); min-height: 100svh; }
   .fig { position: sticky; top: 0; height: 100svh; }

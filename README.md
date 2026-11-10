@@ -6,7 +6,7 @@ Everything online at **https://www.hardtobreakprogram.com** for Josh Heald's **H
 |---|---|
 | `/` | Sales page. Josh's promo video (bonus pitch and free-guide lines cut), A/B/C format test, Whop pixel |
 | `/waitlist` | Version A of the sales page with "Join the waitlist" instead of buy buttons. Email only, saved to Resend by `api/waitlist.js`; then a bonus-modules reward screen |
-| `/guide` | Free step-by-step guide (handstand, front lever, muscle-up, from his public reels only). The first skill they pick opens a one-time popup: Josh's full promo + "Get the program" (bonus checkout, no price). Clicking off it starts the guide |
+| `/guide` | Free step-by-step guide (handstand, front lever, muscle-up, from his public reels only). The first skill they pick opens a one-time popup: Josh's full promo + "Join the waitlist" (same box as /waitlist). Clicking off it starts the guide; people already on the list skip it |
 | `/builder`, `/gear`, `/recovery` | Tools inside Whop (Workout Builder, Recommended Gear, Stretch Routines). Only whop.com may frame them |
 | `/terms`, `/privacy` | Terms of Use and Privacy Policy |
 
@@ -31,7 +31,7 @@ No build step and no dependencies. Plain HTML, CSS and JS.
 
 ## Checkouts
 - Sales page and free guide buttons: `whop.com/checkout/plan_G1ImiXXj5pKK3` ($48)
-- Free guide popup only: `whop.com/checkout/plan_260bpocwoYkFm` ($48 + Bonus Material)
+- Bonus checkout for the waitlist launch email: `whop.com/checkout/plan_260bpocwoYkFm` ($48 + Bonus Material)
 
 ## Rules
 - Nothing ships in Josh's name without his OK. Refund line stays "All sales are final". No fake urgency or reference prices (agreement §9).

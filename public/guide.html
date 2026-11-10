@@ -15,7 +15,7 @@
 <main id="app"></main>
 <noscript><p class="noscript">This guide needs JavaScript to run.</p></noscript>
 
-<!-- One-time popup after they pick a skill: Josh's full video (bonus pitch included) and the bonus checkout.
+<!-- One-time popup after they pick a skill: Josh's full video (bonus pitch included) and "Join the waitlist".
      Clicking off it, the X or Esc closes it on that skill's first step. guide.js opens it; vsl.js plays it. -->
 <dialog class="pop" data-pop aria-label="Joshua's video">
   <div class="pop-box" tabindex="-1" autofocus>
@@ -24,12 +24,38 @@
       <button class="sound" type="button" data-sound hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none"/></svg><span>Tap for sound</span></button>
       <div class="vbar" aria-hidden="true"><i data-vbar></i></div>
     </div>
-    <a class="cta" href="https://whop.com/checkout/plan_260bpocwoYkFm" data-buy>Get the program</a>
+    <a class="cta" href="#join" data-join>Join the waitlist</a>
   </div>
   <button class="pop-x" type="button" data-pop-close aria-label="Close and start the free guide">&times;</button>
 </dialog>
 
+<!-- Waitlist: email only. waitlist.js posts it to /api/waitlist (saved in Resend), then shows the bonus reward -->
+<dialog class="join" data-join-box aria-labelledby="join-h">
+  <form class="join-form" data-join-form novalidate>
+    <p class="eyebrow">Launching very soon</p>
+    <h2 id="join-h">Join the <em>waitlist</em></h2>
+    <p>Put in your email and we'll send you the checkout the moment it drops.</p>
+    <label class="join-field"><span>Email</span><input type="email" name="email" autocomplete="email" inputmode="email" required maxlength="254" placeholder="you@email.com"></label>
+    <input class="trap" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="join-error" data-join-error role="alert" hidden></p>
+    <button class="cta" type="submit">Join the waitlist</button>
+    <p class="consent">By joining, you agree to get emails from Joshua Heald about the Hard to Break Program, including the launch checkout link. Unsubscribe anytime. <a href="privacy">Privacy Policy</a></p>
+  </form>
+  <div class="join-done" data-join-done hidden>
+    <p class="eyebrow">You're on the waitlist</p>
+    <h2>You unlocked the <em class="purple-text">bonus modules</em></h2>
+    <ul class="ledger bonus purple">
+      <li><i aria-hidden="true"></i><div><b>Post-training stretching</b><small>Josh's cool-down after every hard session</small></div><em>Bonus</em></li>
+      <li><i aria-hidden="true"></i><div><b>Rest-day mobility</b><small>His full rest-day routine, in three parts</small></div><em>Bonus</em></li>
+    </ul>
+    <p><b>Launching: very soon.</b> When it drops, we'll email you the checkout. Check out from that email and the bonus modules are yours.</p>
+    <button class="cta" type="button" data-join-close>Done</button>
+  </div>
+  <button class="join-x" type="button" data-join-close aria-label="Close">&times;</button>
+</dialog>
+
 <script src="vsl.js"></script>
+<script src="waitlist.js"></script>
 <script type="module" src="guide.js"></script>
 </body>
 </html>

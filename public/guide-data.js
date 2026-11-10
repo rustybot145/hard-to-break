@@ -171,6 +171,3 @@ export const SKILLS = [
     finish: "That's how you're going to get your very first muscle-up with some momentum. As that gets easier, the next stage is your strict muscle-up.",
   },
 ];
-
-// The plain $48 plan. The bonus plan (plan_260bpocwoYkFm) is only in the one-time popup (guide.html).
-export const CHECKOUT = "https://whop.com/checkout/plan_G1ImiXXj5pKK3";

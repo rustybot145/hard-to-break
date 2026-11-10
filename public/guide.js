@@ -1,6 +1,6 @@
 // Free guide: home (pick a skill) → skill intro → one step per screen → finish + program button.
 // The place lives in the URL hash (#handstand/3), so Back, refresh and shared links all work.
-import { SKILLS, CHECKOUT } from "./guide-data.js";
+import { SKILLS } from "./guide-data.js";
 
 const app = document.getElementById("app");
 const KEY = "h2b-guide";
@@ -89,28 +89,26 @@ function finish(s) {
       <p class="lede">${nb(s.finish)}</p>
       <div class="offer">
         <h2>Ready for the<em>next skill?</em></h2>
-        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out.</p>
-        <a class="cta" href="${CHECKOUT}">Get the program <span>$48</span></a>
-        <p class="micro">Instant access on Whop · All sales are final</p>
+        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. It's launching very soon. Join the waitlist and you get the bonus modules when it drops.</p>
+        <a class="cta" href="#join" data-join>${onList() ? "Joined waitlist" : "Join the waitlist"}</a>
+        <p class="micro">Free to join · Launching very soon</p>
       </div>
       <a class="reel" href="#">Try another skill</a>
       ${bar(s, n + 1)}
     </div>`;
 }
 
-// One-time popup: the first skill they pick opens Josh's video over that skill's first page. Closing it any way
-// except "Get the program" marks it seen in this browser; after a checkout click it shows again when they come back.
+// One-time popup: the first skill they pick opens Josh's video over that skill's first page, with "Join the waitlist"
+// (waitlist.js). Closing it any way marks it seen in this browser; anyone already on the waitlist never gets it.
 const SEEN = "h2b-offer";
-const offerSeen = () => { try { return localStorage.getItem(SEEN) === "gone"; } catch { return true; } };
-const pop = document.querySelector("[data-pop]"), popVideo = pop.querySelector("[data-vsl]"), popBuy = pop.querySelector("[data-buy]");
-let buying = false;
-const openPop = () => { if (pop.open) return; buying = false; popBuy.classList.remove("loading"); pop.showModal(); popVideo.start(); };
-pop.addEventListener("close", () => { popVideo.stop(); if (!buying) try { localStorage.setItem(SEEN, "gone"); } catch {} });
+const onList = () => { try { return localStorage.getItem("h2b-waitlist") === "1"; } catch { return false; } };
+const offerSeen = () => { try { return onList() || localStorage.getItem(SEEN) === "gone"; } catch { return true; } };
+const pop = document.querySelector("[data-pop]"), popVideo = pop.querySelector("[data-vsl]");
+const openPop = () => { if (pop.open) return; pop.showModal(); popVideo.start(); };
+pop.addEventListener("close", () => { popVideo.stop(); try { localStorage.setItem(SEEN, "gone"); } catch {} });
 pop.addEventListener("click", (e) => { if (e.target === pop) pop.close(); }); // a click off the video and button
 pop.querySelector("[data-pop-close]").addEventListener("click", () => pop.close());
-popBuy.addEventListener("click", () => { buying = true; popBuy.classList.add("loading"); });
 addEventListener("hashchange", () => { if (pop.open) pop.close(); });
-addEventListener("pageshow", (e) => { if (e.persisted && pop.open) { buying = false; popBuy.classList.remove("loading"); } }); // back from checkout
 
 function route() {
   const [id, raw] = location.hash.slice(1).split("/");

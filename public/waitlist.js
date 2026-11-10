@@ -1,4 +1,4 @@
-// Waitlist page: every "Join the waitlist" button opens one box that asks for an email. On success it shows the
+// Waitlist page and free guide: every "Join the waitlist" button opens one box that asks for an email. On success it shows the
 // bonus reward. The email goes to /api/waitlist, which saves it as a contact in Resend.
 const box = document.querySelector("[data-join-box]"), form = document.querySelector("[data-join-form]");
 const done = document.querySelector("[data-join-done]"), err = document.querySelector("[data-join-error]");
@@ -11,12 +11,15 @@ if (joined()) markJoined();
 const show = (isDone) => { form.hidden = isDone; done.hidden = !isDone; };
 const fail = (text) => { err.textContent = text; err.hidden = false; submit.disabled = false; submit.textContent = "Join the waitlist"; };
 
-document.querySelectorAll("[data-join]").forEach((a) => a.addEventListener("click", (e) => {
+// delegated, so join buttons drawn later (the free guide's screens) open the box too
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("[data-join]")) return;
   e.preventDefault();
+  document.querySelector("[data-pop][open]")?.close(); // the free guide's video popup steps aside
   show(joined()); err.hidden = true;
   box.showModal();
   if (!joined()) email.focus();
-}));
+});
 document.querySelectorAll("[data-join-close]").forEach((b) => b.addEventListener("click", () => box.close()));
 box.addEventListener("click", (e) => { if (e.target === box) box.close(); }); // a click off the box
 
