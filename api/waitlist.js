@@ -56,13 +56,13 @@ async function welcome(key, to) {
 
 const WELCOME = `Hey,
 
-You're on the Hard to Break waitlist.
+You're on the Hard to Break waitlist, and your free bonuses are locked in: my post-training stretching and rest-day mobility routines.
 
 Most people stay stuck on the same skill for months because they're guessing: how many sets, how many reps, when to move on.
 
 The program fixes that. Every skill is broken into steps, and every step tells you exactly how much to do and when you're ready for the next one.
 
-Your bonus stretching and mobility routines are locked in. I'll email you the checkout when it launches.
+I'll email you the checkout when it launches.
 
 Talk soon,
 Josh
