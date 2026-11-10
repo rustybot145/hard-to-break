@@ -1,7 +1,7 @@
 // POST /api/waitlist {email}: adds the email to Resend as a contact (the Hard 2 Break waitlist).
 // Env (Vercel project settings): RESEND_API_KEY, and optional RESEND_SEGMENT_ID to file contacts under a segment.
 // Only the site itself may call it. A filled-in "company" field is a bot, so it gets a fake success.
-const ALLOWED = ["https://hard-to-break.vercel.app", "http://localhost:4350"];
+const ALLOWED = ["https://www.hardtobreakprogram.com", "https://hardtobreakprogram.com", "https://hard-to-break.vercel.app", "http://localhost:4350"];
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 module.exports = async (req, res) => {

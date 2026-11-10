@@ -68,6 +68,17 @@
   ],
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "hard-to-break.vercel.app"
+        }
+      ],
+      "destination": "https://www.hardtobreakprogram.com/:path*",
+      "permanent": true
+    },
+    {
       "source": "/offer",
       "destination": "/guide",
       "permanent": false

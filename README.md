@@ -1,6 +1,6 @@
 # Hard 2 Break
 
-Everything online for Josh Heald's **Hard to Break Program** ([@trainerjosh](https://www.instagram.com/trainerjosh/)), a $48 calisthenics program on Whop. One repo, one Vercel project. Built by Truepoint Digital.
+Everything online at **https://www.hardtobreakprogram.com** for Josh Heald's **Hard to Break Program** ([@trainerjosh](https://www.instagram.com/trainerjosh/)), a $48 calisthenics program on Whop. One repo, one Vercel project. Built by Truepoint Digital.
 
 | Path | What it is |
 |---|---|
@@ -24,7 +24,7 @@ public/
   media/                           logo, icon, promo videos + posters
 api/waitlist.js  Vercel function: POST {email} → Resend contact. Needs RESEND_API_KEY (and optional RESEND_SEGMENT_ID) in Vercel env
 serve.py       local preview with byte ranges (python -m http.server stalls Safari video): python3 serve.py 4350
-vercel.json    clean URLs, strict CSP + security headers; t.whop.tw allowed for the pixel
+vercel.json    clean URLs, old hard-to-break.vercel.app → www.hardtobreakprogram.com, strict CSP + security headers; t.whop.tw allowed for the pixel
 ```
 
 No build step and no dependencies. Plain HTML, CSS and JS.

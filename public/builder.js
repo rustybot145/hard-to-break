@@ -275,7 +275,7 @@ $("[data-time]").addEventListener("change", calendarLinks);
 $("[data-ics]").addEventListener("click", () => {
   const esc = (t) => t.replace(/[\\,;]/g, (c) => "\\" + c);
   const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Hard 2 Break//Workout Builder//EN", "CALSCALE:GREGORIAN",
-    ...calendarEvents().flatMap((e) => ["BEGIN:VEVENT", `UID:h2b-${e.p.d}-${Date.now()}@hard-to-break.vercel.app`, `DTSTAMP:${stamp(new Date())}Z`,
+    ...calendarEvents().flatMap((e) => ["BEGIN:VEVENT", `UID:h2b-${e.p.d}-${Date.now()}@hardtobreakprogram.com`, `DTSTAMP:${stamp(new Date())}Z`,
       `DTSTART:${local(e.startAt)}`, `DTEND:${local(e.endAt)}`, `RRULE:FREQ=WEEKLY;COUNT=${plan.mod.weeks}`,
       `SUMMARY:${esc(e.title)}`, `DESCRIPTION:${esc(`Your workout is in the Workout Builder: ${location.origin}/builder`)}`, "END:VEVENT"]),
     "END:VCALENDAR"];
