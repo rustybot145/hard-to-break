@@ -36,5 +36,7 @@ main { max-width: 1012px; margin: 0 auto; padding: 0 16px 32px; }
   background: var(--orange); padding: 12px 0; border-radius: 10px; transition: background .2s;
 }
 .item:hover .buy { background: #ffa463; }
+.more-h { margin: 34px 0 12px; font: 400 1.3rem/1 "Knewave", sans-serif; text-transform: uppercase; color: var(--orange); }
+.more { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: 14px; }
 .fine { margin-top: 20px; color: var(--mute); font-size: .8rem; }
 .fine a { color: var(--orange); font-weight: 600; }

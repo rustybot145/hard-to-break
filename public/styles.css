@@ -212,6 +212,12 @@ footer p { font: 600 .78rem/1.5 var(--label); letter-spacing: .06em; text-transf
 .join-error { margin-top: 10px; color: #ff8a7a !important; font-weight: 600; }
 .trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .join-done .ledger { margin: 6px 0 14px; }
+.join .consent { margin-top: 12px; font-size: .8rem; line-height: 1.45; text-align: center; }
+.join .consent a { color: var(--mute); text-underline-offset: 2px; }
+/* the bonus modules wear the Bonus Material purple from Whop */
+.ledger.purple i { background: #9b5cff; }
+.ledger.purple em { background: #9b5cff; color: #fff; }
+.purple-text { color: #b48cff !important; }
 .join-x { position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--mute); font: 400 1.8rem/1 var(--body); cursor: pointer; }
 .join-x:hover { color: var(--ink); background: rgba(242, 238, 228, .08); }
 

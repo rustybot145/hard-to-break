@@ -6,6 +6,8 @@ const submit = form.querySelector('button[type="submit"]'), email = form.element
 const JOINED = "h2b-waitlist"; // remembered so a returning visitor sees "you're on the list"
 
 const joined = () => { try { return localStorage.getItem(JOINED) === "1"; } catch { return false; } };
+const markJoined = () => document.querySelectorAll("[data-join]").forEach((a) => { a.textContent = "Joined waitlist"; a.classList.add("joined"); });
+if (joined()) markJoined();
 const show = (isDone) => { form.hidden = isDone; done.hidden = !isDone; };
 const fail = (text) => { err.textContent = text; err.hidden = false; submit.disabled = false; submit.textContent = "Join the waitlist"; };
 
@@ -31,6 +33,7 @@ form.addEventListener("submit", async (e) => {
     });
     if (!r.ok) throw new Error(String(r.status));
     try { localStorage.setItem(JOINED, "1"); } catch {}
+    markJoined();
     show(true);
   } catch {
     fail("Something went wrong. Try again in a minute.");
