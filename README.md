@@ -5,6 +5,7 @@ Everything online for Josh Heald's **Hard to Break Program** ([@trainerjosh](htt
 | Path | What it is |
 |---|---|
 | `/` | Sales page. Josh's promo video (bonus pitch and free-guide lines cut), A/B/C format test, Whop pixel |
+| `/waitlist` | Version A of the sales page with "Join the waitlist" instead of buy buttons. Email only, saved to Resend by `api/waitlist.js`; then a bonus-modules reward screen |
 | `/guide` | Free step-by-step guide (handstand, front lever, muscle-up, from his public reels only). The first skill they pick opens a one-time popup: Josh's full promo + "Get the program" (bonus checkout, no price). Clicking off it starts the guide |
 | `/builder`, `/gear`, `/recovery` | Tools inside Whop (Workout Builder, Recommended Gear, Stretch Routines). Only whop.com may frame them |
 | `/terms`, `/privacy` | Terms of Use and Privacy Policy |
@@ -21,6 +22,7 @@ public/
   builder.*, gear.*, recovery.*    Whop tools
   clips/                           demo clips (m*- lessons, g-* free guide from reels, dw-/r- stretch)
   media/                           logo, icon, promo videos + posters
+api/waitlist.js  Vercel function: POST {email} → Resend contact. Needs RESEND_API_KEY (and optional RESEND_SEGMENT_ID) in Vercel env
 serve.py       local preview with byte ranges (python -m http.server stalls Safari video): python3 serve.py 4350
 vercel.json    clean URLs, strict CSP + security headers; t.whop.tw allowed for the pixel
 ```
