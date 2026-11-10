@@ -3,14 +3,15 @@
 //   a: the original rows
 //   b: every section a raised panel, grids, and a buy button between sections (.v-b blocks)
 //   c: story order (pain, how it works, Josh, what's inside, then the price), alternating bands, a timeline
-// Each visitor gets one version at random and keeps it (localStorage). Each version's buy buttons go to its own
-// Whop tracking link, so Whop reports clicks, sales and conversion per version (Dashboard > Marketing > Tracking links).
-// Preview a version with ?v=a / ?v=b / ?v=c (not saved). Until a version has its tracking link, its buttons keep the
-// plain checkout tagged with utm_campaign=version-<v>, which Whop records on the order.
+// Each visitor gets one version at random and keeps it (localStorage). Preview a version with ?v=a / ?v=b / ?v=c
+// (not saved).
+// Each version sells through its own $48 plan on the same product (B and C are hidden copies of A's plan), so Whop's
+// own sales records show which version each sale came from. Same price, same program, same access.
+const TAG = (v) => `utm_source=landing&utm_medium=ab-test&utm_campaign=version-${v}`;
 const AB = {
-  a: { checkout: "" },
-  b: { checkout: "" },
-  c: { checkout: "" },
+  a: { checkout: `https://whop.com/checkout/plan_G1ImiXXj5pKK3?${TAG("a")}` },
+  b: { checkout: `https://whop.com/checkout/plan_MFRUaI8jmedbH?${TAG("b")}` },
+  c: { checkout: `https://whop.com/checkout/plan_8FnG1f0KavJwP?${TAG("c")}` },
 };
 (() => {
   const KEY = "h2b-ab", names = Object.keys(AB);
@@ -26,7 +27,7 @@ const AB = {
   document.documentElement.dataset.v = v;
   // label the visit with its version so analytics (the Whop pixel) can tell A, B and C apart. ?ab= doesn't force a version
   try { const u = new URL(location.href); u.searchParams.set("ab", v); history.replaceState(history.state, "", u); } catch {}
-  const link = AB[v].checkout || `https://whop.com/checkout/plan_G1ImiXXj5pKK3?utm_source=landing&utm_medium=ab-test&utm_campaign=version-${v}`;
+  const link = AB[v].checkout;
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('a[href^="https://whop.com/checkout/plan_G1ImiXXj5pKK3"]').forEach((a) => { a.href = link; });
   });
