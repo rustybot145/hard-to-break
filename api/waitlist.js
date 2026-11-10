@@ -60,7 +60,7 @@ You're on the Hard to Break waitlist, and your free bonuses are locked in: my po
 
 Most people stay stuck on the same skill for months because they're guessing: how many sets, how many reps, when to move on.
 
-The program fixes that. Every skill is broken into steps, and every step tells you exactly how much to do and when you're ready for the next one.
+The program fixes that. You'll never have to make a single workout again. Every time you walk into the gym, you'll have a plan: exactly what to do, how much to do, and when you're ready for the next step. Every session builds on the last one.
 
 I'll email you the checkout when it launches.
 
