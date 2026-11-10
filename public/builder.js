@@ -14,7 +14,7 @@ const PROFILE = [
   { id: "height", type: "height", title: "Your height", optional: true },
   { id: "level", type: "choice", title: "Your experience", options: LEVELS.map(([v, l, d]) => ({ v, l, d })) },
   { id: "goals", type: "multi", title: "Skills you want", optional: true, layout: "two", how: "Pick any. Skip it and your plan covers every skill in the program.",
-    options: GOALS.map((n) => ({ v: n, l: MODULES[n].title.replace(/^The /, "").replace(/ to Handstand$/, ""), d: MODULES[n].comingSoon ? "Coming soon" : `Module ${n}` })) },
+    options: GOALS.map((n) => ({ v: n, l: MODULES[n].title.replace(/^The /, "").replace(/ to Handstand$/, ""), d: `Module ${n}` })) },
   { id: "days", type: "choice", title: "Training days", how: "How many days a week can you train?", layout: "nums", options: [2, 3, 4, 5, 6].map((n) => ({ v: n, l: String(n), d: "days" })) },
   { id: "offer", type: "choice", title: "Add the quick tests?", how: "5 quick tests (bar hang, pull-ups, dips, push-ups, hollow hold) make your plan more exact. About 10 minutes. Warm up first.",
     options: [{ v: "yes", l: "Do the quick tests", d: "Most exact plan" }, { v: "no", l: "Skip and build my plan", d: "Based on your answers" }] },
@@ -122,7 +122,7 @@ function place(a) {
   const foundations = tested ? v.hang >= 60 && v.pushups >= 15 && v.hollow >= 60 : a.level !== "new";
   const strength = tested ? v.pullups >= 10 && v.dips >= 10 : a.level === "trained";
   const goals = (a.goals?.length ? [...a.goals] : GOALS).sort((x, y) => x - y);
-  const firstSkill = goals.find((n) => !MODULES[n].comingSoon) ?? 4;
+  const firstSkill = goals[0];
   const start = !foundations ? 2 : !strength ? 3 : firstSkill;
   return { start, v, tested };
 }

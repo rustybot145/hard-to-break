@@ -5,16 +5,11 @@
 //   c: story order (pain, how it works, Josh, what's inside, then the price), alternating bands, a timeline
 // Each visitor gets one version at random and keeps it (localStorage). Preview a version with ?v=a / ?v=b / ?v=c
 // (not saved).
-// Each version sells through its own $48 plan on the same product (B and C are hidden copies of A's plan), so Whop's
-// own sales records show which version each sale came from. Same price, same program, same access.
-const TAG = (v) => `utm_source=landing&utm_medium=ab-test&utm_campaign=version-${v}`;
-const AB = {
-  a: { checkout: `https://whop.com/checkout/plan_G1ImiXXj5pKK3?${TAG("a")}` },
-  b: { checkout: `https://whop.com/checkout/plan_MFRUaI8jmedbH?${TAG("b")}` },
-  c: { checkout: `https://whop.com/checkout/plan_8FnG1f0KavJwP?${TAG("c")}` },
-};
+// All three sell through the one $48 plan; each version's buttons carry utm_campaign=version-<v>, and the page
+// address carries ?ab=<v> for Whop's site analytics.
+const VERSIONS = ["a", "b", "c"];
 (() => {
-  const KEY = "h2b-ab", names = Object.keys(AB);
+  const KEY = "h2b-ab", names = VERSIONS;
   const forced = new URLSearchParams(location.search).get("v");
   let v = names.includes(forced) ? forced : null;
   if (!v) {
@@ -27,7 +22,7 @@ const AB = {
   document.documentElement.dataset.v = v;
   // label the visit with its version so analytics (the Whop pixel) can tell A, B and C apart. ?ab= doesn't force a version
   try { const u = new URL(location.href); u.searchParams.set("ab", v); history.replaceState(history.state, "", u); } catch {}
-  const link = AB[v].checkout;
+  const link = `https://whop.com/checkout/plan_G1ImiXXj5pKK3?utm_source=landing&utm_medium=ab-test&utm_campaign=version-${v}`;
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('a[href^="https://whop.com/checkout/plan_G1ImiXXj5pKK3"]').forEach((a) => { a.href = link; });
   });
