@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
 function safeJson(s) { try { return JSON.parse(s); } catch { return {}; } }
 
 // The welcome email, in Joshua's words. Plain text, no links, no images, no tracking: it reads like a personal note, which keeps
-// it out of Gmail's Promotions tab. No reply_to, so a "stop" reply lands in Resend > Emails > Receiving. A failure never blocks the signup.
+// it out of Gmail's Promotions tab. A "stop" reply goes to Josh's Gmail (the domain has no inbox). A failure never blocks the signup.
 async function welcome(key, to) {
   const from = process.env.RESEND_FROM;
   if (!from) return;
@@ -48,7 +48,7 @@ async function welcome(key, to) {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", "Idempotency-Key": `waitlist-welcome-${to}` },
-      body: JSON.stringify({ from, to: [to], subject: "you're on the list", text: WELCOME }),
+      body: JSON.stringify({ from, to: [to], reply_to: "lifeelitefit@gmail.com", subject: "you're on the list", text: WELCOME }),
     });
     if (!r.ok) console.error("welcome", r.status, (await r.text()).slice(0, 300));
   } catch (e) { console.error("welcome", e.message); }
