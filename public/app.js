@@ -36,8 +36,9 @@ if (motion) {
 }
 
 // Value stack: once it's well in view, strike through each $20 one after another, then the $120, then land the $48.
-if (motion) {
-  const stack = document.querySelector(".stack");
+// (The waitlist page has no value stack.)
+const stack = document.querySelector(".stack");
+if (motion && stack) {
   const strikes = [...stack.querySelectorAll(".ledger s, .sum s")];
   stack.classList.add("armed");
   strikes.forEach((s, i) => s.style.setProperty("--d", 0.35 + i * 0.16 + "s"));
