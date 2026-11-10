@@ -39,8 +39,8 @@ module.exports = async (req, res) => {
 
 function safeJson(s) { try { return JSON.parse(s); } catch { return {}; } }
 
-// The welcome email, in Joshua's words. Plain text, no links, no images: it reads like a personal note, which keeps it out of
-// Gmail's Promotions tab. Asking for a reply helps too: once they reply, his launch email lands in Primary. A failure never blocks the signup.
+// The welcome email, in Joshua's words. Plain text, no links, no images, no tracking: it reads like a personal note, which keeps
+// it out of Gmail's Promotions tab. No reply_to, so a "stop" reply lands in Resend > Emails > Receiving. A failure never blocks the signup.
 async function welcome(key, to) {
   const from = process.env.RESEND_FROM;
   if (!from) return;
@@ -48,7 +48,7 @@ async function welcome(key, to) {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", "Idempotency-Key": `waitlist-welcome-${to}` },
-      body: JSON.stringify({ from, to: [to], reply_to: "lifeelitefit@gmail.com", subject: "You're on the list", text: WELCOME }),
+      body: JSON.stringify({ from, to: [to], subject: "you're on the list", text: WELCOME }),
     });
     if (!r.ok) console.error("welcome", r.status, (await r.text()).slice(0, 300));
   } catch (e) { console.error("welcome", e.message); }
@@ -64,8 +64,7 @@ The program fixes that. Every skill is broken into steps, and every step tells y
 
 Your bonus stretching and mobility routines are locked in. I'll email you the checkout when it launches.
 
-Which skill are you going after? Hit reply and let me know.
+Talk soon,
+Josh
 
-Trainer Josh
-
-(Don't want these emails? Reply "stop".)`;
+P.S. Don't want these emails? Reply "stop" and I'll take you off the list.`;
