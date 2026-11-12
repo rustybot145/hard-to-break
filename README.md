@@ -5,8 +5,8 @@ Everything online at **https://www.hardtobreakprogram.com** for Josh Heald's **H
 | Path | What it is |
 |---|---|
 | `/` | Sales page. Josh's promo video (bonus pitch and free-guide lines cut), A/B/C format test, Whop pixel |
-| `/waitlist` | Version A of the sales page with "Join the waitlist" instead of buy buttons. Email only, saved to Resend by `api/waitlist.js`; then a bonus-modules reward screen |
-| `/guide` | Free step-by-step guide (handstand, front lever, muscle-up, from his public reels only). The first skill they pick opens a one-time popup: Josh's full promo + "Join the waitlist" (same box as /waitlist). Clicking off it starts the guide; people already on the list skip it |
+| `/waitlist` | Redirects to `/guide` (the waitlist lives in the free guide) |
+| `/guide` | Free step-by-step guide (handstand, front lever, muscle-up, from his public reels only). The first skill they pick opens a one-time popup: Josh's full promo + "Join the waitlist" (email only, saved to Resend by `api/waitlist.js`, then a bonus-modules reward). Clicking off it starts the guide; people already on the list skip it |
 | `/builder`, `/gear`, `/recovery` | Tools inside Whop (Workout Builder, Recommended Gear, Stretch Routines). Only whop.com may frame them |
 | `/terms`, `/privacy` | Terms of Use and Privacy Policy |
 
