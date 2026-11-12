@@ -89,7 +89,11 @@ function finish(s) {
       <p class="lede">${nb(s.finish)}</p>
       <div class="offer">
         <h2>Ready for the<em>next skill?</em></h2>
-        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. It's launching very soon. Join the waitlist and you get the bonus modules when it drops.</p>
+        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. It's launching very soon. Join the waitlist and you also get these two bonuses free:</p>
+        <ul class="ledger">
+          <li><i aria-hidden="true"></i><div><b>Post-training stretching</b><small>Josh's cool-down after every hard session</small></div><em>Free</em></li>
+          <li><i aria-hidden="true"></i><div><b>Rest-day mobility</b><small>His full rest-day routine, in three parts</small></div><em>Free</em></li>
+        </ul>
         <a class="cta" href="#join" data-join>${onList() ? "Joined waitlist" : "Join the waitlist"}</a>
         <p class="micro">Free to join · Launching very soon</p>
       </div>
