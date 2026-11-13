@@ -13,6 +13,8 @@ export const SKILLS = [
     long: "A month to about 6 months, depending on where you're starting.",
     how: "Train each step 2 times a week, 3 if you're not too sore.",
     need: "A wall and a bench or chair.",
+    // PDF categories: [name, number of steps], in step order. pdf.mjs checks they add up to steps.length
+    phases: [["Shoulder strength", 2], ["Wall work", 3], ["Kick up and bail out", 2], ["Find your balance", 2]],
     steps: [
       {
         name: "The pike walk", dose: "5–10", unit: "reps, 5-second hold", clip: clip("hs1"), src: "DdcBJvwo8CR, step 1",
@@ -63,6 +65,7 @@ export const SKILLS = [
     long: "It took me about 4 months, but I was already very fit. Closer to a year for most people.",
     how: "Train each step 2 times a week, 3 if you're not too sore.",
     need: "A pull-up bar, and bands for the last steps.",
+    phases: [["Grip and core", 3], ["Lever raises", 5], ["Lever holds", 3], ["Band-assisted holds", 3]],
     steps: [
       {
         name: "Straight bar hang", dose: "1", unit: "minute", clip: clip("fl1"), src: "DdmW4uhoay4, step 1",
@@ -132,6 +135,7 @@ export const SKILLS = [
     long: "About 1 to 3 months if you can already hang for a minute and do 10 pull-ups. 3 to 9 months if you're brand new.",
     how: "Train each step 2 times a week, 3 if you're not too sore.",
     need: "A pull-up bar and a cable machine with a lat pull-down bar.",
+    phases: [["Swing and pull", 2], ["Dip and press strength", 2], ["Link the pieces", 3], ["The muscle-up", 1]],
     // his corrected order from Dd1uX7joaM_ (caption: "I changed the order from my last video"), so step numbers match the clips
     steps: [
       {

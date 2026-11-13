@@ -4,31 +4,23 @@ import { SKILLS } from "./guide-data.js";
 
 const app = document.getElementById("app");
 const topBar = document.querySelector("[data-top]");
-const KEY = "h2b-guide";
 const nb = (t) => t.replace(/-/g, "&#8209;");
-
-// remembered step per skill: a convenience only, so the page works without storage
-const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
-const save = (id, i) => { try { localStorage.setItem(KEY, JSON.stringify({ ...load(), [id]: i })); } catch {} };
 
 const video = (c, cls = "") => `<video class="${cls}" src="${c}.mp4" poster="${c}.jpg" muted loop autoplay playsinline preload="auto" aria-hidden="true"></video>`;
 const figure = (c) => `<figure class="fig"><img class="blur" src="${c}.jpg" alt="">${video(c)}</figure>`;
 
+// a skill card always opens that skill's first page (no resuming mid-skill)
 function home() {
-  const seen = load();
   app.className = "home";
   app.innerHTML = `
     <img class="logo" src="media/logo.png" alt="Hard 2 Break" width="150" height="150">
     <p class="eyebrow">Free guide · Joshua Heald</p>
     <h1>Pick your<em>first skill</em></h1>
     <p class="sub">Every step from my three most&#8209;watched tutorials, plus two extra steps on each. How much to do, and when you're ready for the next step.</p>
-    <ul class="skills">${SKILLS.map((s) => {
-      const at = seen[s.id];
-      return `<li><a href="#${s.id}${at ? `/${at}` : ""}">
+    <ul class="skills">${SKILLS.map((s) => `<li><a href="#${s.id}">
         <img src="${s.cover}.jpg" alt="" width="84" height="84">
-        <span><b>${nb(s.name)}</b><small>${at && at <= s.steps.length ? `Continue at step ${at} of ${s.steps.length}` : `${s.steps.length} steps`}</small></span>
-        <i aria-hidden="true">&rarr;</i></a></li>`;
-    }).join("")}</ul>
+        <span><b>${nb(s.name)}</b><small>${s.steps.length} steps</small></span>
+        <i aria-hidden="true">&rarr;</i></a></li>`).join("")}</ul>
     <p class="legal">Not medical advice. Train at your own risk and stop if something hurts. <a href="terms.html">Terms</a></p>`;
 }
 
@@ -90,7 +82,7 @@ function finish(s) {
       <p class="lede">${nb(s.finish)}</p>
       <a class="pdf" href="pdf/hard-2-break-${s.id}.pdf" download>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
-        <span><b>Download the PDF</b><small>Every step in one file. Take it to the gym.</small></span>
+        <span><b>Download the PDF</b><small>Every step on one page. Take it to the gym.</small></span>
       </a>
       <div class="offer">
         <h2>Ready for the<em>next skill?</em></h2>
@@ -132,7 +124,6 @@ function route() {
     const i = Math.min(Math.max(parseInt(raw, 10) || 0, 0), n + 1);
     document.title = `${s.name} · Hard 2 Break`;
     if (i === 0) intro(s); else if (i > n) finish(s); else step(s, i);
-    if (i >= 1 && i <= n) save(s.id, i);
     if (picked && !offerSeen()) openPop();
   }
   picked = false;
