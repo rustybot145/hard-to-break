@@ -11,11 +11,12 @@
   --ease: cubic-bezier(.16, 1, .3, 1);
 }
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); touch-action: manipulation; } /* no double-tap zoom when tapping Next fast; pinch zoom still works */
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1.0625rem/1.55 var(--body); -webkit-font-smoothing: antialiased; }
 body::before { content: ""; position: fixed; inset: 0; z-index: 5; pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"); }
-a { color: inherit; }
+a { color: inherit; -webkit-tap-highlight-color: transparent; }
+button { -webkit-tap-highlight-color: transparent; }
 a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; border-radius: 6px; }
 h1, h2, p, ol, ul, dl, dd, figure { margin: 0; padding: 0; }
 .noscript { padding: 24px; }
@@ -31,14 +32,12 @@ h1, h2, p, ol, ul, dl, dd, figure { margin: 0; padding: 0; }
 .sub { margin: 14px auto 0; max-width: 46ch; text-align: center; color: var(--mute); font-size: 1rem; line-height: 1.45; }
 .skills { list-style: none; margin-top: 18px; border-top: 1px solid var(--line); }
 .skills a { display: flex; align-items: center; gap: 16px; padding: 10px 4px; text-decoration: none; border-bottom: 1px solid var(--line); transition: background .2s; }
-.skills a:hover { background: rgba(245, 200, 66, .06); }
 .skills a:active { background: rgba(245, 200, 66, .12); }
 .skills img { width: clamp(60px, 10svh, 84px); height: clamp(60px, 10svh, 84px); object-fit: cover; object-position: 50% 35%; border-radius: 10px; flex: none; }
 .skills span { flex: 1; min-width: 0; }
 .skills b { display: block; font: 400 clamp(1.3rem, 3.4svh, 1.65rem)/1.05 var(--display); text-transform: uppercase; color: var(--yellow); }
 .skills small { display: block; margin-top: 4px; font: 600 .84rem/1.2 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
 .skills i { font-style: normal; font-size: 1.4rem; color: var(--yellow); transition: transform .25s var(--ease); }
-.skills a:hover i { transform: translateX(4px); }
 .legal { margin-top: 12px; text-align: center; font-size: .78rem; color: var(--mute); }
 
 /* a screen: clip on top on phones, side by side on desktop */
@@ -48,7 +47,25 @@ h1, h2, p, ol, ul, dl, dd, figure { margin: 0; padding: 0; }
 .fig .blur { position: absolute; inset: -30px; width: calc(100% + 60px); height: calc(100% + 60px); object-fit: cover; filter: blur(26px) brightness(.45); }
 .sheet { padding: 20px 20px calc(92px + env(safe-area-inset-bottom)); animation: rise .45s var(--ease); }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
-.all { display: none; }
+
+/* top nav on skill screens: logo = all skills, tabs = each skill's first page */
+.top { position: sticky; top: 0; z-index: 7; height: 56px; display: flex; align-items: center; gap: 10px;
+  padding: 0 max(12px, env(safe-area-inset-right)) 0 max(12px, env(safe-area-inset-left)); background: var(--bg); border-bottom: 1px solid var(--line); }
+.top[hidden] { display: none; }
+.top-home { display: grid; place-items: center; min-width: 44px; height: 44px; flex: none; }
+.top-home img { width: 40px; height: auto; }
+.top nav { display: flex; flex: 1; justify-content: flex-end; gap: 2px; min-width: 0; }
+.top nav a { display: flex; align-items: center; min-height: 44px; padding: 0 9px; border-radius: 8px; color: var(--mute); text-decoration: none; white-space: nowrap;
+  font: 600 .9rem/1 var(--label); letter-spacing: .08em; text-transform: uppercase; transition: color .2s, background .2s; }
+.top nav a[aria-current] { color: var(--bg); background: var(--yellow); }
+@media (max-width: 374px) { .top { gap: 4px; } .top nav a { padding: 0 6px; font-size: .78rem; letter-spacing: .03em; } }
+
+/* download the PDF, on the finish screen */
+.pdf { display: flex; align-items: center; gap: 14px; margin-top: 20px; padding: 14px 16px; border: 2px solid var(--yellow); border-radius: 12px; text-decoration: none;
+  transition: background .2s; }
+.pdf svg { width: 26px; height: 26px; flex: none; fill: none; stroke: var(--yellow); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.pdf b { display: block; font: 400 1.15rem/1.1 var(--display); text-transform: uppercase; color: var(--yellow); }
+.pdf small { display: block; margin-top: 3px; color: var(--mute); font-size: .92rem; }
 
 .rail { display: flex; gap: 3px; margin-bottom: 16px; }
 .rail a { flex: 1; position: relative; height: 5px; border-radius: 3px; background: var(--line); }
@@ -85,7 +102,6 @@ dd { margin-top: 3px; max-width: 58ch; }
   background: var(--yellow); color: var(--bg); border-radius: 12px; text-decoration: none; font: 400 1.2rem/1 var(--display); text-transform: uppercase;
   box-shadow: 0 2px 0 #b8901f, 0 16px 40px -14px rgba(245, 200, 66, .55); transition: transform .25s var(--ease), background .2s; }
 .cta span { font-size: 1.5rem; padding-left: 12px; border-left: 2px solid rgba(18, 17, 16, .22); }
-.cta:hover { background: var(--yellow-hi); transform: translateY(-2px); }
 .cta:active { transform: translateY(1px); }
 .offer .micro { margin-top: 12px; text-align: center; letter-spacing: .06em; }
 
@@ -96,7 +112,6 @@ dd { margin-top: 3px; max-width: 58ch; }
 .back:hover { color: var(--ink); }
 .next { flex: 1; margin-left: auto; min-height: 52px; display: flex; align-items: center; justify-content: center; background: var(--yellow); color: var(--bg); border-radius: 12px;
   text-decoration: none; font: 400 1.25rem/1 var(--display); text-transform: uppercase; box-shadow: 0 2px 0 #b8901f; transition: transform .25s var(--ease), background .2s; }
-.next:hover { background: var(--yellow-hi); transform: translateY(-1px); }
 .next:active { transform: translateY(1px); }
 
 /* one-time popup after picking a skill: just Josh's video and the buy button. A click anywhere off them closes it */
@@ -159,12 +174,23 @@ dd { margin-top: 3px; max-width: 58ch; }
 .purple-text { color: #b48cff !important; }
 
 @media (min-width: 900px) {
-  .screen { display: grid; grid-template-columns: minmax(0, 46vw) minmax(0, 1fr); min-height: 100svh; }
-  .fig { position: sticky; top: 0; height: 100svh; }
+  .screen { display: grid; grid-template-columns: minmax(0, 46vw) minmax(0, 1fr); min-height: calc(100svh - 56px); }
+  .fig { position: sticky; top: 56px; height: calc(100svh - 56px); }
+  .top { padding: 0 24px; }
+  .top nav { gap: 6px; }
   .sheet { padding: 44px clamp(32px, 5vw, 76px) 110px; max-width: 760px; }
   .sheet h1 { font-size: 3rem; }
   .bar { left: 46vw; padding: 12px clamp(32px, 5vw, 76px); max-width: calc(54vw); }
   .next { flex: 0 1 280px; }
+}
+/* hover lifts only on real pointers: on phones a tap would leave the button stuck raised */
+@media (hover: hover) {
+  .skills a:hover { background: rgba(245, 200, 66, .06); }
+  .skills a:hover i { transform: translateX(4px); }
+  .cta:hover { background: var(--yellow-hi); transform: translateY(-2px); }
+  .next:hover { background: var(--yellow-hi); transform: translateY(-1px); }
+  .pdf:hover { background: rgba(245, 200, 66, .08); }
+  .top nav a:hover { color: var(--ink); background: rgba(242, 238, 228, .06); }
 }
 @media (prefers-reduced-motion: reduce) {
   .sheet { animation: none; }

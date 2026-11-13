@@ -3,6 +3,7 @@
 import { SKILLS } from "./guide-data.js";
 
 const app = document.getElementById("app");
+const topBar = document.querySelector("[data-top]");
 const KEY = "h2b-guide";
 const nb = (t) => t.replace(/-/g, "&#8209;");
 
@@ -31,6 +32,7 @@ function home() {
     <p class="legal">Not medical advice. Train at your own risk and stop if something hurts. <a href="terms.html">Terms</a></p>`;
 }
 
+// Rendered outside .sheet on purpose: .sheet animates a transform, which would un-pin this fixed bar mid-animation
 function bar(s, i) {
   const n = s.steps.length, last = n + 1;
   const back = i === 0 ? `<a class="back" href="#">All skills</a>` : `<a class="back" href="#${s.id}/${i - 1}">Back</a>`;
@@ -49,7 +51,6 @@ function intro(s) {
   app.className = "screen";
   app.innerHTML = `${figure(s.cover)}
     <div class="sheet">
-      <a class="all" href="#">All skills</a>
       <p class="where">${s.steps.length} steps · start at step 1</p>
       <h1>${nb(s.title)}</h1>
       <dl>
@@ -59,8 +60,8 @@ function intro(s) {
       </dl>
       <p class="rule">Hit the goal on each step before you move on. That way you don't injure yourself.</p>
       <a class="reel" href="${s.reel}" target="_blank" rel="noopener">Watch the original tutorial</a>
-      ${bar(s, 0)}
-    </div>`;
+    </div>
+    ${bar(s, 0)}`;
 }
 
 function step(s, i) {
@@ -74,8 +75,8 @@ function step(s, i) {
       <p class="goal"><b>${t.dose}</b><span>${t.unit}<small>${i < s.steps.length ? "Your goal before the next step" : "Your goal"}</small></span></p>
       <ol>${t.cues.map((c) => `<li>${c}</li>`).join("")}</ol>
       ${t.tip ? `<p class="tip">${t.tip}</p>` : ""}
-      ${bar(s, i)}
-    </div>`;
+    </div>
+    ${bar(s, i)}`;
 }
 
 function finish(s) {
@@ -87,6 +88,10 @@ function finish(s) {
       <p class="where">You hit every step</p>
       <h1>${nb(s.title)}</h1>
       <p class="lede">${nb(s.finish)}</p>
+      <a class="pdf" href="pdf/hard-2-break-${s.id}.pdf" download>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
+        <span><b>Download the PDF</b><small>Every step in one file. Take it to the gym.</small></span>
+      </a>
       <div class="offer">
         <h2>Ready for the<em>next skill?</em></h2>
         <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. It's launching very soon. Join the waitlist and you also get these two bonuses free:</p>
@@ -98,8 +103,8 @@ function finish(s) {
         <p class="micro">Free to join · Launching very soon</p>
       </div>
       <a class="reel" href="#">Try another skill</a>
-      ${bar(s, n + 1)}
-    </div>`;
+    </div>
+    ${bar(s, n + 1)}`;
 }
 
 // One-time popup: clicking handstand, front lever or muscle-up on the home screen opens Josh's video over that skill's
@@ -119,6 +124,8 @@ app.addEventListener("click", (e) => { if (e.target.closest(".skills a")) picked
 function route() {
   const [id, raw] = location.hash.slice(1).split("/");
   const s = SKILLS.find((x) => x.id === id);
+  topBar.hidden = !s;
+  topBar.querySelectorAll("nav a").forEach((a) => a.toggleAttribute("aria-current", a.hash === `#${id}`));
   if (!s) { document.title = "Free step-by-step guide · Hard 2 Break"; home(); }
   else {
     const n = s.steps.length;

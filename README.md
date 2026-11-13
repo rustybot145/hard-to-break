@@ -19,10 +19,12 @@ public/
   vsl.js                           shared video player (sound if allowed, else muted + "Tap for sound"; front-loaded progress bar)
   whop-pixel.js                    Whop pixel, sales page only
   guide.html/.js/.css, guide-data.js   free guide
+  pdf/                             free guide PDFs, one per skill (built by pdf.mjs, linked from each finish screen)
   builder.*, gear.*, recovery.*    Whop tools
   clips/                           demo clips (m*- lessons, g-* free guide from reels, dw-/r- stretch)
   media/                           logo, icon, promo videos + posters
 api/waitlist.js  Vercel function: POST {email} → Resend contact. Needs RESEND_API_KEY (and optional RESEND_SEGMENT_ID) in Vercel env
+pdf.mjs        rebuilds public/pdf/ from guide-data.js with headless Chrome. Run `node pdf.mjs` after any guide-data.js edit
 serve.py       local preview with byte ranges (python -m http.server stalls Safari video): python3 serve.py 4350
 vercel.json    clean URLs, old hard-to-break.vercel.app → www.hardtobreakprogram.com, strict CSP + security headers; t.whop.tw allowed for the pixel
 ```
