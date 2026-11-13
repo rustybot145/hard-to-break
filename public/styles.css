@@ -195,6 +195,32 @@ footer p { font: 600 .78rem/1.5 var(--label); letter-spacing: .06em; text-transf
 .sound svg { width: 20px; height: 20px; fill: currentColor; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
 .sound[hidden] { display: none; }
 .frame video { cursor: pointer; }
+/* waitlist page: the email box and the bonus reward */
+.join { width: min(460px, calc(100vw - 32px)); max-height: calc(100svh - 32px); margin: auto; padding: 30px 22px 24px; border: 1px solid var(--line); border-radius: 18px;
+  background: var(--bg-2); color: var(--ink); box-shadow: 0 1px 0 rgba(245, 200, 66, .2) inset, 0 40px 80px -30px rgba(0, 0, 0, .9); }
+.join::backdrop { background: rgba(10, 9, 8, .82); }
+.join h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); margin-bottom: 12px; }
+.join p { color: var(--mute); }
+.join p b { color: var(--ink); }
+.join .cta { margin-top: 18px; border: 0; cursor: pointer; }
+.join .cta:disabled { opacity: .7; cursor: wait; }
+.join .micro { text-align: center; }
+.join-field { display: block; margin-top: 18px; }
+.join-field span { display: block; margin-bottom: 6px; font: 600 .84rem/1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
+.join-field input { width: 100%; min-height: 52px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); font: 400 1.05rem/1 var(--body); }
+.join-field input:focus { outline: 2px solid var(--yellow); outline-offset: 1px; border-color: transparent; }
+.join-error { margin-top: 10px; color: #ff8a7a !important; font-weight: 600; }
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.join-done .ledger { margin: 6px 0 14px; }
+.join .consent { margin-top: 12px; font-size: .8rem; line-height: 1.45; text-align: center; }
+.join .consent a { color: var(--mute); text-underline-offset: 2px; }
+/* the bonus modules wear the Bonus Material purple from Whop */
+.ledger.purple i { background: #9b5cff; }
+.ledger.purple em { background: #9b5cff; color: #fff; }
+.purple-text { color: #b48cff !important; }
+.join-x { position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--mute); font: 400 1.8rem/1 var(--body); cursor: pointer; }
+.join-x:hover { color: var(--ink); background: rgba(242, 238, 228, .08); }
+
 /* A/B/C test (ab.js sets html[data-v] before paint). No JS = version A */
 html:not([data-v="b"]) .v-b { display: none; }
 

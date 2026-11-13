@@ -145,7 +145,7 @@ dd { margin-top: 3px; max-width: 58ch; }
 .pop-x:hover { background: rgba(242, 238, 228, .2); }
 .cta.loading { pointer-events: none; opacity: .8; }
 
-/* the waitlist box (driven by waitlist.js) */
+/* the waitlist box (shared markup with /waitlist, driven by waitlist.js) */
 .join { width: min(460px, calc(100vw - 32px)); max-height: calc(100svh - 32px); margin: auto; padding: 30px 22px 24px; border: 1px solid var(--line); border-radius: 18px;
   background: var(--bg-2); color: var(--ink); box-shadow: 0 1px 0 rgba(245, 200, 66, .2) inset, 0 40px 80px -30px rgba(0, 0, 0, .9); }
 .join::backdrop { background: rgba(10, 9, 8, .82); }

@@ -77,7 +77,6 @@
     }
   ],
   "redirects": [
-    { "source": "/waitlist", "destination": "/guide", "permanent": false },
     {
       "source": "/",
       "has": [
