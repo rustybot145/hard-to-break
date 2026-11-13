@@ -97,7 +97,27 @@ function finish(s) {
       <a class="reel" href="#">Try another skill</a>
     </div>
     ${bar(s, n + 1)}`;
+  preparePdf(s);
 }
+
+// "Get the PDF" does two things on one tap: the link opens the PDF in a new tab, and this saves a copy.
+// The copy is a blob fetched when the finish screen opens, so the download can fire straight from the tap
+// (a fetch inside the tap would lose the tap and get blocked). Tap before it's fetched: the PDF still opens.
+let pdfCopy = null;
+function preparePdf(s) {
+  pdfCopy = null;
+  const name = `hard-2-break-${s.id}.pdf`;
+  fetch(`pdf/${name}`).then((r) => (r.ok ? r.blob() : null)).then((b) => { if (b) pdfCopy = { name, b }; }).catch(() => {});
+}
+app.addEventListener("click", (e) => {
+  const link = e.target.closest(".pdf");
+  if (!link || !pdfCopy || !link.href.endsWith(pdfCopy.name)) return;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(pdfCopy.b);
+  a.download = pdfCopy.name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+});
 
 // One-time popup: clicking handstand, front lever or muscle-up on the home screen opens Josh's video over that skill's
 // first page, with "Join the waitlist" (waitlist.js). Never on a refresh, shared link or Back. Closing it any way marks it seen in this browser; anyone already on the waitlist never gets it.
