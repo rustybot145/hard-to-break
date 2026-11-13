@@ -80,9 +80,9 @@ function finish(s) {
       <p class="where">You hit every step</p>
       <h1>${nb(s.title)}</h1>
       <p class="lede">${nb(s.finish)}</p>
-      <a class="pdf" href="pdf/hard-2-break-${s.id}.pdf" download>
+      <a class="pdf" href="pdf/hard-2-break-${s.id}.pdf" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
-        <span><b>Download the PDF</b><small>Every step on one page. Take it to the gym.</small></span>
+        <span><b>Get the PDF</b><small>Every step on one page. Take it to the gym.</small></span>
       </a>
       <div class="offer">
         <h2>Ready for the<em>next skill?</em></h2>
@@ -97,29 +97,7 @@ function finish(s) {
       <a class="reel" href="#">Try another skill</a>
     </div>
     ${bar(s, n + 1)}`;
-  preparePdf(s);
 }
-
-// Saving the PDF on a phone. iPhone Safari ignores the download attribute and the attachment header for PDFs and just
-// shows them, so on touch screens the button opens the share sheet with the file ("Save to Files", Books, AirDrop).
-// share() must run straight from the tap, so the file is fetched as soon as the finish screen opens.
-// Computers, older phones, or a tap before the fetch finishes: the plain link (download attribute) handles it.
-let pdfFile = null;
-function preparePdf(s) {
-  pdfFile = null;
-  if (!navigator.canShare || !matchMedia("(pointer: coarse)").matches) return;
-  const name = `hard-2-break-${s.id}.pdf`;
-  fetch(`pdf/${name}`).then((r) => (r.ok ? r.blob() : null)).then((b) => {
-    const f = b && new File([b], name, { type: "application/pdf" });
-    if (f && navigator.canShare({ files: [f] })) pdfFile = f;
-  }).catch(() => {});
-}
-app.addEventListener("click", (e) => {
-  const link = e.target.closest(".pdf");
-  if (!link || !pdfFile || !link.href.endsWith(pdfFile.name)) return;
-  e.preventDefault();
-  navigator.share({ files: [pdfFile] }).catch((err) => { if (err.name !== "AbortError") location.href = link.href; });
-});
 
 // One-time popup: clicking handstand, front lever or muscle-up on the home screen opens Josh's video over that skill's
 // first page, with "Join the waitlist" (waitlist.js). Never on a refresh, shared link or Back. Closing it any way marks it seen in this browser; anyone already on the waitlist never gets it.
