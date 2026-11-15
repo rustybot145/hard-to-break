@@ -29,6 +29,36 @@ let A = {};       // answers
 let at = 0;       // index into steps()
 const steps = () => (A.offer === "yes" ? [...PROFILE, ...TEST_STEPS] : PROFILE);
 
+// Saved after every answer in two places: localStorage, and the page's own URL (#weight=180&level=some&step=3).
+// Inside Whop's iframe on phones the browser can block or wipe storage, so the URL is what survives a reload,
+// and it doubles as a link that opens this exact plan anywhere ("Keep your plan").
+const ALL = [...PROFILE, ...TEST_STEPS];
+function encode() {
+  const q = new URLSearchParams();
+  for (const st of ALL) if (A[st.id] != null) q.set(st.id, st.type === "height" ? `${A.height.ft}-${A.height.in}` : [].concat(A[st.id]).join(","));
+  q.set("step", at);
+  return q.toString();
+}
+// only values the questions could have produced get in, so a hand-edited link can't break the plan
+function decode(str) {
+  const q = new URLSearchParams(str), a = {};
+  for (const st of ALL) {
+    const raw = q.get(st.id), n = Number(raw);
+    if (raw == null) continue;
+    if (st.type === "number" && Number.isInteger(n) && n >= 0 && n <= st.max) a[st.id] = n;
+    if (st.type === "height") { const [ft, inch] = raw.split("-").map(Number); if (ft >= 1 && ft <= 9 && inch >= 0 && inch <= 11) a.height = { ft, in: inch }; }
+    if (st.type === "choice") { const o = st.options.find((o) => String(o.v) === raw); if (o) a[st.id] = o.v; }
+    if (st.type === "multi") { const vs = st.options.filter((o) => raw.split(",").includes(String(o.v))).map((o) => o.v); if (vs.length) a[st.id] = vs; }
+  }
+  return { a, step: Math.max(0, parseInt(q.get("step"), 10) || 0) };
+}
+const planLink = () => `${location.origin}${location.pathname}#${encode()}`;
+function save() {
+  const q = encode();
+  try { localStorage.setItem(STORE, q); } catch {}
+  try { history.replaceState(null, "", `#${q}`); } catch {}
+}
+
 function show(name) {
   for (const [key, s] of Object.entries(screens)) s.hidden = key !== name;
   scrollTo(0, 0);
@@ -36,6 +66,7 @@ function show(name) {
 
 // ---- asking ----
 function ask() {
+  save();
   const all = steps(), st = all[at];
   $("[data-step]").textContent = st.test ? `Quick test ${at - PROFILE.length + 1} of ${TESTS.length}` : `Question ${at + 1} of ${PROFILE.length}`;
   $("[data-title]").textContent = st.title;
@@ -75,7 +106,7 @@ function renderChoices(st) {
     b.setAttribute("aria-pressed", picked.includes(o.v));
     b.append(el("b", "", o.l), ...(o.d ? [el("span", "", o.d)] : []));
     b.addEventListener("click", () => {
-      if (multi) { A[st.id] = picked.includes(o.v) ? picked.filter((x) => x !== o.v) : [...picked, o.v]; renderChoices(st); }
+      if (multi) { A[st.id] = picked.includes(o.v) ? picked.filter((x) => x !== o.v) : [...picked, o.v]; save(); renderChoices(st); }
       else { A[st.id] = o.v; next(); }
     });
     return b;
@@ -110,7 +141,7 @@ function capture() {
 
 function next() {
   at++;
-  if (at < steps().length) ask(); else build(true);
+  if (at < steps().length) ask(); else build();
 }
 function nudge() { screens.question.classList.add("nudge"); setTimeout(() => screens.question.classList.remove("nudge"), 400); }
 
@@ -139,8 +170,9 @@ function week(mod, days) {
 
 let plan = null;  // { mod, lesson index, days } of what's on screen, for the player and the calendar
 
-function build(fresh) {
-  if (fresh) { try { localStorage.setItem(STORE, JSON.stringify({ at: Date.now(), A })); } catch {} }
+function build() {
+  save();
+  $("[data-plan-link]").href = planLink();
   const { start, v, tested } = place(A);
   const mod = MODULES[start], days = A.days || 3;
   plan = { mod, days, ctx: { v, w: A.weight }, tested, wk: week(mod, days) };
@@ -265,7 +297,7 @@ function calendarLinks() {
     action: "TEMPLATE", text: "Hard 2 Break workout",
     dates: `${local(first.startAt)}/${local(first.endAt)}`,
     recur: `RRULE:FREQ=WEEKLY;BYDAY=${evs.map((e) => ICS_DAY[e.p.d]).join(",")};COUNT=${evs.length * plan.mod.weeks}`,
-    details: `Your workout is in the Workout Builder: ${location.origin}/builder`,
+    details: `Your workout plan: ${planLink()}`,
   });
   $("[data-gcal]").href = `https://calendar.google.com/calendar/render?${q}`;
   $("[data-cal-note]").textContent = `Repeats every week for ${plan.mod.weeks} weeks, starting tomorrow.`;
@@ -277,7 +309,7 @@ $("[data-ics]").addEventListener("click", () => {
   const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Hard 2 Break//Workout Builder//EN", "CALSCALE:GREGORIAN",
     ...calendarEvents().flatMap((e) => ["BEGIN:VEVENT", `UID:h2b-${e.p.d}-${Date.now()}@hardtobreakprogram.com`, `DTSTAMP:${stamp(new Date())}Z`,
       `DTSTART:${local(e.startAt)}`, `DTEND:${local(e.endAt)}`, `RRULE:FREQ=WEEKLY;COUNT=${plan.mod.weeks}`,
-      `SUMMARY:${esc(e.title)}`, `DESCRIPTION:${esc(`Your workout is in the Workout Builder: ${location.origin}/builder`)}`, "END:VEVENT"]),
+      `SUMMARY:${esc(e.title)}`, `DESCRIPTION:${esc(`Your workout plan: ${planLink()}`)}`, "END:VEVENT"]),
     "END:VCALENDAR"];
   const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(new Blob([lines.join("\r\n")], { type: "text/calendar" })), download: "hard-2-break-workouts.ics" });
   document.body.append(a); a.click(); a.remove();
@@ -304,7 +336,23 @@ for (const s of ["[data-value]", "[data-ft]", "[data-in]"]) {
 }
 $("[data-ft]").addEventListener("input", (e) => { if (e.target.value) $("[data-in]").focus(); });
 $("[data-rebuild]").addEventListener("click", () => { at = 0; ask(); });
-$("[data-clear]").addEventListener("click", () => { try { localStorage.removeItem(STORE); } catch {} A = {}; show("intro"); });
+$("[data-clear]").addEventListener("click", () => {
+  try { localStorage.removeItem(STORE); } catch {}
+  try { history.replaceState(null, "", location.pathname + location.search); } catch {}
+  A = {}; at = 0; show("intro");
+});
+// copy the plan link; if the embed blocks the clipboard, try the share sheet, then just open it
+$("[data-share]").addEventListener("click", async (e) => {
+  const url = planLink(), b = e.currentTarget;
+  try { await navigator.clipboard.writeText(url); b.textContent = "Link copied"; return; } catch {}
+  try { await navigator.share({ title: "My Hard 2 Break workout plan", url }); return; } catch (err) { if (err.name === "AbortError") return; }
+  open(url, "_blank", "noopener");
+});
 
-// came back later: show their plan; "Rebuild" starts from their saved answers
-try { const saved = JSON.parse(localStorage.getItem(STORE)); if (saved?.A?.level) { A = saved.A; build(false); } } catch {}
+// came back later: a plan link (or this page's own URL) wins over storage; pick up exactly where they left off
+let saved = location.hash.slice(1);
+try { saved ||= localStorage.getItem(STORE) || ""; } catch {}
+if (saved.startsWith("{")) { try { const old = JSON.parse(saved); if (old?.A?.level) { A = old.A; at = steps().length; } } catch {} }  // pre-2026-11-14 format
+else if (saved) { const d = decode(saved); A = d.a; at = Math.min(d.step, steps().length); }
+if (at === steps().length && A.level) build();
+else if (Object.keys(A).length) { at = Math.min(at, steps().length - 1); ask(); }
