@@ -1,8 +1,10 @@
 // POST /api/waitlist {email}: adds the email to Resend as a contact (the Hard 2 Break waitlist).
-// Env (Vercel project settings): RESEND_API_KEY; optional RESEND_SEGMENT_ID to file contacts under a segment;
+// Env (Vercel project settings): RESEND_API_KEY; RESEND_SEGMENT_ID overrides the "Hard 2 Break waitlist" segment below;
 // RESEND_FROM (an address on a domain verified in Resend) turns on the welcome email to new signups.
 // Only the site itself may call it. A filled-in "company" field is a bot, so it gets a fake success.
 const ALLOWED = ["https://www.hardtobreakprogram.com", "https://hardtobreakprogram.com", "https://hard-to-break.vercel.app", "http://localhost:4350"];
+// Every signup goes in this segment, so the launch email reaches only Hard 2 Break signups (the Resend account is shared).
+const SEGMENT = process.env.RESEND_SEGMENT_ID || "58b56c00-5ab6-4b83-9811-605c28ab4008";
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 module.exports = async (req, res) => {
@@ -18,16 +20,18 @@ module.exports = async (req, res) => {
   const key = process.env.RESEND_API_KEY;
   if (!key) return res.status(503).json({ error: "Waitlist not configured" });
 
-  const contact = { email, unsubscribed: false };
-  if (process.env.RESEND_SEGMENT_ID) contact.segments = [{ id: process.env.RESEND_SEGMENT_ID }];
+  const contact = { email, unsubscribed: false, segments: [{ id: SEGMENT }] };
   try {
     const r = await fetch("https://api.resend.com/contacts", {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify(contact),
     });
-    // someone joining twice is still on the list (and doesn't get the welcome email again)
-    if (r.status === 409) return res.status(200).json({ ok: true });
+    // Already a contact (joined twice, or from another list on this account): file them under this segment, no second welcome email
+    if (r.status === 409) {
+      await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}/segments/${SEGMENT}`, { method: "POST", headers: { Authorization: `Bearer ${key}` } }).catch(() => {});
+      return res.status(200).json({ ok: true });
+    }
     if (r.ok) { await welcome(key, email); return res.status(200).json({ ok: true }); }
     console.error("resend", r.status, (await r.text()).slice(0, 300));
     return res.status(502).json({ error: "Could not save" });

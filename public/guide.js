@@ -86,13 +86,13 @@ function finish(s) {
       </a>
       <div class="offer">
         <h2>Ready for the<em>next skill?</em></h2>
-        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. It's launching very soon. Join the waitlist and you also get these two bonuses free:</p>
+        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. It launches Sunday. Join the waitlist before then and you also get these two bonuses free:</p>
         <ul class="ledger">
           <li><i aria-hidden="true"></i><div><b>Post-training stretching</b><small>Josh's cool-down after every hard session</small></div><em>Free</em></li>
           <li><i aria-hidden="true"></i><div><b>Rest-day mobility</b><small>His full rest-day routine, in three parts</small></div><em>Free</em></li>
         </ul>
         <a class="cta" href="#join" data-join>${onList() ? "Joined waitlist" : "Join the waitlist"}</a>
-        <p class="micro">Free to join · Launching very soon</p>
+        <p class="micro">Free to join + 2 free bonuses · Launches Sunday</p>
       </div>
       <a class="reel" href="#">Try another skill</a>
     </div>
