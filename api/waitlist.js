@@ -20,7 +20,9 @@ module.exports = async (req, res) => {
   const key = process.env.RESEND_API_KEY;
   if (!key) return res.status(503).json({ error: "Waitlist not configured" });
 
-  const contact = { email, unsubscribed: false, segments: [{ id: SEGMENT }] };
+  // Free-guide signups were promised the stretch routines PDF, waitlist-page signups the bonus videos; h2b_source picks their launch link
+  const source = body.list === "guide" ? "guide" : "waitlist";
+  const contact = { email, unsubscribed: false, segments: [{ id: SEGMENT }], properties: { h2b_source: source } };
   try {
     const r = await fetch("https://api.resend.com/contacts", {
       method: "POST",
@@ -32,7 +34,7 @@ module.exports = async (req, res) => {
       await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}/segments/${SEGMENT}`, { method: "POST", headers: { Authorization: `Bearer ${key}` } }).catch(() => {});
       return res.status(200).json({ ok: true });
     }
-    if (r.ok) { await welcome(key, email); return res.status(200).json({ ok: true }); }
+    if (r.ok) { await welcome(key, email, source); return res.status(200).json({ ok: true }); }
     console.error("resend", r.status, (await r.text()).slice(0, 300));
     return res.status(502).json({ error: "Could not save" });
   } catch (e) {
@@ -45,14 +47,14 @@ function safeJson(s) { try { return JSON.parse(s); } catch { return {}; } }
 
 // The welcome email, in Joshua's words. Plain text, no links, no images, no tracking: it reads like a personal note, which keeps
 // it out of Gmail's Promotions tab. A "stop" reply goes to Josh's Gmail (the domain has no inbox). A failure never blocks the signup.
-async function welcome(key, to) {
+async function welcome(key, to, source) {
   const from = process.env.RESEND_FROM;
   if (!from) return;
   try {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", "Idempotency-Key": `waitlist-welcome-${to}` },
-      body: JSON.stringify({ from, to: [to], reply_to: "lifeelitefit@gmail.com", subject: "you're on the list", text: WELCOME }),
+      body: JSON.stringify({ from, to: [to], reply_to: "lifeelitefit@gmail.com", subject: "you're on the list", text: source === "guide" ? WELCOME_GUIDE : WELCOME }),
     });
     if (!r.ok) console.error("welcome", r.status, (await r.text()).slice(0, 300));
   } catch (e) { console.error("welcome", e.message); }
@@ -72,3 +74,7 @@ Talk soon,
 Josh
 
 P.S. Don't want these emails? Reply "stop" and I'll take you off the list.`;
+
+const WELCOME_GUIDE = WELCOME.replace(
+  "your free bonuses are locked in: my post-training stretching and rest-day mobility routines.",
+  "my stretch routines PDF is locked in: a daily stretch routine and a rest-day stretch routine.");
