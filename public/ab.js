@@ -15,7 +15,7 @@ const VERSIONS = ["a", "b", "c"];
   document.documentElement.dataset.v = v;
   // label the visit with its version so analytics (the Whop pixel) can tell A, B and C apart. ?ab= doesn't force a version
   try { const u = new URL(location.href); u.searchParams.set("ab", v); history.replaceState(history.state, "", u); } catch {}
-  const link = `https://whop.com/checkout/plan_G1ImiXXj5pKK3?utm_source=landing&utm_medium=ab-test&utm_campaign=version-${v}`;
+  const link = `https://whop.com/checkout/plan_G1ImiXXj5pKK3?utm_source=landing&utm_medium=ab-test&utm_campaign=version-${v}&promoCode=LAUNCH`;
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('a[href^="https://whop.com/checkout/plan_G1ImiXXj5pKK3"]').forEach((a) => { a.href = link; });
   });
