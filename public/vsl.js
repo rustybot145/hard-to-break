@@ -3,9 +3,12 @@
 // the muted start, so that retries on load, visibility, back/forward and the first touch. No native controls: the bar
 // at the bottom runs fast early and slows near the end (it still lands on 100% exactly when the video ends).
 // A video marked data-defer (the free guide's popup) waits for vsl.start(), which runs right after a tap, so sound is allowed.
+// TikTok's in-app browser often won't play video inline: every play() it didn't ask for throws the video into its fullscreen
+// player. There the video never starts on its own; it waits on the poster with "Tap to play" and plays with sound on that tap.
 const vsl = document.querySelector("[data-vsl]"), btn = document.querySelector("[data-sound]"), fill = document.querySelector("[data-vbar]");
 if (vsl) {
-  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const tiktok = /BytedanceWebview|musical_ly|TikTok|trill_/i.test(navigator.userAgent);
+  const still = tiktok || matchMedia("(prefers-reduced-motion: reduce)").matches; // "still" = never start or loop on its own
   const label = btn.querySelector("span");
   const say = (text) => { label.textContent = text; btn.hidden = !text; };
   const shown = (x) => 1 - Math.pow(1 - x, 3.5); // 10% watched shows ~31%, a quarter ~64%, half ~91%
