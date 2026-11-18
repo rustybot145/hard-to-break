@@ -7,8 +7,8 @@
 // player. There the video never starts on its own; it waits on the poster with "Tap to play" and plays with sound on that tap.
 const vsl = document.querySelector("[data-vsl]"), btn = document.querySelector("[data-sound]"), fill = document.querySelector("[data-vbar]");
 if (vsl) {
-  const tiktok = /BytedanceWebview|musical_ly|TikTok|trill_/i.test(navigator.userAgent);
-  const still = tiktok || matchMedia("(prefers-reduced-motion: reduce)").matches; // "still" = never start or loop on its own
+  let tiktok = !!window.H2B_NOINLINE; // inapp.js: this browser won't play video inside the page
+  let still = tiktok || matchMedia("(prefers-reduced-motion: reduce)").matches; // "still" = never start or loop on its own
   const label = btn.querySelector("span");
   if (tiktok) btn.classList.add("tt"); // shows the words, not just the icon, where the video waits for a tap
   const say = (text) => { label.textContent = text; btn.hidden = !text; };
@@ -42,8 +42,11 @@ if (vsl) {
   addEventListener("pageshow", nudge);
   addEventListener("pointerdown", nudge, { once: true, passive: true });
 
+  addEventListener("h2b-noinline", () => { tiktok = still = true; btn.classList.add("tt"); vsl.pause(); say("Tap to play"); });
+
   // a tap is a user gesture, so sound is always allowed here
   const tap = () => {
+    vsl.dataset.userPlay = "1";
     if (vsl.muted || vsl.ended) withSound(true).catch(() => {});
     else if (vsl.paused) vsl.play().catch(() => {});
     else vsl.pause();
