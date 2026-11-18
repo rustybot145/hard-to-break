@@ -10,6 +10,7 @@ if (vsl) {
   const tiktok = /BytedanceWebview|musical_ly|TikTok|trill_/i.test(navigator.userAgent);
   const still = tiktok || matchMedia("(prefers-reduced-motion: reduce)").matches; // "still" = never start or loop on its own
   const label = btn.querySelector("span");
+  if (tiktok) btn.classList.add("tt"); // shows the words, not just the icon, where the video waits for a tap
   const say = (text) => { label.textContent = text; btn.hidden = !text; };
   const shown = (x) => 1 - Math.pow(1 - x, 3.5); // 10% watched shows ~31%, a quarter ~64%, half ~91%
   const draw = () => {

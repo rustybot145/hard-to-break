@@ -6,7 +6,12 @@ const app = document.getElementById("app");
 const topBar = document.querySelector("[data-top]");
 const nb = (t) => t.replace(/-/g, "&#8209;");
 
-const video = (c, cls = "") => `<video class="${cls}" src="${c}.mp4" poster="${c}.jpg" muted loop autoplay playsinline preload="auto" aria-hidden="true"></video>`;
+// TikTok's in-app browser throws any video it plays into its fullscreen player, so there the step clips never start on their
+// own: each shows its still frame and a "Tap to play" button (fullscreen is fine once they asked for it).
+const tiktok = /BytedanceWebview|musical_ly|TikTok|trill_/i.test(navigator.userAgent);
+const video = (c, cls = "") => tiktok
+  ? `<video class="${cls}" src="${c}.mp4" poster="${c}.jpg" muted loop playsinline webkit-playsinline preload="none"></video><button class="tapplay" type="button" data-tapplay>&#9654; Tap to play</button>`
+  : `<video class="${cls}" src="${c}.mp4" poster="${c}.jpg" muted loop autoplay playsinline preload="auto" aria-hidden="true"></video>`;
 const figure = (c) => `<figure class="fig"><img class="blur" src="${c}.jpg" alt="">${video(c)}</figure>`;
 
 // a skill card always opens that skill's first page (no resuming mid-skill)
@@ -151,7 +156,7 @@ function route() {
   // Safari ignores the muted attribute on videos added through innerHTML, so set the property and retry once it can play
   app.querySelectorAll("video").forEach((v) => {
     v.muted = true;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (tiktok || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const play = () => v.play().catch(() => {});
     v.addEventListener("canplay", play, { once: true });
     play();
@@ -163,9 +168,24 @@ addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") app.querySelector(".next")?.click();
   if (e.key === "ArrowLeft") app.querySelector(".back")?.click();
 });
-// iPhone can refuse the first autoplay; retry on the first touch
-addEventListener("pointerdown", () => { app.querySelector("video")?.play().catch(() => {}); }, { passive: true });
-const retry = () => { if (!document.hidden) app.querySelector("video")?.play().catch(() => {}); };
-addEventListener("pageshow", retry);
-document.addEventListener("visibilitychange", retry);
+if (tiktok) {
+  app.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-tapplay]"); if (!b) return;
+    const v = b.previousElementSibling; b.hidden = true;
+    v.play().catch(() => { b.hidden = false; });
+    v.addEventListener("pause", () => { b.hidden = false; }, { once: true }); // closing TikTok's player pauses it
+  });
+  // one-line tip: in the real browser the clips loop inline
+  const tip = document.createElement("p");
+  tip.className = "tt-tip";
+  tip.innerHTML = 'Videos play best in your browser: tap <b>&middot;&middot;&middot;</b> then <b>Open in browser</b>. <button type="button" aria-label="Dismiss">&times;</button>';
+  tip.querySelector("button").addEventListener("click", () => tip.remove());
+  document.body.prepend(tip);
+} else {
+  // iPhone can refuse the first autoplay; retry on the first touch
+  addEventListener("pointerdown", () => { app.querySelector("video")?.play().catch(() => {}); }, { passive: true });
+  const retry = () => { if (!document.hidden) app.querySelector("video")?.play().catch(() => {}); };
+  addEventListener("pageshow", retry);
+  document.addEventListener("visibilitychange", retry);
+}
 route();
