@@ -34,7 +34,7 @@ form.addEventListener("submit", async (e) => {
   try {
     const r = await fetch("/api/waitlist", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: value, company: form.elements.company.value, list: form.dataset.list }),
+      body: JSON.stringify({ email: value, company: form.elements.company.value }),
     });
     if (!r.ok) throw new Error(String(r.status));
     try { localStorage.setItem(JOINED, "1"); } catch {}

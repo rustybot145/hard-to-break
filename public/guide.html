@@ -28,7 +28,7 @@
      Clicking off it, the X or Esc closes it on that skill's first step. guide.js opens it; vsl.js plays it. -->
 <dialog class="pop" data-pop aria-label="Joshua's video">
   <div class="pop-box" tabindex="-1" autofocus>
-    <p class="pop-hook">Join the waitlist and get my <em>stretch routines PDF</em> free</p>
+    <p class="pop-hook">Join the waitlist and get <em>2 free bonuses</em></p>
     <div class="frame">
       <video data-vsl data-defer src="media/offer.mp4" poster="media/offer-poster.jpg" playsinline webkit-playsinline preload="metadata"></video>
       <button class="sound" type="button" data-sound hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none"/></svg><span>Tap for sound</span></button>
@@ -41,7 +41,7 @@
 
 <!-- Waitlist: email only. waitlist.js posts it to /api/waitlist (saved in Resend), then shows the bonus reward -->
 <dialog class="join" data-join-box aria-labelledby="join-h">
-  <form class="join-form" data-join-form data-list="guide" novalidate>
+  <form class="join-form" data-join-form novalidate>
     <p class="eyebrow">Launches Sunday</p>
     <h2 id="join-h">Join the <em>waitlist</em></h2>
     <p>Put in your email and we'll send you the checkout the moment it drops.</p>
@@ -53,11 +53,12 @@
   </form>
   <div class="join-done" data-join-done hidden>
     <p class="eyebrow">You're on the waitlist</p>
-    <h2>You unlocked the <em class="purple-text">stretch routines PDF</em></h2>
+    <h2>You unlocked <em class="purple-text">2 free bonuses</em></h2>
     <ul class="ledger bonus purple">
       <li><i aria-hidden="true"></i><div><b>Stretch routines PDF</b><small>A daily stretch routine and a rest-day stretch routine</small></div><em>Free</em></li>
+      <li><i aria-hidden="true"></i><div><b>Bonus video module</b><small>Post-training stretching and rest-day mobility, on video</small></div><em>Free</em></li>
     </ul>
-    <p><b>Launching Sunday.</b> When it drops, we'll email you the checkout. Check out from that email and the stretch routines PDF comes with it.</p>
+    <p><b>Launching Sunday.</b> When it drops, we'll email you the checkout. Check out from that email and both bonuses are yours.</p>
     <button class="cta" type="button" data-join-close>Done</button>
   </div>
   <button class="join-x" type="button" data-join-close aria-label="Close">&times;</button>
