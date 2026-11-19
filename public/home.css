@@ -1,0 +1,44 @@
+/* Sales page (index.html) on top of styles.css: the problem as the lead-in, the whole program as the payoff */
+.home .offer h1 { font-size: clamp(1.45rem, 6.4vw, 2.3rem); color: var(--mute); }
+.home .offer h1 em { font-size: clamp(2.7rem, 12.6vw, 5rem); color: var(--yellow); margin-top: .22em; }
+
+/* a soft yellow glow behind the video, so the frame isn't a hole in the page */
+.home main { overflow-x: clip; } /* the glow is wider than the phone */
+.home .vsl { position: relative; }
+.home .vsl::before {
+  content: ""; position: absolute; inset: -12% -40%; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(245, 200, 66, .13), transparent);
+}
+
+/* value stack: a buy button right under the price */
+.stack-cta { margin-top: 22px; }
+.stack .micro { text-align: center; }
+
+/* real comments from his free tutorials: taped-up notes stacked in one line, tilted and nudged left/right like a wall */
+.comments { list-style: none; display: grid; gap: 20px; padding: 12px 4px 0; }
+.comments li {
+  position: relative; width: 92%; padding: 22px 18px 14px; border-radius: 4px;
+  background: linear-gradient(175deg, #f6f2e8, #e9e3d4); color: #1b1a17;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset, 0 14px 30px -12px rgba(0, 0, 0, .8), 0 3px 8px rgba(0, 0, 0, .35);
+  rotate: -1.6deg; transition: rotate .4s var(--ease), transform .4s var(--ease);
+}
+.comments li:nth-child(even) { rotate: 1.4deg; justify-self: end; }
+.comments li:nth-child(3n) { rotate: -.6deg; }
+.comments li:hover { rotate: 0deg; transform: translateY(-3px); }
+/* yellow tape across the top */
+.comments li::before {
+  content: ""; position: absolute; top: -10px; left: 50%; width: 84px; height: 22px; margin-left: -42px;
+  background: rgba(245, 200, 66, .88); rotate: -3deg; box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+  clip-path: polygon(3% 0, 97% 6%, 100% 50%, 96% 100%, 4% 94%, 0 50%);
+}
+.comments li:nth-child(even)::before { rotate: 4deg; left: 38%; }
+/* a big brush quote mark behind the words */
+.comments li::after { content: "\201C"; position: absolute; right: 12px; top: 0; font: 400 3.8rem/1 var(--display); color: rgba(27, 26, 23, .1); pointer-events: none; }
+.comments li > div { display: flex; flex-direction: column; }
+.comments i { display: none; }
+.comments p { order: 1; padding-right: 26px; font: 400 clamp(1.12rem, 4.8vw, 1.3rem)/1.15 var(--display); text-transform: uppercase; text-wrap: balance; }
+.comments b { order: 2; margin-top: 10px; font: 600 .88rem/1.2 var(--body); color: #1b1a17; }
+.comments small { order: 3; margin-top: 3px; font: 600 .68rem/1 var(--label); letter-spacing: .12em; text-transform: uppercase; color: #8a6d12; }
+.said-note { margin-top: 18px; color: var(--mute); font-size: .9rem; }
+@media (min-width: 640px) { .comments { grid-template-columns: 1fr 1fr; gap: 26px 22px; align-items: start; } .comments li { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .comments li { transition: none; } }
