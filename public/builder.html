@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" href="media/icon.png">
 <link rel="preload" href="fonts/knewave.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="builder.css">
+<link rel="stylesheet" href="builder.css?v=4">
 </head>
 <body>
 
@@ -44,15 +44,6 @@
       <div class="bar" data-bar><i data-fill></i></div>
     </div>
 
-    <!-- height: feet and inches -->
-    <div class="meter" data-type="height">
-      <p class="ask">How tall are you?</p>
-      <div class="pair">
-        <div class="field"><input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" placeholder="5" data-ft aria-label="Feet"><span>ft</span></div>
-        <div class="field"><input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" placeholder="10" data-in aria-label="Inches"><span>in</span></div>
-      </div>
-    </div>
-
     <!-- pick one / pick any -->
     <div class="choices" data-type="choice" role="group"></div>
 
@@ -69,6 +60,7 @@
     <p class="brand">Your workout plan</p>
     <h1>Your <em>week</em></h1>
     <p class="lead" data-summary></p>
+    <p class="built" data-built></p>
     <ol class="days" data-days></ol>
     <div class="phases" data-phases role="group" aria-label="Which weeks"></div>
     <div data-sessions></div>
@@ -81,13 +73,6 @@
       <button class="cta" type="button" data-ics>Add to my calendar</button>
       <a class="ghost" data-gcal target="_blank" rel="noopener">Use Google Calendar</a>
       <p class="hint" data-cal-note></p>
-    </div>
-
-    <div class="part cal">
-      <h3>Keep your plan</h3>
-      <p class="hint">This link opens this exact plan on any phone or browser. Save it, or text it to yourself.</p>
-      <button class="cta" type="button" data-share>Copy my plan link</button>
-      <a class="ghost" data-plan-link target="_blank" rel="noopener">Open it in my browser</a>
     </div>
 
     <div class="part" data-scores-block>
@@ -118,7 +103,7 @@
   <p>© 2026 Joshua Heald · Hard to Break Program · Not medical advice. Stop anything that hurts.</p>
 </footer>
 
-<script src="builder-data.js"></script>
-<script src="builder.js"></script>
+<script src="builder-data.js?v=4"></script>
+<script src="builder.js?v=4"></script>
 </body>
 </html>

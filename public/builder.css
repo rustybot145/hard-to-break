@@ -60,7 +60,9 @@ button.cta { border: 0; cursor: pointer; }
 .enter > :nth-child(n+6) { animation-delay: .12s; }
 
 /* the answer: a question and a box they type the number into */
-html { touch-action: manipulation; }  /* no double-tap zoom on fast taps */
+/* no double-tap zoom on fast taps, and no sideways panning inside the Whop app (pinch zoom still works) */
+html { touch-action: pan-y pinch-zoom; }
+html, body { overflow-x: clip; overscroll-behavior-x: none; }
 .meter { margin-top: 18px; padding: 18px 16px 16px; border-radius: 16px; background: var(--bg-2); border: 1px solid var(--line); }
 .ask { display: block; font: 600 1.12rem/1.3 var(--body); margin-bottom: 12px; }
 .field {
@@ -143,13 +145,19 @@ footer { position: relative; z-index: 1; }
 
 /* the week at a glance: 7 days, training days lit */
 .days { list-style: none; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 22px; }
-.days li { display: grid; gap: 4px; justify-items: center; padding: 10px 0 9px; border-radius: 12px; background: var(--bg-2); border: 1px solid var(--line); }
-.days b { font: 600 .8rem/1 var(--label); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
-.days span { font: 600 .7rem/1 var(--label); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
-.days .train { background: var(--accent); border-color: var(--accent); }
-.days .train b, .days .train span { color: var(--bg); }
-.days .mobility { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
-.days .mobility b { color: var(--ink); }
+.days { gap: 5px; }
+.days button {
+  width: 100%; min-height: 64px; display: grid; gap: 5px; align-content: start; justify-items: center; padding: 10px 2px 8px; cursor: pointer;
+  border-radius: 12px; background: var(--bg-2); border: 1.5px solid var(--line); color: var(--mute); transition: background .2s, border-color .2s, transform .2s var(--ease);
+}
+.days b { font: 600 .8rem/1 var(--label); letter-spacing: .08em; text-transform: uppercase; }
+.days span { font: 600 .62rem/1.1 var(--label); letter-spacing: .04em; text-transform: uppercase; text-align: center; }
+.days .train { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); color: var(--ink); }
+.days .train span { color: var(--accent); }
+.days [aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); transform: translateY(-2px); }
+.days [aria-pressed="true"] span { color: var(--bg); }
+.days button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.restday { padding: 16px; color: var(--mute); border-top: 1px solid var(--line); }
 
 /* weeks 1-3 / weeks 4-6 when a module has more than one lesson */
 .phases { display: flex; gap: 6px; margin-top: 22px; padding: 4px; border-radius: 12px; background: var(--bg-2); border: 1px solid var(--line); }
@@ -246,7 +254,7 @@ footer { position: relative; z-index: 1; }
 @keyframes shine { 0%, 60% { translate: -120% 0; } 100% { translate: 120% 0; } }
 @keyframes fade { from { opacity: 0; } }
 .glow { animation: breathe 5s ease-in-out infinite alternate; }
-@keyframes breathe { to { opacity: .6; transform: scale(1.08); } }
+@keyframes breathe { to { opacity: .6; } }  /* opacity only: scaling pushed it past the screen edges */
 /* the footer only under the finished plan */
 body:has(#result[hidden]) footer { display: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -269,3 +277,22 @@ body:has(#result[hidden]) footer { display: none; }
 .typing .ask { margin-bottom: 8px; font-size: 1.05rem; }
 .typing .progress { margin-bottom: 14px; }
 .typing h2 { margin-bottom: 6px; }
+
+/* ticking off: the number is the checkbox */
+.ex .n {
+  width: 34px; height: 34px; display: grid; place-items: center; padding: 0; border-radius: 50%; cursor: pointer;
+  background: none; border: 1.5px solid color-mix(in srgb, var(--accent) 45%, var(--line)); font: 400 1.1rem/1 var(--display); color: var(--accent);
+  transition: background .2s, border-color .2s, transform .2s var(--ease);
+}
+.ex .n:active { transform: scale(.9); }
+.ex .n:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.ex.done .n { background: var(--accent); border-color: var(--accent); color: var(--bg); font: 700 1rem/1 var(--body); }
+.ex.done b { color: var(--mute); text-decoration: line-through; text-decoration-color: var(--accent); }
+.ex { grid-template-columns: 34px 1fr auto; }
+/* sets x reps stands out; Joshua's note sits under it */
+.ex .sets { display: inline-block; margin-top: 5px; padding: 3px 9px; border-radius: 7px; font: 400 1rem/1.2 var(--display); font-style: normal; color: var(--ink); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.ex .sets + span { margin-top: 5px; }
+.demo { min-width: 64px; }
+.tip { padding: 10px 16px 0; color: var(--mute); font-size: .88rem; }
+.days .finished:not([aria-pressed="true"]) { background: color-mix(in srgb, var(--accent) 22%, var(--bg-2)); }
+.built { margin-top: 10px; font: 600 .8rem/1.4 var(--label); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }

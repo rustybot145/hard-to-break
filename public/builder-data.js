@@ -3,7 +3,8 @@
 //   freq:     Joshua's training days per week for the module (null = he doesn't set one)
 //   sessions: the session types, rotated across the training days
 //   lessons:  each lesson's exercises, in order; `weeks` is Joshua's minimum time on it
-//   rx:       a string, or a function of { v: test numbers, w: body weight in lb } for lines that adapt
+//   rx:       a string, or a function of { v: test numbers, w: body weight in lb, level } for lines that adapt.
+//             Only Joshua's own options are used (his band, his easier version, his "add weight once 10 is easy").
 //   clip:     clips/<clip>.mp4 + .jpg, a few seconds of Joshua doing it, cut from the lesson video
 
 // The 5 optional quick tests, and the target that counts as "has it"
@@ -17,23 +18,29 @@ const TESTS = [
 
 const below = (id, target) => ({ v }) => v[id] !== undefined && v[id] < target;
 const did = (id, unit = "") => ({ v }) => (v[id] !== undefined ? ` (you did ${v[id]}${unit})` : "");
+// needs the easier version: their quick test is under Joshua's target, or, without the test, their experience says so
+const easy = (id, target, levels = ["new"]) => (c) => (c.v[id] !== undefined ? c.v[id] < target : levels.includes(c.level));
+const BANDED = ["new", "some"];  // pull-ups and dips: band until the test (or "I already train calisthenics") says otherwise
+// pull-ups and dips: band if under 10, added weight once they have 10, Joshua's general line if we don't know
+const pullDip = (id, more = "") => (c) => (easy(id, 10, BANDED)(c) ? `3 × 10 with a band${did(id)(c)}. Lighter band each week.`
+  : c.v[id] !== undefined ? `3 × 10 with added weight${more}` : "3 × 10. Add weight once 10 is easy.");
 
 const MODULES = {
   2: {
     title: "Calisthenics Foundations", color: "#ff8a3d", weeks: 6, freq: 4, sessions: ["Push + Pull", "Core + Legs"], rest: "90 seconds between sets",
     lessons: [{ title: "Pushing, Pulling, Core and Legs", weeks: 6, items: [
-      { s: 0, name: "Deep pseudo push-ups", clip: "m2-deep-pseudo-push-ups", rx: (c) => (below("pushups", 15)(c) ? `3 × 15 with a band${did("pushups")(c)}. Lighter band each week.` : "3 × 15") },
+      { s: 0, name: "Deep pseudo push-ups", clip: "m2-deep-pseudo-push-ups", rx: (c) => (easy("pushups", 15)(c) ? `3 × 15 with a band${did("pushups")(c)}. Lighter band each week.` : "3 × 15") },
       { s: 0, name: "Straight-arm banded flies", clip: "m2-straight-arm-banded-flies", rx: "3 × 15. Walk forward to make it harder." },
       { s: 0, name: "Dumbbell press to the hips", clip: "m2-dumbbell-press-to-the-hips", rx: "3 × 15. Start light, build to 25 lb." },
-      { s: 0, name: "Pike push-ups", clip: "m2-pike-push-ups", rx: "3 × 15. Band if you need it." },
-      { s: 0, name: "Bar hang", clip: "m2-bar-hang", rx: (c) => (below("hang", 60)(c) ? `3 holds, as long as you can: beat ${c.v.hang}s. Build to 60s.` : "3 × 60s") },
-      { s: 0, name: "Scapular pull-ups", clip: "m2-scapular-pull-ups", rx: "3 × 15. Band if you need it." },
+      { s: 0, name: "Pike push-ups", clip: "m2-pike-push-ups", rx: (c) => (easy("pushups", 15)(c) ? "3 × 15 with a band. Lighter band each week." : "3 × 15") },
+      { s: 0, name: "Bar hang", clip: "m2-bar-hang", rx: (c) => (below("hang", 60)(c) && c.v.hang > 0 ? `3 holds, as long as you can: beat ${c.v.hang}s. Build to 60s.` : easy("hang", 60)(c) ? "3 holds, as long as you can. Build to 60s." : "3 × 60s") },
+      { s: 0, name: "Scapular pull-ups", clip: "m2-scapular-pull-ups", rx: (c) => (easy("hang", 60)(c) ? "3 × 15 with a band. Lighter band each week." : "3 × 15") },
       { s: 0, name: "Inverted rows", clip: "m2-inverted-rows", rx: "3 × 15. Lower the bar each week." },
       { s: 0, name: "Band rows", clip: "m2-band-rows", rx: "3 × 15. Heavier band each week." },
-      { s: 1, name: "Plank", clip: "m2-plank", rx: "3 × 60s. Band around your waist if you need it." },
-      { s: 1, name: "Ab wheel rollouts", clip: "m2-ab-wheel-rollouts", rx: "3 × 15. Band around your chest if you need it." },
-      { s: 1, name: "Leg raises", clip: "m2-leg-raises", rx: "3 × 15. Start with knee tucks if straight legs are too hard." },
-      { s: 1, name: "Hollow body hold", clip: "m2-hollow-body-hold", rx: (c) => (below("hollow", 60)(c) ? `3 holds with your feet planted${did("hollow", "s")(c)}. Move up a version each time it's easy.` : "3 × 60s") },
+      { s: 1, name: "Plank", clip: "m2-plank", rx: (c) => (easy("hollow", 60)(c) ? "3 × 60s with a band around your waist" : "3 × 60s") },
+      { s: 1, name: "Ab wheel rollouts", clip: "m2-ab-wheel-rollouts", rx: (c) => (easy("hollow", 60)(c) ? "3 × 15 with a band around your chest" : "3 × 15") },
+      { s: 1, name: "Leg raises", clip: "m2-leg-raises", rx: (c) => (easy("hollow", 60)(c) ? "3 × 15 as knee tucks. Straight legs once they're easy." : "3 × 15") },
+      { s: 1, name: "Hollow body hold", clip: "m2-hollow-body-hold", rx: (c) => (easy("hollow", 60)(c) ? `3 holds with your feet planted${did("hollow", "s")(c)}. Move up a version each time it's easy.` : "3 × 60s") },
       { s: 1, name: "Bodyweight squats", clip: "m2-bodyweight-squats", rx: "3 × 15" },
       { s: 1, name: "Narrow squats", clip: "m2-narrow-squats", rx: "3 × 15. Hold a band for help if you need it." },
       { s: 1, name: "Cossack squats", clip: "m2-cossack-squats", rx: "3 × 15" },
@@ -43,11 +50,11 @@ const MODULES = {
   3: {
     title: "Building Strength", color: "#ff5252", weeks: 6, freq: 3, sessions: ["Pull-ups, dips and L-sit"], rest: "90 seconds between sets",
     lessons: [{ title: "Pull-Ups, Dips, L-Sit and Toes to Bar", weeks: 6, items: [
-      { s: 0, name: "Chest-to-bar pull-ups", clip: "m3-chest-to-bar-pull-ups", rx: (c) => (below("pullups", 10)(c) ? `3 × 10 with a band${did("pullups")(c)}. Lighter band each week.` : c.v.pullups !== undefined ? "3 × 10 with added weight. Start around 5 lb and go up each time 10 is easy." : "3 × 10. Band if you need it, add weight once 10 is easy.") },
-      { s: 0, name: "Parallette dips", clip: "m3-parallette-dips", rx: "3 × 10. Band if you need it, add weight once 10 is easy." },
-      { s: 0, name: "Straight-bar dips", clip: "m3-straight-bar-dips", rx: (c) => (below("dips", 10)(c) ? `3 × 10 with a band${did("dips")(c)}. Lighter band each week.` : c.v.dips !== undefined ? "3 × 10 with added weight" : "3 × 10. Band if you need it.") },
-      { s: 0, name: "L-sit", clip: "m3-l-sit", rx: "Build to a 30s hold. Start with compression raises, single-leg L-sits and bent-knee holds." },
-      { s: 0, name: "Toes to bar", clip: "m3-toes-to-bar", rx: "3 × 10. Start with knee tuck kick-ups, then halfway raises, then slow negatives." },
+      { s: 0, name: "Chest-to-bar pull-ups", clip: "m3-chest-to-bar-pull-ups", rx: pullDip("pullups", ". Start around 5 lb and go up each time 10 is easy.") },
+      { s: 0, name: "Parallette dips", clip: "m3-parallette-dips", rx: pullDip("dips") },
+      { s: 0, name: "Straight-bar dips", clip: "m3-straight-bar-dips", rx: pullDip("dips") },
+      { s: 0, name: "L-sit", clip: "m3-l-sit", rx: (c) => (easy("hollow", 60, BANDED)(c) ? "Build to a 30s hold. Start with compression raises and bent-knee holds." : "Build to a 30s hold. Single-leg L-sits if the full one isn't there yet.") },
+      { s: 0, name: "Toes to bar", clip: "m3-toes-to-bar", rx: (c) => (easy("hollow", 60, BANDED)(c) ? "3 × 10 knee tuck kick-ups. Then halfway raises, then slow negatives." : "3 × 10. Slow negatives for the reps you can't finish.") },
     ] }],
   },
   4: {
