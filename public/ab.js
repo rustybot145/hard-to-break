@@ -12,6 +12,9 @@ const OFFER_PLANS = { a: "plan_G1ImiXXj5pKK3", b: "plan_XE3wUg9Vllrij", c: "plan
   const forced = new URLSearchParams(location.search).get("v");
   const v = forced in OFFER_PLANS ? forced : "abc"[Math.floor(Math.random() * 3)];
   document.documentElement.dataset.offer = v;
+  // label the address with the version before the pixel's page view fires, so Whop > Websites can tell A, B and C apart
+  // (?offer= is only a label; ?v= is what forces a version)
+  try { const u = new URL(location.href); u.searchParams.set("offer", v); history.replaceState(history.state, "", u); } catch {}
   const plan = OFFER_PLANS[v], link = `https://whop.com/checkout/${plan}`;
   const track = (...args) => { try { window.whop && whop.track(...args); } catch {} };
   document.addEventListener("DOMContentLoaded", () => {
