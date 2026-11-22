@@ -42,3 +42,10 @@
 .said-note { margin-top: 18px; color: var(--mute); font-size: .9rem; }
 @media (min-width: 640px) { .comments { grid-template-columns: 1fr 1fr; gap: 26px 22px; align-items: start; } .comments li { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { .comments li { transition: none; } }
+
+/* /bonus: the waitlist page, every buy button in Bonus Material purple */
+.wl .cta, .wl .sticky { background: #9b5cff; color: #fff; box-shadow: 0 2px 0 #6b3fd1, 0 16px 40px -14px rgba(155, 92, 255, .55); }
+.wl .sticky { box-shadow: 0 2px 0 #6b3fd1, 0 14px 34px rgba(0, 0, 0, .55); }
+.wl .cta span, .wl .sticky span { border-left-color: rgba(255, 255, 255, .3); }
+.wl .cta:hover { background: #ac74ff; }
+.wl .cta:active { box-shadow: 0 1px 0 #6b3fd1; }
