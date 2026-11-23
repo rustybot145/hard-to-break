@@ -91,13 +91,12 @@ function finish(s) {
       </a>
       <div class="offer">
         <h2>Ready for the<em>next skill?</em></h2>
-        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. It launches Sunday. Join the waitlist before then and you also get these 2 bonuses free:</p>
-        <ul class="ledger">
+        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. Get it from this guide and my stretch routines come free:</p>
+        <ul class="ledger blue">
           <li><i aria-hidden="true"></i><div><b>Stretch routines PDF</b><small>A daily stretch routine and a rest-day stretch routine</small></div><em>Free</em></li>
-          <li><i aria-hidden="true"></i><div><b>Bonus video module</b><small>Post-training stretching and rest-day mobility, on video</small></div><em>Free</em></li>
         </ul>
-        <a class="cta" href="#join" data-join>${onList() ? "Joined waitlist" : "Join the waitlist"}</a>
-        <p class="micro">Free to join + 2 free bonuses · Launches Sunday</p>
+        <a class="cta blue" href="/stretch">See the program</a>
+        <p class="micro">$48 launch price until Sun Nov 29</p>
       </div>
       <a class="reel" href="#">Try another skill</a>
     </div>

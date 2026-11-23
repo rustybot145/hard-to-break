@@ -9,6 +9,10 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
 class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *a, **k): super().__init__(*a, directory=ROOT, **k)
 
+    def translate_path(self, path):  # clean URLs like Vercel: /stretch serves stretch.html
+        p = super().translate_path(path)
+        return p + ".html" if not os.path.exists(p) and os.path.isfile(p + ".html") else p
+
     def end_headers(self):
         self.send_header("Accept-Ranges", "bytes")
         self.send_header("Cache-Control", "no-store")  # local preview: always serve the latest edit
