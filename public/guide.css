@@ -207,8 +207,3 @@ dd { margin-top: 3px; max-width: 58ch; }
 .tt-tip button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; border: 0; background: none; font-size: 22px; color: #111; cursor: pointer; }
 .sound.tt { width: auto; padding: 0 14px; grid-auto-flow: column; gap: 6px; }
 .sound.tt span { position: static; width: auto; height: auto; overflow: visible; clip-path: none; font: 700 15px/1 "Barlow", system-ui, sans-serif; }
-/* after launch: the offer leads to /stretch (program + stretch routines), in blue */
-.cta.blue { background: #2f80ff; color: #fff; box-shadow: 0 2px 0 #1d5fc9, 0 16px 40px -14px rgba(47, 128, 255, .55); }
-.ledger.blue i { background: #2f80ff; }
-.ledger.blue em { background: #2f80ff; color: #fff; }
-.pop-hook em { color: #7fb6ff; }

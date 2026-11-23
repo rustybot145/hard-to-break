@@ -9,7 +9,7 @@
 <meta name="description" content="Your first handstand, front lever or muscle-up. Joshua Heald's free step-by-step guide: every step, how much to do, and when to move on.">
 <link rel="icon" type="image/png" href="media/icon.png">
 <link rel="preload" href="fonts/knewave.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="guide.css?v=3">
+<link rel="stylesheet" href="guide.css?v=4">
 </head>
 <body>
 <!-- Top nav on every skill screen (hidden on the home screen): Home = back to the skill list from any step, each tab = that skill's first page -->
@@ -24,17 +24,17 @@
 <main id="app"></main>
 <noscript><p class="noscript">This guide needs JavaScript to run.</p></noscript>
 
-<!-- One-time popup after they pick a skill: Josh's full video ("$48" cut out) and a link to /stretch (the program + his stretch routines).
+<!-- One-time popup after they pick a skill: Josh's full video ("$48" cut out) and a link to the sales page.
      Clicking off it, the X or Esc closes it on that skill's first step. guide.js opens it; vsl.js plays it. -->
 <dialog class="pop" data-pop aria-label="Joshua's video">
   <div class="pop-box" tabindex="-1" autofocus>
-    <p class="pop-hook">Get the program and my <em>free stretch routines</em></p>
+    <p class="pop-hook">Every skill, every step, <em>all in one place</em></p>
     <div class="frame">
       <video data-vsl data-defer src="media/offer.mp4" poster="media/offer-poster.jpg" playsinline webkit-playsinline preload="metadata"></video>
       <button class="sound" type="button" data-sound hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none"/></svg><span>Tap for sound</span></button>
       <div class="vbar" aria-hidden="true"><i data-vbar></i></div>
     </div>
-    <a class="cta blue" href="/stretch">See the program</a>
+    <a class="cta" href="/">See the program</a>
   </div>
   <button class="pop-x" type="button" data-pop-close aria-label="Close and start the free guide">&times;</button>
 </dialog>
@@ -67,6 +67,6 @@
 <script src="inapp.js?v=3"></script>
 <script src="vsl.js?v=3"></script>
 <script src="waitlist.js?v=3"></script>
-<script type="module" src="guide.js?v=4"></script>
+<script type="module" src="guide.js?v=5"></script>
 </body>
 </html>

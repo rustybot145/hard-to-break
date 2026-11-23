@@ -50,26 +50,3 @@
 .wl .cta:hover { background: #ac74ff; }
 .wl .cta:active { box-shadow: 0 1px 0 #6b3fd1; }
 
-/* A/B/C offer test: ab.js sets html[data-offer] before paint; without it, A shows */
-.o-b, .o-c { display: none; }
-html[data-offer="b"] .o-a, html[data-offer="c"] .o-a { display: none; }
-html[data-offer="b"] .o-b, html[data-offer="c"] .o-c { display: inline; }
-html[data-offer="b"] .o-notb { display: none; }
-/* A/B/C: the same sections under the video, in a different order per version (all three use flex so spacing matches) */
-.home main { display: flex; flex-direction: column; }
-html[data-offer="b"] .said { order: 1; } html[data-offer="b"] .stack { order: 2; }
-html[data-offer="b"] .s-josh { order: 3; } html[data-offer="b"] .s-faq { order: 4; } html[data-offer="b"] .final { order: 5; }
-html[data-offer="c"] .s-josh { order: 1; } html[data-offer="c"] .said { order: 2; } html[data-offer="c"] .stack { order: 3; }
-html[data-offer="c"] .s-faq { order: 4; } html[data-offer="c"] .final { order: 5; }
-/* B and C have no gray lead-in line, so the offer starts the headline without the top gap */
-html[data-offer="b"] .home .offer h1 em, html[data-offer="c"] .home .offer h1 em { margin-top: 0; }
-html[data-offer="c"] .home .offer h1 em { font-size: clamp(2.2rem, 10vw, 4.2rem); }
-/* /stretch: the free-guide page, every buy button blue, the bonus in blue */
-.gd .cta, .gd .sticky { background: #2f80ff; color: #fff; box-shadow: 0 2px 0 #1d5fc9, 0 16px 40px -14px rgba(47, 128, 255, .55); }
-.gd .sticky { box-shadow: 0 2px 0 #1d5fc9, 0 14px 34px rgba(0, 0, 0, .55); }
-.gd .cta span, .gd .sticky span { border-left-color: rgba(255, 255, 255, .3); }
-.gd .cta:hover { background: #4a93ff; }
-.gd .cta:active { box-shadow: 0 1px 0 #1d5fc9; }
-.blue-text { color: #7fb6ff !important; }
-.ledger.blue i { background: #2f80ff; }
-.ledger.blue em { background: #2f80ff; color: #fff; }
