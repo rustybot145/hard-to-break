@@ -49,4 +49,12 @@
 .wl .cta span, .wl .sticky span { border-left-color: rgba(255, 255, 255, .3); }
 .wl .cta:hover { background: #ac74ff; }
 .wl .cta:active { box-shadow: 0 1px 0 #6b3fd1; }
-
+/* /stretch: the free-guide page, every buy button blue, the bonus in blue */
+.gd .cta, .gd .sticky { background: #2f80ff; color: #fff; box-shadow: 0 2px 0 #1d5fc9, 0 16px 40px -14px rgba(47, 128, 255, .55); }
+.gd .sticky { box-shadow: 0 2px 0 #1d5fc9, 0 14px 34px rgba(0, 0, 0, .55); }
+.gd .cta span, .gd .sticky span { border-left-color: rgba(255, 255, 255, .3); }
+.gd .cta:hover { background: #4a93ff; }
+.gd .cta:active { box-shadow: 0 1px 0 #1d5fc9; }
+.blue-text { color: #7fb6ff !important; }
+.ledger.blue i { background: #2f80ff; }
+.ledger.blue em { background: #2f80ff; color: #fff; }

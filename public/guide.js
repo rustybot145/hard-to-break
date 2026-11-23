@@ -91,8 +91,11 @@ function finish(s) {
       </a>
       <div class="offer">
         <h2>Ready for the<em>next skill?</em></h2>
-        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. One payment, no subscription.</p>
-        <a class="cta" href="/">See the program</a>
+        <p>The Hard to Break Program is six skills, every step from zero, with your workouts planned out. Get it from this guide and my stretch routines come free:</p>
+        <ul class="ledger blue">
+          <li><i aria-hidden="true"></i><div><b>Stretch routines PDF</b><small>A daily stretch routine and a rest-day stretch routine</small></div><em>Free</em></li>
+        </ul>
+        <a class="cta blue" href="/stretch">See the program</a>
         <p class="micro">$48 launch price until Sun Nov 29</p>
       </div>
       <a class="reel" href="#">Try another skill</a>

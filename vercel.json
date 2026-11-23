@@ -123,11 +123,6 @@
       "source": "/waitlist",
       "destination": "/",
       "permanent": false
-    },
-    {
-      "source": "/stretch",
-      "destination": "/",
-      "permanent": false
     }
   ]
 }
